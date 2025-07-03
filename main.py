@@ -1,5 +1,5 @@
-from scripts.test_panda_class.twod_script import MyApp
+from scripts.main_classes.main_class import StepDefence
 
 if __name__ == "__main__":
-    game = MyApp()
+    game = StepDefence()
     game.run()

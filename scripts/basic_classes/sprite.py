@@ -3,19 +3,22 @@ from direct.showbase.ShowBase import ShowBase
 from scripts.basic_classes.rect import Rect
 from panda3d.core import CardMaker, TransparencyAttrib
 
+from scripts.main_classes.render import Render
+
+
 class Sprite:
     """Прямоугольный спрайт"""
-    def __init__(self, rect:Rect, path_image:str, show_base:ShowBase):
+    def __init__(self, rect:Rect, path_image:str, render:Render):
         self._rect = rect
 
         card = CardMaker("image")
         card.setFrame(self._rect.scale)
-        self._node = show_base.render.attachNewNode(card.generate())
+        self._node = render.render.attachNewNode(card.generate())
         self._node.setPos(self._rect.x, self._rect.y, 0)
 
         self._node.setHpr(0, -90, 0)
 
-        texture = show_base.loader.loadTexture(path_image)
+        texture = render.loader.loadTexture(path_image)
         self._node.setTexture(texture)
         self._node.setTransparency(TransparencyAttrib.MAlpha)
 
