@@ -7,3 +7,9 @@ class Scene(ABC):
     @abstractmethod
     def __init__(self):
         self.__button_controller = ButtonsController()
+
+
+    def hide(self):
+        """Скрывает сцену"""
+        print('scene was hid')
+        pass

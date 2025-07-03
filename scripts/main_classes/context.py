@@ -1,8 +1,6 @@
-from direct.showbase.ShowBase import ShowBase
-
 from scripts.main_classes.events.event_handler import EventHandler
-from scripts.main_classes.render import Render
-from scripts.scene.scene_classes.scene_controller import SceneController
+from scripts.main_classes.DTO.render import Render
+from scripts.scene.scene_controller import SceneController
 
 
 class Context:

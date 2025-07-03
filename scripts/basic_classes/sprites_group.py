@@ -1,11 +1,11 @@
-from scripts.basic_classes.sprite import Sprite
+from scripts.basic_classes.sprite3D import Sprite3D
 
 class SpritesGroup:
     """Группа спрайтов"""
     def __init__(self):
         self.__sprites = []
 
-    def add(self, sprite:Sprite):
+    def add(self, sprite:Sprite3D):
         """Добавляет спрайт в группу"""
         self.__sprites.append(sprite)
 
@@ -14,7 +14,7 @@ class SpritesGroup:
         for sprite in self.__sprites:
             sprite.update(args, kwargs)
 
-    def remove(self, sprite:Sprite):
+    def remove(self, sprite:Sprite3D):
         """Удаляет спрайт из группы"""
         if sprite in self.__sprites:
             sprite.node.removeNode()  # Удаляем из сцены

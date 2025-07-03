@@ -2,9 +2,9 @@ from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 
 from scripts.basic_classes.rect import Rect
-from scripts.basic_classes.sprite import Sprite
+from scripts.basic_classes.sprite3D import Sprite3D
 from scripts.main_classes.context import Context
-from scripts.main_classes.render import Render
+from scripts.main_classes.DTO.render import Render
 from math import radians, sin, cos
 
 
@@ -15,7 +15,7 @@ class StepDefence(ShowBase):
         ShowBase.__init__(self)
         self.__context = Context(Render(self.render, self.loader))
 
-        Sprite(Rect(0, 0, 2, 2), 'images2d/anty_invisibility_tower.png', Render(self.render, self.loader))
+        Sprite3D(Rect(0, 0, 2, 2), 'images2d/anty_invisibility_tower.png', Render(self.render, self.loader, self.render2d))
 
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
 
