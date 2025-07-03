@@ -1,4 +1,4 @@
-from scripts.basic_classes.rect import Rect
+from scripts.sprite.rect import Rect
 from panda3d.core import CardMaker, TransparencyAttrib
 
 from scripts.main_classes.DTO.render import Render
@@ -24,3 +24,7 @@ class Sprite2D:
     @property
     def node(self):
         return self._node
+
+    @property
+    def rect(self):
+        return self._rect

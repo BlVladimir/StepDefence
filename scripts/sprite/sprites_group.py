@@ -1,4 +1,4 @@
-from scripts.basic_classes.sprite3D import Sprite3D
+from scripts.sprite.sprite3D import Sprite3D
 
 class SpritesGroup:
     """Группа спрайтов"""
@@ -25,3 +25,6 @@ class SpritesGroup:
         for sprite in self.__sprites:
             sprite.node.removeNode()
         self.__sprites.clear()
+
+    def sprites(self):
+        return self.__sprites

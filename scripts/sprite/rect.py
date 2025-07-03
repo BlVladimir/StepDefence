@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from panda3d.core import Vec3
 
 class Rect:
@@ -12,6 +14,13 @@ class Rect:
         """Двигает прямоугольник на заданный вектор"""
         self._x += vector.x
         self._y += vector.y
+
+    def is_point_in(self, point:Tuple[int, int]):
+        """Проверяет, находится ли точка внутри прямоугольника"""
+        if self._x <= point[0] <= self._x+self._width and self._y <= point[1] <= self._y+self._height:
+            return True
+        else:
+            return False
 
     @property
     def center(self):

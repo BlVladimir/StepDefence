@@ -1,4 +1,4 @@
-from scripts.scene.buttons.battuns_controller import ButtonsController
+from scripts.scene.buttons.buttons_controller import ButtonsController
 from scripts.scene.scene_classes.scenes.abstract_scene import Scene
 
 

@@ -1,37 +1,23 @@
-# from pygame.sprite import Group
-#
-# class ButtonsGroup:
-#     def __init__(self, sprites = None):
-#         self.__button_group = Group()
-#         if sprites:
-#             for i in sprites:
-#                 self.__button_group.add(i)
-#         self.__active = True
-#
-#     def draw(self, context):
-#         if self.__active:
-#             self.__button_group.draw(context.config_parameter_scene.get_screen())
-#             self.__button_group.update(context=context)
-#
-#     def action(self):
-#         if self.__active:
-#             for i in self.__button_group.sprites():
-#                 if i.is_pressed():
-#                     return i.is_pressed()
-#         return False
-#
-#     def update(self, context):
-#         if self.__active:
-#             self.__button_group.update(context = context)
-#
-#     @property
-#     def active(self):
-#         raise PermissionError('privet attribute')
-#
-#     @active.setter
-#     def active(self, value):
-#         self.__active = bool(value)
-#
+from typing import Tuple, Union
+
+from scripts.sprite.sprite2D import Sprite2D
+from scripts.sprite.sprite3D import Sprite3D
+from scripts.sprite.sprites_group import SpritesGroup
+
+
+class ButtonsGroup:
+    def __init__(self, sprites:Union[Tuple[Sprite2D], Tuple[Sprite3D]]):
+        self.__button_group = SpritesGroup()
+        if sprites:
+            for sprite in sprites:
+                self.__button_group.add(sprite)
+
+    def action(self):
+        for i in self.__button_group.sprites():
+            if i.is_pressed():
+                return i.is_pressed()
+        return False
+
 # class TextButtonsGroup(ButtonsGroup):
 #     def __init__(self, sprites = None):
 #         super().__init__(sprites)

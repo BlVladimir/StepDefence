@@ -1,5 +1,5 @@
-from scripts.basic_classes.rect import Rect
-from scripts.basic_classes.sprite2D import Sprite2D
+from scripts.sprite.rect import Rect
+from scripts.sprite.sprite2D import Sprite2D
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.DTO.render import Render
 
@@ -8,7 +8,6 @@ class Button(Sprite2D):
     """Основа всех кнопок"""
     def __init__(self, rect:Rect, image_path:str, render:Render, event:Event):
         super().__init__(rect, image_path, render)
-        self.rect = rect
         self.__event = event
 
     def update(self, context):
@@ -18,13 +17,12 @@ class Button(Sprite2D):
         # if self.rect[0] + self.__width >= mouse_position[0] >= self.rect[0] and self.rect[1] + self.__height >= mouse_position[1] >= self.rect[1]:
         #     context.config_parameter_scene.get_screen().blit(self.__highlight, self.rect)
 
-    def is_pressed(self): # функция, считывающая нажатие кнопки
+    def is_pressed(self, context): # функция, считывающая нажатие кнопки
         """Проверяет нажатие кнопки. Если нажата, то возвращает event"""
-        pass
-        # if self.rect[0] + self.__width >= pygame.mouse.get_pos()[0] >= self.rect[0] and self.rect[1] + self.__height >= pygame.mouse.get_pos()[1] >= self.rect[1]:
-        #     return self.__event
-        # else:
-        #     return False
+        if super().rect.is_point_in((context.key_watcher.mouse_watcher.get_mouse_x, context.key_watcher.mouse_watcher.get_mouse_y)):
+            return self.__event
+        else:
+            return False
 
 '''class ButtonWithAdditionalImage(Button):
     def __init__(self, x, y, image, width, height, event, additional_image):

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from scripts.scene.buttons.battuns_controller import ButtonsController
+from scripts.scene.buttons.buttons_controller import ButtonsController
 
 
 class Scene(ABC):
