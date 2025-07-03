@@ -5,6 +5,7 @@ from scripts.scene.scene_classes.scene_controller import SceneController
 
 
 class Context:
+    """Через этот класс осуществляются все взаимодействия в программе"""
     def __init__(self, main_class:ShowBase):
         self.__event_handler = EventHandler()
         self.__scene_controller = SceneController()

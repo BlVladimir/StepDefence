@@ -4,6 +4,7 @@ from scripts.main_classes.context import Context
 
 
 class StepDefence(ShowBase):
+    """Главный класс, осуществляющий взаимодействие программы с пользователем"""
     def __init__(self):
         ShowBase.__init__(self)
         self.__context = Context(self)

@@ -1,8 +1,8 @@
 from scripts.basic_classes.sprite import Sprite
 
 class SpritesGroup:
+    """Группа спрайтов"""
     def __init__(self):
-        """Группа спрайтов"""
         self.__sprites = []
 
     def add(self, sprite:Sprite):

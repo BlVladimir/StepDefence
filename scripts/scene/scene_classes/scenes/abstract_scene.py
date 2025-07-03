@@ -3,6 +3,7 @@ from scripts.scene.buttons.battuns_controller import ButtonsController
 
 
 class Scene(ABC):
+    """Абстрактная сцена"""
     @abstractmethod
     def __init__(self):
         self.__button_controller = ButtonsController()

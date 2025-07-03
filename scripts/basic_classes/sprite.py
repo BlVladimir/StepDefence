@@ -4,8 +4,8 @@ from scripts.basic_classes.rect import Rect
 from panda3d.core import CardMaker, TransparencyAttrib
 
 class Sprite:
+    """Прямоугольный спрайт"""
     def __init__(self, rect:Rect, path_image:str, show_base:ShowBase):
-        """Прямоугольный спрайт"""
         self._rect = rect
 
         card = CardMaker("image")

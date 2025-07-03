@@ -1,6 +1,7 @@
 from collections.abc import Mapping
 
 class Event(Mapping):
+    """Событие"""
     def __init__(self, name, **attributes):
         self.__name = name
         self.__attributes = attributes
