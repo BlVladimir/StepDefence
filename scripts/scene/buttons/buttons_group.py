@@ -1,21 +1,20 @@
-from typing import Tuple, Union
+from typing import Tuple
 
-from scripts.sprite.sprite2D import Sprite2D
-from scripts.sprite.sprite3D import Sprite3D
+from scripts.scene.buttons.button_class import Button
 from scripts.sprite.sprites_group import SpritesGroup
 
 
 class ButtonsGroup:
-    def __init__(self, sprites:Union[Tuple[Sprite2D], Tuple[Sprite3D]]):
+    def __init__(self, sprites:Tuple[Button]):
         self.__button_group = SpritesGroup()
         if sprites:
             for sprite in sprites:
                 self.__button_group.add(sprite)
 
-    def action(self):
+    def action(self, context):
         for i in self.__button_group.sprites():
-            if i.is_pressed():
-                return i.is_pressed()
+            if i.is_pressed(context):
+                return i.is_pressed(context)
         return False
 
 # class TextButtonsGroup(ButtonsGroup):

@@ -5,4 +5,6 @@ class EventHandler:
     @staticmethod
     def handle_event(event:Event, context):
         """Обработка событий"""
-        pass
+        match event.name:
+            case 'change_scene':
+                context.scene_controller.change_scene(event)

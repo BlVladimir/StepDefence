@@ -12,7 +12,7 @@ class Sprite3D:
         card = CardMaker("image")
         card.setFrame(self._rect.scale)
         self._node = render.render.attachNewNode(card.generate())
-        self._node.setPos(self._rect.x, self._rect.y, 0)
+        self._node.setPos(self._rect.center[0], self._rect.center[1], 0)
 
         self._node.setHpr(0, -90, 0)
 

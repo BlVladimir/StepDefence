@@ -15,7 +15,7 @@ class Rect:
         self._x += vector.x
         self._y += vector.y
 
-    def is_point_in(self, point:Tuple[int, int]):
+    def is_point_in(self, point:Tuple[float, float]):
         """Проверяет, находится ли точка внутри прямоугольника"""
         if self._x <= point[0] <= self._x+self._width and self._y <= point[1] <= self._y+self._height:
             return True
@@ -30,7 +30,7 @@ class Rect:
     @property
     def scale(self):
         """Для корректной отрисовки спрайта"""
-        return 0, -self._width, self._height, 0
+        return 0, -self._width, -self._height, 0
 
     @property
     def x(self):

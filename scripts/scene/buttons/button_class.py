@@ -19,7 +19,7 @@ class Button(Sprite2D):
 
     def is_pressed(self, context): # функция, считывающая нажатие кнопки
         """Проверяет нажатие кнопки. Если нажата, то возвращает event"""
-        if super().rect.is_point_in((context.key_watcher.mouse_watcher.get_mouse_x, context.key_watcher.mouse_watcher.get_mouse_y)):
+        if super().rect.is_point_in((context.key_watcher.mouse_watcher.get_mouse_x(), context.key_watcher.mouse_watcher.get_mouse_y())):
             return self.__event
         else:
             return False

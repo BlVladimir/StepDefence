@@ -10,27 +10,28 @@ class Context:
     """Через этот класс осуществляются все взаимодействия в программе"""
     def __init__(self, render:Render, key_watcher:KeyWatcher):
         self.__event_handler = EventHandler()
-        self.__scene_controller = SceneController()
-        self.__render = render
-        self.__key_watcher = key_watcher
-        self.__settings = Settings()
+        self._scene_controller = SceneController(render)
+        self._render = render
+        self._key_watcher = key_watcher
+        self._settings = Settings()
 
     def send_event(self, event:Event):
         """Отправляет event на обработку"""
-        self.__event_handler.handle_event(event, self)
+        if type(event) == Event:
+            self.__event_handler.handle_event(event, self)
 
     @property
     def scene_controller(self):
-        return self.__scene_controller
+        return self._scene_controller
 
     @property
     def render(self):
-        return self.__render
+        return self._render
 
     @property
     def key_watcher(self):
-        return self.__key_watcher
+        return self._key_watcher
 
     @property
     def settings(self):
-        return self.__settings
+        return self._settings

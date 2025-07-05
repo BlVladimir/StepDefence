@@ -12,7 +12,7 @@ class Sprite2D:
         card = CardMaker("image")
         card.setFrame(self._rect.scale)
         self._node = render.render2d.attachNewNode(card.generate())
-        self._node.setPos(self._rect.x, 0, self._rect.y)
+        self._node.setPos(self._rect.center[0], 0, self._rect.center[1])
 
         texture = render.loader.loadTexture(path_image)
         self._node.setTexture(texture)
