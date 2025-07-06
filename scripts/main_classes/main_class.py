@@ -19,8 +19,9 @@ class StepDefence(ShowBase):
         ShowBase.__init__(self)
 
         self._set_window_size(800, 600)
-        self.__context = Context(Render(render=self.render, loader=self.loader, render2d=self.render2d, set_window_size=self._set_window_size, win=self.win), KeyWatcher(self.mouseWatcherNode))
-        Sprite3D(Rect(-1, -1, 1, 1), 'images2d/button_image_1.png', Render(render=self.render, loader=self.loader, render2d=self.render2d, set_window_size=self._set_window_size, win=self.win))
+        render = Render(render=self.render, loader=self.loader, render2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
+        self.__context = Context(render, KeyWatcher(self.mouseWatcherNode))
+        Sprite3D(Rect(-1, -1, 1, 1, render.convert_coordinate), 'images2d/button_image_1.png', render)
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
 
         self.__key_handler = KeyHandler(self.accept, self.__context)

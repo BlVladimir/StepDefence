@@ -15,7 +15,6 @@ class ButtonsController:
     def __init__(self, render:Render):
         height = render.win.get_y_size()
         width = render.win.get_x_size()
-        print(width, height)
         if height / 2.5 > width / 4:
             button_level_scale = 1 / 4
             height /= width
@@ -24,14 +23,13 @@ class ButtonsController:
             button_level_scale = 1 / 2.5
             width /= height
             height = 1
-        print(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40)
-        buttons = (Button(Rect(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale), "images2d/UI/lvl/lvl1.png", render, Event(
+        buttons = (Button(Rect(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl1.png", render, Event(
                 'change_scene', scene='1')),
-            Button(Rect(width / 2 - button_level_scale / 2, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale), "images2d/UI/lvl/lvl2.png", render, Event('change_scene', scene='2')),
-            Button(Rect(width / 2 + button_level_scale / 2 + height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale), "images2d/UI/lvl/lvl3.png", render, Event('change_scene', scene='3')),
-            Button(Rect(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 + height / 40, button_level_scale, button_level_scale), "images2d/UI/lvl/lvl4.png", render, Event('change_scene', scene='4')),
-            Button(Rect(width / 2 - button_level_scale / 2, height / 2 + height / 40, button_level_scale, button_level_scale), "images2d/UI/lvl/lvl5.png", render, Event('change_scene', scene='5')),
-            Button(Rect(width / 2 + button_level_scale / 2 + height / 20, height / 2 + height / 40, button_level_scale, button_level_scale), "images2d/UI/lvl/lvl6.png", render, Event('change_scene', scene='6')))
+            Button(Rect(width / 2 - button_level_scale / 2, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl2.png", render, Event('change_scene', scene='2')),
+            Button(Rect(width / 2 + button_level_scale / 2 + height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl3.png", render, Event('change_scene', scene='3')),
+            Button(Rect(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl4.png", render, Event('change_scene', scene='4')),
+            Button(Rect(width / 2 - button_level_scale / 2, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl5.png", render, Event('change_scene', scene='5')),
+            Button(Rect(width / 2 + button_level_scale / 2 + height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl6.png", render, Event('change_scene', scene='6')))
         self.__main_menu_group = ButtonsGroup(buttons)
 
 
