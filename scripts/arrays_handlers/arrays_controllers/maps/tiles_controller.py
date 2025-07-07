@@ -1,4 +1,4 @@
-from scripts.arrays_handlers.arrays_controllers.map.tiles_builder import TilesBuilder
+from scripts.arrays_handlers.arrays_controllers.maps.tiles_builder import TilesBuilder
 
 
 class TilesController:

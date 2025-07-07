@@ -1,6 +1,6 @@
 from scripts.arrays_handlers.arrays_controllers.enemy.enemies_controller import EnemiesController
-from scripts.arrays_handlers.arrays_controllers.map.maps_controllers import MapsController
-from scripts.arrays_handlers.arrays_controllers.tower.towers_controller import TowersController
+from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import MapsController
+from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
 
 
 class MediatorControllers:
