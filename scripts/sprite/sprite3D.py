@@ -1,12 +1,12 @@
-from scripts.sprite.rect import Rect
+from scripts.sprite.rect import Rect, TestRect
 from panda3d.core import CardMaker, TransparencyAttrib
 
 from scripts.main_classes.DTO.render import Render
 
 
 class Sprite3D:
-    """Прямоугольный спрайт"""
-    def __init__(self, rect:Rect, path_image:str, render:Render):
+    """Прямоугольный спрайт в 3d"""
+    def __init__(self, rect:Rect | TestRect, path_image:str, render:Render):
         self._rect = rect
 
         card = CardMaker("image")
