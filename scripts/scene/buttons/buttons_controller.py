@@ -13,7 +13,6 @@ from scripts.sprite.rect import Rect2D
 class ButtonsController:
     """Класс всех кнопок на сцене"""
     def __init__(self, render:Render):
-        print(1)
         height = render.win.get_y_size()
         width = render.win.get_x_size()
         if height / 2.5 > width / 4:
@@ -25,14 +24,14 @@ class ButtonsController:
             width /= height
             height = 1
         self.__buttons_node = render.main_node2d.attachNewNode('button_node')
-        buttons = (Button(Rect2D(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl1.png", self.__buttons_node, render, Event(
-                'change_scene', scene='1')),
-            Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl2.png", self.__buttons_node, render, Event('change_scene', scene='2')),
-            Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl3.png", self.__buttons_node, render, Event('change_scene', scene='3')),
-            Button(Rect2D(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl4.png", self.__buttons_node, render, Event('change_scene', scene='4')),
-            Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl5.png", self.__buttons_node, render, Event('change_scene', scene='5')),
-            Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl6.png", self.__buttons_node, render, Event('change_scene', scene='6')))
-        self.__main_menu_group = ButtonsGroup(buttons)
+
+        main_menu_node = self.__buttons_node.attachNewNode('main_menu_node')
+        self.__main_menu_group = ButtonsGroup(main_menu_node, Button(Rect2D(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl1.png", main_menu_node, render, Event('change_scene', scene='1')),
+            Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl2.png", main_menu_node, render, Event('change_scene', scene='2')),
+            Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl3.png", main_menu_node, render, Event('change_scene', scene='3')),
+            Button(Rect2D(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl4.png", main_menu_node, render, Event('change_scene', scene='4')),
+            Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl5.png", main_menu_node, render, Event('change_scene', scene='5')),
+            Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl6.png", main_menu_node, render, Event('change_scene', scene='6')))
 
 
     def action(self, context):
@@ -43,7 +42,7 @@ class ButtonsController:
         return None
 
     def remove_button(self):
-        self.__main_menu_group.clear()
+        self.__main_menu_group.hide()
 
 class NullButtonsController:
     """Класс всех кнопок на сцене"""

@@ -4,7 +4,7 @@ from unittest import TestCase
 class FinderTrack:
     """Класс для поиска пути"""
     def __init__(self):
-        self.__directions = [(1, 0), (0, -1), (-1, 0), (0, 1)]  # 0: вверх, 1: вправо, 2: вниз, 3: влево
+        self.__directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 0: вверх, 1: вправо, 2: вниз, 3: влево
 
     def find_track(self, array):
         """Ищет кротчайший путь"""

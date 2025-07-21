@@ -5,20 +5,30 @@ from scripts.sprite.sprites_group import SpritesGroup
 
 
 class ButtonsGroup:
-    def __init__(self, sprites:Tuple[Button]):
+    def __init__(self, node, *buttons:Button):
+        self._node = node
         self.__button_group = SpritesGroup()
-        if sprites:
-            for sprite in sprites:
-                self.__button_group.add(sprite)
+        if buttons:
+            for button in buttons:
+                self.__button_group.add(button.sprit)
+
+        self.__active = True
+        self.__buttons = buttons
 
     def action(self, context):
-        for i in self.__button_group.sprites():
-            if i.is_pressed(context):
-                return i.is_pressed(context)
-        return False
+        if self.__active:
+            for button in self.__buttons:
+                if button.is_pressed(context):
+                    return button.is_pressed(context)
+        return None
 
-    def clear(self):
-        self.__button_group.clear()
+    def hide(self):
+        self.__active = False
+        self._node.hide()
+
+    def show(self):
+        self.__active = True
+        self._node.show()
 
 # class TextButtonsGroup(ButtonsGroup):
 #     def __init__(self, sprites = None):
