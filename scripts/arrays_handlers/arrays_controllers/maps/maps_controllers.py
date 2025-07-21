@@ -12,3 +12,6 @@ class MapsController:
 
     def create_map(self, level):
         self.__tiles_controller.create_map(self.__map_config, level)
+
+    def clear_map(self):
+        self.__tiles_controller.clear_tiles()

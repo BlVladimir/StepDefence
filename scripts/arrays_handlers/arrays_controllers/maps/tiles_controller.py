@@ -33,3 +33,6 @@ class TilesController:
                     rect = Rect3D(1.2*x - half_x, 1.2*y - half_y, 1, 1)
                     if map_array[y][x] in maps_config.keys.keys():
                         self.__tiles_array.append(self.__tiles_builder.create_tile(maps_config.keys[map_array[y][x]], rect))
+
+    def clear_tiles(self):
+        self.__tiles_builder.clear_node()

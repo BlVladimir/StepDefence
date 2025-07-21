@@ -11,3 +11,6 @@ class GameplayHandler:
 
     def create_scene(self, level):
         self.__mediator_controllers.create_scene(level)
+
+    def remove_scene(self):
+        self.__mediator_controllers.remove_scene()

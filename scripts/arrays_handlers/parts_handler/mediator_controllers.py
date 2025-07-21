@@ -13,3 +13,6 @@ class MediatorControllers:
 
     def create_scene(self, level):
         self.__maps_controller.create_map(level)
+
+    def remove_scene(self):
+        self.__maps_controller.clear_map()

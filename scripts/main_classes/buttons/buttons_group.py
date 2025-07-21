@@ -1,6 +1,4 @@
-from typing import Tuple
-
-from scripts.scene.buttons.button_class import Button
+from scripts.main_classes.buttons.button_class import Button
 from scripts.sprite.sprites_group import SpritesGroup
 
 

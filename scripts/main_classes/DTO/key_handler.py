@@ -8,4 +8,4 @@ class KeyHandler:
 
     @staticmethod
     def on_left_click(context:Context):
-        context.send_event(context.scene_controller.action(context))
+        context.send_event(context.buttons_controller.action(context))

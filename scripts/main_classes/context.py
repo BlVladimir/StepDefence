@@ -1,4 +1,5 @@
 from scripts.main_classes.DTO.key_watcher import KeyWatcher
+from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.events.event_handler import EventHandler
 from scripts.main_classes.DTO.render import Render
@@ -14,6 +15,8 @@ class Context:
         self._render = render
         self._key_watcher = key_watcher
         self._settings = Settings()
+        self._buttons_controller = ButtonsController(self._render)
+        self.__s = 2
 
     def send_event(self, event:Event):
         """Отправляет event на обработку"""
@@ -35,3 +38,7 @@ class Context:
     @property
     def settings(self):
         return self._settings
+
+    @property
+    def buttons_controller(self):
+        return self._buttons_controller

@@ -1,11 +1,7 @@
-from math import ceil
-
 from scripts.main_classes.DTO.render import Render
 from scripts.main_classes.events.event_class import Event
-from scripts.scene.buttons.button_class import Button
-from scripts.scene.buttons.buttons_group import ButtonsGroup
-
-from panda3d.core import WindowProperties
+from scripts.main_classes.buttons.button_class import Button
+from scripts.main_classes.buttons.buttons_group import ButtonsGroup
 
 from scripts.sprite.rect import Rect2D
 
@@ -25,7 +21,7 @@ class ButtonsController:
             height = 1
         self.__buttons_node = render.main_node2d.attachNewNode('button_node')
 
-        main_menu_node = self.__buttons_node.attachNewNode('main_menu_node')
+        main_menu_node = self.__buttons_node.attachNewNode('main_menu_buttons_node')
         self.__main_menu_group = ButtonsGroup(main_menu_node, Button(Rect2D(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl1.png", main_menu_node, render, Event('change_scene', scene='1')),
             Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl2.png", main_menu_node, render, Event('change_scene', scene='2')),
             Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl3.png", main_menu_node, render, Event('change_scene', scene='3')),
@@ -33,25 +29,26 @@ class ButtonsController:
             Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl5.png", main_menu_node, render, Event('change_scene', scene='5')),
             Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl6.png", main_menu_node, render, Event('change_scene', scene='6')))
 
+        gameplay_buttons_node = render.main_node2d.attachNewNode('gameplay_buttons_node')
+        self.__gameplay_group = ButtonsGroup(gameplay_buttons_node, Button(Rect2D(x=width/40, y=width/40, width=width/15, height=width/15, convert=render.convert_coordinate), "images2d/UI/exit_in_main_menu.png", gameplay_buttons_node, render, Event('change_scene', scene='main_menu')))
+        self.__gameplay_group.hide()
+
 
     def action(self, context):
-        match 'main_menu':
+        match context.scene_controller.get_name_current_scene():
             case 'main_menu':
                 if self.__main_menu_group.action(context):
                     return self.__main_menu_group.action(context)
+            case 'gameplay':
+                if self.__gameplay_group.action(context):
+                    return self.__gameplay_group.action(context)
         return None
 
-    def remove_button(self):
-        self.__main_menu_group.hide()
-
-class NullButtonsController:
-    """Класс всех кнопок на сцене"""
-    def __init__(self, render:Render):
-        pass
-
-    def action(self, context):
-        pass
-
-    def remove_button(self):
-        pass
-
+    def vision_control(self, context):
+        match context.scene_controller.get_name_current_scene():
+            case 'main_menu':
+                self.__main_menu_group.show()
+                self.__gameplay_group.hide()
+            case 'gameplay':
+                self.__main_menu_group.hide()
+                self.__gameplay_group.show()

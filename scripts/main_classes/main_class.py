@@ -22,9 +22,6 @@ class StepDefence(ShowBase):
         self._set_window_size(800, 600)
         render = Render(main_node3d=self.render, loader=self.loader, main_node2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
         self.__context = Context(render, KeyWatcher(self.mouseWatcherNode))
-        # Sprite3D(Rect3D(0, 0, 2, 2), 'images2d/button_image_1.png', render)
-        # Sprite3D(Rect3D(1, 1, 2, 2), 'images2d/button_image_1.png', render)
-        # TestNode(Rect3D(0, 0, 2, 2), 'images2d/button_image_1.png', render)
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
 
         self.__key_handler = KeyHandler(self.accept, self.__context)
