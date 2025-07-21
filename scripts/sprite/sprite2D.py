@@ -1,20 +1,20 @@
-from scripts.sprite.rect import Rect
-from panda3d.core import CardMaker, TransparencyAttrib
+from scripts.sprite.rect import Rect2D
+from panda3d.core import CardMaker, TransparencyAttrib, PandaNode
 
 from scripts.main_classes.DTO.render import Render
 
 
 class Sprite2D:
     """Прямоугольный спрайт"""
-    def __init__(self, rect:Rect, path_image:str, render:Render):
+    def __init__(self, rect:Rect2D, path_image:str, node:PandaNode, loader):
         self._rect = rect
 
         card = CardMaker("image")
         card.setFrame(self._rect.scale)
-        self._node = render.render2d.attachNewNode(card.generate())
+        self._node = node.attachNewNode(card.generate())
         self._node.setPos(self._rect.center[0], 0, self._rect.center[1])
 
-        texture = render.loader.loadTexture(path_image)
+        texture = loader.loadTexture(path_image)
         self._node.setTexture(texture)
         self._node.setTransparency(TransparencyAttrib.MAlpha)
 

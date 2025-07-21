@@ -1,4 +1,6 @@
-from scripts.sprite.rect import Rect
+from panda3d.core import PandaNode
+
+from scripts.sprite.rect import Rect2D
 from scripts.sprite.sprite2D import Sprite2D
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.DTO.render import Render
@@ -6,8 +8,9 @@ from scripts.main_classes.DTO.render import Render
 
 class Button(Sprite2D):
     """Основа всех кнопок"""
-    def __init__(self, rect:Rect, image_path:str, render:Render, event:Event):
-        super().__init__(rect, image_path, render)
+    def __init__(self, rect:Rect2D, image_path:str, button_node:PandaNode, render:Render, event:Event):
+        node = button_node.attachNewNode('1')
+        super().__init__(rect, image_path, node, render.loader)
         self.__event = event
 
     def update(self, context):

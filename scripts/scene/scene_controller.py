@@ -18,16 +18,15 @@ class SceneController:
         if event.name:
             match event['scene']:
                 case 'main_menu':
-                    self.__current_scene.hide()
                     self.__current_scene = self.__main_menu_scene
                     print(f'scene changed on {event['scene']}')
                 case 'settings':
-                    self.__current_scene.hide()
                     self.__current_scene = self.__settings_scene
                     print(f'scene changed on {event['scene']}')
-                case 'gameplay' | '1' | '2' | '3' | '4' | '5' | '6':
+                case '1' | '2' | '3' | '4' | '5' | '6':
                     self.__current_scene.hide()
                     self.__current_scene = self.__gameplay_scene
+                    self.__gameplay_scene.create_scene(int(event['scene'])-1)
                     print(f'scene changed on {event['scene']}')
                 case _:
                     print('incorrect attributes')

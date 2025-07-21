@@ -6,8 +6,7 @@ from panda3d.core import LineSegs, NodePath
 
 from scripts.main_classes.DTO.key_handler import KeyHandler
 from scripts.sprite.convert_coordinate import ConvertCoordinate
-from scripts.sprite.rect import Rect, TestRect
-from scripts.sprite.sprite3D import Sprite3D
+from scripts.sprite.rect import Rect2D, Rect3D
 from scripts.main_classes.DTO.key_watcher import KeyWatcher
 from scripts.main_classes.context import Context
 from scripts.main_classes.DTO.render import Render
@@ -21,13 +20,14 @@ class StepDefence(ShowBase):
         ShowBase.__init__(self)
 
         self._set_window_size(800, 600)
-        render = Render(render=self.render, loader=self.loader, render2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
-        # self.__context = Context(render, KeyWatcher(self.mouseWatcherNode))
-        Sprite3D(TestRect(0, 0, 2, 2), 'images2d/button_image_1.png', render)
-        Sprite3D(TestRect(1, 1, 2, 2), 'images2d/button_image_1.png', render)
+        render = Render(main_node3d=self.render, loader=self.loader, main_node2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
+        self.__context = Context(render, KeyWatcher(self.mouseWatcherNode))
+        # Sprite3D(Rect3D(0, 0, 2, 2), 'images2d/button_image_1.png', render)
+        # Sprite3D(Rect3D(1, 1, 2, 2), 'images2d/button_image_1.png', render)
+        # TestNode(Rect3D(0, 0, 2, 2), 'images2d/button_image_1.png', render)
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
 
-        # self.__key_handler = KeyHandler(self.accept, self.__context)
+        self.__key_handler = KeyHandler(self.accept, self.__context)
 
         self.__draw_basis()
 
@@ -40,7 +40,19 @@ class StepDefence(ShowBase):
         self.win.request_properties(props)
 
     def spinCameraTask(self, task):
+
         angleDegrees = task.time * 50.0
+        angleRadians = radians(angleDegrees)
+        self.camera.setPos(17 * sin(angleRadians), -17 * cos(angleRadians), 10)
+        self.camera.setHpr(angleDegrees, -25, 0)
+        """angleDegrees = 7
+        angleRadians = radians(angleDegrees)
+        self.camera.setPos(17 * sin(angleRadians), -17 * cos(angleRadians), 10)
+        self.camera.setHpr(angleDegrees, -25, 0)"""
+        return Task.cont
+
+    def fixCameraTask(self, task):
+        angleDegrees = 7
         angleRadians = radians(angleDegrees)
         self.camera.setPos(17 * sin(angleRadians), -17 * cos(angleRadians), 10)
         self.camera.setHpr(angleDegrees, -25, 0)

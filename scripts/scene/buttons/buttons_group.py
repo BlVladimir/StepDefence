@@ -17,6 +17,9 @@ class ButtonsGroup:
                 return i.is_pressed(context)
         return False
 
+    def clear(self):
+        self.__button_group.clear()
+
 # class TextButtonsGroup(ButtonsGroup):
 #     def __init__(self, sprites = None):
 #         super().__init__(sprites)

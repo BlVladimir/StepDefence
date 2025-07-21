@@ -8,3 +8,9 @@ class MainMenuScene(Scene):
     def __init__(self, render:Render):
         super().__init__(render)
         self.__button_controller = ButtonsController(render)
+
+    def hide(self):
+        self.__button_controller.remove_button()
+
+    def action(self, context):
+        return self.__button_controller.action(context)

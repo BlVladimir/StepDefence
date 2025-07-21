@@ -7,12 +7,13 @@ from scripts.scene.buttons.buttons_group import ButtonsGroup
 
 from panda3d.core import WindowProperties
 
-from scripts.sprite.rect import Rect
+from scripts.sprite.rect import Rect2D
 
 
 class ButtonsController:
     """Класс всех кнопок на сцене"""
     def __init__(self, render:Render):
+        print(1)
         height = render.win.get_y_size()
         width = render.win.get_x_size()
         if height / 2.5 > width / 4:
@@ -23,13 +24,14 @@ class ButtonsController:
             button_level_scale = 1 / 2.5
             width /= height
             height = 1
-        buttons = (Button(Rect(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl1.png", render, Event(
+        self.__buttons_node = render.main_node2d.attachNewNode('button_node')
+        buttons = (Button(Rect2D(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl1.png", self.__buttons_node, render, Event(
                 'change_scene', scene='1')),
-            Button(Rect(width / 2 - button_level_scale / 2, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl2.png", render, Event('change_scene', scene='2')),
-            Button(Rect(width / 2 + button_level_scale / 2 + height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl3.png", render, Event('change_scene', scene='3')),
-            Button(Rect(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl4.png", render, Event('change_scene', scene='4')),
-            Button(Rect(width / 2 - button_level_scale / 2, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl5.png", render, Event('change_scene', scene='5')),
-            Button(Rect(width / 2 + button_level_scale / 2 + height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl6.png", render, Event('change_scene', scene='6')))
+            Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl2.png", self.__buttons_node, render, Event('change_scene', scene='2')),
+            Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 - button_level_scale - height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl3.png", self.__buttons_node, render, Event('change_scene', scene='3')),
+            Button(Rect2D(width / 2 - button_level_scale * 1.5 - height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl4.png", self.__buttons_node, render, Event('change_scene', scene='4')),
+            Button(Rect2D(width / 2 - button_level_scale / 2, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl5.png", self.__buttons_node, render, Event('change_scene', scene='5')),
+            Button(Rect2D(width / 2 + button_level_scale / 2 + height / 20, height / 2 + height / 40, button_level_scale, button_level_scale, render.convert_coordinate), "images2d/UI/lvl/lvl6.png", self.__buttons_node, render, Event('change_scene', scene='6')))
         self.__main_menu_group = ButtonsGroup(buttons)
 
 
@@ -39,4 +41,18 @@ class ButtonsController:
                 if self.__main_menu_group.action(context):
                     return self.__main_menu_group.action(context)
         return None
+
+    def remove_button(self):
+        self.__main_menu_group.clear()
+
+class NullButtonsController:
+    """Класс всех кнопок на сцене"""
+    def __init__(self, render:Render):
+        pass
+
+    def action(self, context):
+        pass
+
+    def remove_button(self):
+        pass
 
