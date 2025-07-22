@@ -26,13 +26,13 @@ class ANSIColorFormatter(logging.Formatter):
         return f"{color}{message}{self.RESET}"
 
 def setup_logging():
+    """Настройка логирования"""
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
-    # Консольный обработчик
     console = logging.StreamHandler()
     console.setFormatter(ANSIColorFormatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        logging.BASIC_FORMAT
     ))
 
     logger.addHandler(console)

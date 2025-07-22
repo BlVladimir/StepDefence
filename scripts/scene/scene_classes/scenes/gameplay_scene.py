@@ -1,5 +1,5 @@
 from scripts.arrays_handlers.gameplay_handler import GameplayHandler
-from scripts.main_classes.DTO.render import Render
+from scripts.main_classes.interaction.render import Render
 from scripts.scene.scene_classes.scenes.abstract_scene import Scene
 
 

@@ -1,4 +1,4 @@
-from scripts.main_classes.DTO.render import Render
+from scripts.main_classes.interaction.render import Render
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.buttons.button_class import Button
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup

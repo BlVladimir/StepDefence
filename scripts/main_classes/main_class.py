@@ -4,10 +4,11 @@ from panda3d.core import WindowProperties
 
 from panda3d.core import LineSegs
 
-from scripts.main_classes.DTO.key_handler import KeyHandler
-from scripts.main_classes.DTO.key_watcher import KeyWatcher
+from scripts.main_classes.interaction.click_handler import ClickHandler
+from scripts.main_classes.interaction.key_handler import KeyHandler
+from scripts.main_classes.interaction.key_watcher import KeyWatcher
 from scripts.main_classes.context import Context
-from scripts.main_classes.DTO.render import Render
+from scripts.main_classes.interaction.render import Render
 from math import radians, sin, cos
 
 
@@ -19,6 +20,7 @@ class StepDefence(ShowBase):
 
         self._set_window_size(800, 600)
         render = Render(main_node3d=self.render, loader=self.loader, main_node2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
+        click_handler = ClickHandler(self.camNode, self.mouseWatcherNode, self.render)
         self.__context = Context(render, KeyWatcher(self.mouseWatcherNode))
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
 

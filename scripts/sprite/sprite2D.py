@@ -1,7 +1,7 @@
 from scripts.sprite.rect import Rect2D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode
 
-from scripts.main_classes.DTO.render import Render
+from scripts.main_classes.interaction.render import Render
 
 
 class Sprite2D:

@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from scripts.main_classes.DTO.render import Render
+from scripts.main_classes.interaction.render import Render
 from scripts.main_classes.events.event_class import Event
 from scripts.scene.scene_classes.scenes.gameplay_scene import GameplayScene
 from scripts.scene.scene_classes.scenes.main_menu_scene import MainMenuScene

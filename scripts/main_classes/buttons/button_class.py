@@ -3,7 +3,7 @@ from panda3d.core import PandaNode
 from scripts.sprite.rect import Rect2D
 from scripts.sprite.sprite2D import Sprite2D
 from scripts.main_classes.events.event_class import Event
-from scripts.main_classes.DTO.render import Render
+from scripts.main_classes.interaction.render import Render
 
 
 class Button:

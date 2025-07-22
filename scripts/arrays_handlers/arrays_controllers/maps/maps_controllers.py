@@ -1,6 +1,6 @@
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
-from scripts.main_classes.DTO.render import Render
+from scripts.main_classes.interaction.render import Render
 
 
 class MapsController:
