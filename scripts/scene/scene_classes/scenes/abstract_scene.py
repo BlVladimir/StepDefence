@@ -7,7 +7,6 @@ class Scene(ABC):
     @staticmethod
     def hide():
         """Скрывает сцену"""
-        print('scene was hide')
         pass
 
     @staticmethod

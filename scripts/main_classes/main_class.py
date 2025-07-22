@@ -2,11 +2,9 @@ from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import WindowProperties
 
-from panda3d.core import LineSegs, NodePath
+from panda3d.core import LineSegs
 
 from scripts.main_classes.DTO.key_handler import KeyHandler
-from scripts.sprite.convert_coordinate import ConvertCoordinate
-from scripts.sprite.rect import Rect2D, Rect3D
 from scripts.main_classes.DTO.key_watcher import KeyWatcher
 from scripts.main_classes.context import Context
 from scripts.main_classes.DTO.render import Render
