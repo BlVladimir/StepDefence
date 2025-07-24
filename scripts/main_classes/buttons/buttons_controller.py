@@ -1,3 +1,4 @@
+from scripts.interface.i_button_controller import IButtonsController
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render import Render
 from scripts.main_classes.events.event_class import Event
@@ -7,7 +8,7 @@ from scripts.main_classes.buttons.buttons_group import ButtonsGroup
 from scripts.sprite.rect import Rect2D
 
 
-class ButtonsController:
+class ButtonsController(IButtonsController):
     """Класс всех кнопок на сцене"""
     def __init__(self, render:Render):
         height = render.win.get_y_size()

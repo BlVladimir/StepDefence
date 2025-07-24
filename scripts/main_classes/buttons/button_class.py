@@ -24,7 +24,7 @@ class Button:
 
     def is_pressed(self, context: IContext) -> Optional[Event]:  # функция, считывающая нажатие кнопки
         """Проверяет нажатие кнопки. Если нажата, то возвращает event"""
-        if self._sprite.rect.is_point_in((context.key_watcher.mouse_watcher.get_mouse_x(), context.key_watcher.mouse_watcher.get_mouse_y())):
+        if self._sprite.rect.is_point_in((context.key_watcher.__mouse_watcher.get_mouse_x(), context.key_watcher.__mouse_watcher.get_mouse_y())):
             return self.__event
         else:
             return False
