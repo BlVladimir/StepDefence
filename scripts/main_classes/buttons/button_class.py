@@ -5,12 +5,12 @@ from scripts.interface.i_context import IContext
 from scripts.sprite.rect import Rect2D
 from scripts.sprite.sprite2D import Sprite2D
 from scripts.main_classes.events.event_class import Event
-from scripts.main_classes.interaction.render import Render
+from scripts.main_classes.interaction.rendermanager import RenderManager
 
 
 class Button:
     """Основа всех кнопок"""
-    def __init__(self, rect: Rect2D, image_path: str, button_node: PandaNode, render: Render, event: Event) -> None:
+    def __init__(self, rect: Rect2D, image_path: str, button_node: PandaNode, render: RenderManager, event: Event) -> None:
         node: PandaNode = button_node.attachNewNode('1')
         self._sprite: Sprite2D = Sprite2D(rect, image_path, node, render.loader)
         self.__event: Event = event
@@ -24,7 +24,7 @@ class Button:
 
     def is_pressed(self, context: IContext) -> Optional[Event]:  # функция, считывающая нажатие кнопки
         """Проверяет нажатие кнопки. Если нажата, то возвращает event"""
-        if self._sprite.rect.is_point_in((context.key_watcher.__mouse_watcher.get_mouse_x(), context.key_watcher.__mouse_watcher.get_mouse_y())):
+        if self._sprite.rect.is_point_in((context.key_watcher.mouse_watcher.get_mouse_x(), context.key_watcher.mouse_watcher.get_mouse_y())):
             return self.__event
         else:
             return False

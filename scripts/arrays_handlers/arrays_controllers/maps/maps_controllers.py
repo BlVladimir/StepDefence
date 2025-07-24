@@ -1,11 +1,11 @@
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
-from scripts.main_classes.interaction.render import Render
+from scripts.main_classes.interaction.rendermanager import RenderManager
 
 
 class MapsController:
     """Обработчик карт"""
-    def __init__(self, render:Render):
+    def __init__(self, render:RenderManager):
         self.__map_node = render.main_node3d.attachNewNode("empty_node_name")
         self.__tiles_controller = TilesController(self.__map_node, render.loader)
         self.__map_config = MapsConfig()

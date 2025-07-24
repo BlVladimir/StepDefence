@@ -11,7 +11,7 @@ class TaskManager(ITaskManager):
         self.__taskMng = taskMng
 
     def append_task(self, name:str, task:Callable[[Task], Task]) -> None:
-        self.__taskMng.append_task(name, task)
+        self.__taskMng.add(task, name)
 
     def remove_task(self, name:str) -> None:
-        self.__taskMng.remove_task(name)
+        self.__taskMng.remove(name)

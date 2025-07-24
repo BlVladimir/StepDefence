@@ -1,7 +1,7 @@
 from typing import Protocol, runtime_checkable
 
 @runtime_checkable
-class IRender(Protocol):
+class IRenderManager(Protocol):
     @property
     def main_node3d(self):
         ...

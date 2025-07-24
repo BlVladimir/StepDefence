@@ -6,12 +6,11 @@ from panda3d.core import LineSegs
 
 from scripts.main_classes.interaction.click_handler import ClickHandler
 from scripts.main_classes.interaction.key_handler import KeyHandler
-from scripts.main_classes.interaction.key_watcher import KeyWatcher
 from scripts.main_classes.context import Context
-from scripts.main_classes.interaction.render import Render
+from scripts.main_classes.interaction.rendermanager import RenderManager
 from math import radians, sin, cos
 from scripts.interface.i_main_class import IStepDefence
-
+from scripts.main_classes.task_manager import TaskManager
 
 
 class StepDefence(ShowBase, IStepDefence):
@@ -20,10 +19,12 @@ class StepDefence(ShowBase, IStepDefence):
         ShowBase.__init__(self)
 
         self._set_window_size(800, 600)
-        render = Render(main_node3d=self.render, loader=self.loader, main_node2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
-        click_handler = ClickHandler(self.camera, self.mouseWatcherNode, self.render)
-        self.__context = Context(render, KeyWatcher(self.mouseWatcherNode, click_handler))
-        self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
+        render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
+
+        self.__context = Context(render_manager, self.camera, TaskManager(self.taskMgr), self.mouseWatcherNode, self.render)
+
+        self.__context.task_mng.append_task("SpinCameraTask", self.spinCameraTask)
+        # self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
 
         self.__key_handler = KeyHandler(self.accept, self.__context)
 

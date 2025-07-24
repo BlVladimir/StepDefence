@@ -1,11 +1,11 @@
 from scripts.arrays_handlers.parts_handler.mediator_controllers import MediatorControllers
 from scripts.arrays_handlers.parts_handler.shop import Shop
-from scripts.main_classes.interaction.render import Render
+from scripts.main_classes.interaction.rendermanager import RenderManager
 
 
 class GameplayHandler:
     """Класс, управляющий игрой"""
-    def __init__(self, render:Render):
+    def __init__(self, render:RenderManager):
         self.__mediator_controllers = MediatorControllers(render)
         self.__shop = Shop()
 

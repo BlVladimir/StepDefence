@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from scripts.main_classes.interaction.render import Render
+from scripts.main_classes.interaction.rendermanager import RenderManager
 from scripts.main_classes.events.event_class import Event
 from scripts.scene.scene_classes.scenes.gameplay_scene import GameplayScene
 from scripts.scene.scene_classes.scenes.main_menu_scene import MainMenuScene
@@ -10,7 +10,7 @@ from scripts.interface.i_scene_controller import ISceneController
 
 class SceneController(ISceneController):
     """Класс, обрабатывающий сцены"""
-    def __init__(self, render:Render):
+    def __init__(self, render:RenderManager):
         self.__gameplay_scene = GameplayScene(render)
         self.__settings_scene = SettingsScene()
         self.__main_menu_scene = MainMenuScene()
