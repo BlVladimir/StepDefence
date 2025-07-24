@@ -1,6 +1,7 @@
 from scripts.main_classes.events.event_class import Event
+from scripts.interface.i_event_handler import IEventHandler
 
-class EventHandler:
+class EventHandler(IEventHandler):
     """Направляет событие нужному классу"""
     @staticmethod
     def handle_event(event:Event, context):

@@ -5,9 +5,10 @@ from scripts.main_classes.events.event_class import Event
 from scripts.scene.scene_classes.scenes.gameplay_scene import GameplayScene
 from scripts.scene.scene_classes.scenes.main_menu_scene import MainMenuScene
 from scripts.scene.scene_classes.scenes.settings_scene import SettingsScene
+from scripts.interface.i_scene_controller import ISceneController
 
 
-class SceneController:
+class SceneController(ISceneController):
     """Класс, обрабатывающий сцены"""
     def __init__(self, render:Render):
         self.__gameplay_scene = GameplayScene(render)

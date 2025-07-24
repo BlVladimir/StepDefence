@@ -10,10 +10,11 @@ from scripts.main_classes.interaction.key_watcher import KeyWatcher
 from scripts.main_classes.context import Context
 from scripts.main_classes.interaction.render import Render
 from math import radians, sin, cos
+from scripts.interface.i_main_class import IStepDefence
 
 
 
-class StepDefence(ShowBase):
+class StepDefence(ShowBase, IStepDefence):
     """Главный класс, осуществляющий взаимодействие программы с пользователем"""
     def __init__(self):
         ShowBase.__init__(self)

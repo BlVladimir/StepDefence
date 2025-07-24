@@ -1,31 +1,33 @@
+from typing import Any
+
+from scripts.interface.i_context import IContext
 from scripts.main_classes.buttons.button_class import Button
-from scripts.main_classes.interface.context_interface import IContext
 from scripts.sprite.sprites_group import SpritesGroup
 
 
 class ButtonsGroup:
-    def __init__(self, node, *buttons:Button):
-        self._node = node
-        self.__button_group = SpritesGroup()
+    def __init__(self, node: Any, *buttons: Button) -> None:
+        self._node: Any = node
+        self.__button_group: SpritesGroup = SpritesGroup()
         if buttons:
             for button in buttons:
                 self.__button_group.add(button.sprit)
 
-        self.__active = True
-        self.__buttons = buttons
+        self.__active: bool = True
+        self.__buttons: tuple[Button, ...] = buttons
 
-    def action(self, context:IContext):
+    def action(self, context: IContext) -> Any:
         if self.__active:
             for button in self.__buttons:
                 if button.is_pressed(context):
                     return button.is_pressed(context)
         return None
 
-    def hide(self):
+    def hide(self) -> None:
         self.__active = False
         self._node.hide()
 
-    def show(self):
+    def show(self) -> None:
         self.__active = True
         self._node.show()
 

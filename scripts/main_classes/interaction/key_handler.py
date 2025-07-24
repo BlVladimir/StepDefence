@@ -1,7 +1,8 @@
-from scripts.main_classes.interface.context_interface import IContext
+from scripts.interface.i_context import IContext
+from scripts.interface.i_key_handler import IKeyHandler
 
 
-class KeyHandler:
+class KeyHandler(IKeyHandler):
     def __init__(self, accept, context:IContext):
         self.__accept = accept
         self.__accept("mouse1", lambda: self.on_left_click(context))

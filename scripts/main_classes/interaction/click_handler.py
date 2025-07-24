@@ -1,9 +1,10 @@
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
 
 from logging import debug
+from scripts.interface.i_click_handler import IClickHandler
 
 
-class ClickHandler:
+class ClickHandler(IClickHandler):
     """Обрабатывает клики в трехмерном пространстве"""
 
     def __init__(self, camera_node:NodePath, mouse_watcher:NodePath, render_root:NodePath):
