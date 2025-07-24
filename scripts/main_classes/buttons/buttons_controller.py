@@ -2,6 +2,7 @@ from scripts.main_classes.interaction.render import Render
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.buttons.button_class import Button
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
+from scripts.main_classes.interface.context_interface import IContext
 
 from scripts.sprite.rect import Rect2D
 
@@ -34,7 +35,7 @@ class ButtonsController:
         self.__gameplay_group.hide()
 
 
-    def action(self, context):
+    def action(self, context:IContext):
         match context.scene_controller.get_name_current_scene():
             case 'main_menu':
                 if self.__main_menu_group.action(context):
@@ -44,7 +45,7 @@ class ButtonsController:
                     return self.__gameplay_group.action(context)
         return None
 
-    def vision_control(self, context):
+    def vision_control(self, context:IContext):
         match context.scene_controller.get_name_current_scene():
             case 'main_menu':
                 self.__main_menu_group.show()

@@ -1,4 +1,5 @@
 from scripts.main_classes.buttons.button_class import Button
+from scripts.main_classes.interface.context_interface import IContext
 from scripts.sprite.sprites_group import SpritesGroup
 
 
@@ -13,7 +14,7 @@ class ButtonsGroup:
         self.__active = True
         self.__buttons = buttons
 
-    def action(self, context):
+    def action(self, context:IContext):
         if self.__active:
             for button in self.__buttons:
                 if button.is_pressed(context):

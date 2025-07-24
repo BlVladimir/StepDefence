@@ -3,20 +3,20 @@ from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.events.event_handler import EventHandler
 from scripts.main_classes.interaction.render import Render
+from scripts.main_classes.interface.context_interface import IContext
 from scripts.main_classes.settings import Settings
 from scripts.scene.scene_controller import SceneController
 
 
-class Context:
+class Context(IContext):
     """Через этот класс осуществляются все взаимодействия в программе"""
-    def __init__(self, render:Render, key_watcher:KeyWatcher):
+    def __init__(self, render: Render, key_watcher: KeyWatcher):
         self.__event_handler = EventHandler()
         self._scene_controller = SceneController(render)
         self._render = render
         self._key_watcher = key_watcher
         self._settings = Settings()
         self._buttons_controller = ButtonsController(self._render)
-        self.__s = 2
 
     def send_event(self, event:Event):
         """Отправляет event на обработку"""
