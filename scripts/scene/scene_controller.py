@@ -27,6 +27,7 @@ class SceneController(ISceneController):
                     self.__current_scene = self.__main_menu_scene
                     self.__gameplay_scene.close_scene()
                     self.logger.info(f'scene changed on {event['scene']}')
+                    context.task_mng.remove_task('check_tiles')
                 case 'settings':
                     self.__current_scene = self.__settings_scene
                     self.__gameplay_scene.close_scene()

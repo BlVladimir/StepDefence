@@ -1,3 +1,5 @@
+import logging
+
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
 
 from logging import debug
@@ -36,8 +38,11 @@ class ClickHandler(IClickHandler):
             if self.__picker_queue.getNumEntries() > 0:
                 self.__picker_queue.sortEntries()
                 entry = self.__picker_queue.getEntry(0)
-                debug(f'Find {entry.getIntoNodePath().getName()}')
-                debug(f'Find {entry.getIntoNodePath().findNetTag('tile')}')
+                collided_node = entry.getIntoNodePath().findNetTag('tile')
+                sprite = collided_node.getPythonTag("sprite")
+                dist_debug = logging.getLogger("dist_debug")
+                dist_debug.debug(f"click on tile {sprite}")
+
+                sprite.add_wireframe()
                 return Task.cont
-        debug('Nothing was find')
         return Task.cont

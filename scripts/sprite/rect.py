@@ -125,6 +125,14 @@ class Rect3D:
     def y(self):
         return self._y
 
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
+
     def __str__(self):
         return f'Текущий прямоугольник: ширина-{self._width}, высота-{self._height},  X-{self._x}, Y-{self._y}, центр-{self.center}'
 

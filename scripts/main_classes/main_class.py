@@ -1,6 +1,6 @@
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from panda3d.core import WindowProperties
+from panda3d.core import WindowProperties, CollisionTraverser
 
 from panda3d.core import LineSegs
 
@@ -16,6 +16,9 @@ class StepDefence(ShowBase, IStepDefence):
     """Главный класс, осуществляющий взаимодействие программы с пользователем"""
     def __init__(self):
         ShowBase.__init__(self)
+        self.cTrav = CollisionTraverser()
+
+        # self.cTrav.showCollisions(self.render)
 
         self._set_window_size(800, 600)
         render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
