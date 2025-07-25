@@ -6,45 +6,47 @@ from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode
 
 class Sprite3D:
     """Прямоугольный спрайт в 3d"""
-    def __init__(self, rect: Rect3D, path_image:str, node:PandaNode, loader, number_group:int, name_group:str):
+    def __init__(self, rect: Rect3D, path_image:str, node:NodePath, loader, number_group:int, name_group:str):
         self._rect = rect
+        self._main_node = node.attachNewNode(name_group)
 
         card = CardMaker(name_group)
         card.setFrame(self._rect.scale)
-        self._node = node.attachNewNode(card.generate())
-        self._node.setTag(name_group, str(number_group))
+        self._texture_node = self._main_node.attachNewNode(card.generate())
+        self._texture_node.setTag(name_group, str(number_group))
 
-        self._node.setBin(name_group, number_group)
-        self._node.setDepthTest(False)
-        self._node.setDepthWrite(False)
+        self._texture_node.setBin(name_group, number_group)
+        self._texture_node.setDepthTest(False)
+        self._texture_node.setDepthWrite(False)
 
         texture = loader.loadTexture(path_image)
-        self._node.setTexture(texture)
-        self._node.setTransparency(TransparencyAttrib.MAlpha)
-        self._node.setPythonTag('sprite', self)
+        self._texture_node.setTexture(texture)
+        self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
 
         collision = CollisionNode(name_group)
         collision.addSolid(CollisionPolygon(
-            Point3(rect.x, rect.y, 0),
-            Point3(rect.x, rect.y + rect.height, 0),
-            Point3(rect.x + rect.width, rect.y + rect.height, 0),
-            Point3(rect.x + rect.width, rect.y, 0)
+            Point3(-rect.width/2, 0, -rect.height/2),
+            Point3(-rect.width/2, 0, rect.height/2),
+            Point3(rect.width/2, 0, rect.height/2),
+            Point3(rect.width/2, 0, -rect.height/2)
         ))
-        collision.setPythonTag('sprite', self)
-        self._collision_node = self._node.attachNewNode(collision)
+        # collision.setPythonTag('collision', self)
+        self._collision_node = self._main_node.attachNewNode(collision)
+        self._collision_node.setPythonTag('collision', self)
+        self._collision_node.show()
 
-        self._node.setPos(self._rect.center[0], self._rect.center[1], 0)
+        self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
         self.__rotation = Vec3(0, -90, 0)
-        self._node.setHpr(self.__rotation)
+        self._main_node.setHpr(self.__rotation)
 
         self.__frame = None
 
     def rotate(self, angle: int | float = 90):
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
         self.__rotation = Vec3(0, -90, angle)
-        self._node.setHpr(self.__rotation)
+        self._main_node.setHpr(self.__rotation)
         self._rect.rotate(angle)
-        self._node.setPos(self._rect.center[0], self._rect.center[1], 0)
+        self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
 
     # def add_wireframe(self):
     #     """Добавляет проволочную обводку вокруг объекта"""
@@ -62,7 +64,7 @@ class Sprite3D:
     def add_wireframe(self):
         """Добавляет проволочную обводку вокруг объекта"""
         if not self.__frame:
-            wireframe = self._node.copyTo(self._node.getParent())
+            wireframe = self._texture_node.copyTo(self._main_node)
 
             wireframe.clearTexture()
             wireframe.setRenderModeWireframe()
@@ -73,10 +75,6 @@ class Sprite3D:
             wireframe.setDepthTest(False)
             wireframe.setDepthWrite(False)
 
-            wireframe.setPos(self._node.getPos())
-            wireframe.setHpr(self._node.getHpr())
-            wireframe.setScale(self._node.getScale())
-
             self.__frame = wireframe
 
 
@@ -84,11 +82,15 @@ class Sprite3D:
         pass
 
     @property
-    def node(self):
-        return self._node
+    def main_node(self):
+        return self._main_node
+
+    @property
+    def texture_nose(self):
+        return self._texture_node
 
     def __str__(self):
-        return str(self._rect) + f' Node: {self._node.getName()}'
+        return str(self._rect) + f' Node: {self._texture_node.getName()}'
 
 
 class CopyingSprite3D(Sprite3D):

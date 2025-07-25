@@ -38,10 +38,10 @@ class ClickHandler(IClickHandler):
             if self.__picker_queue.getNumEntries() > 0:
                 self.__picker_queue.sortEntries()
                 entry = self.__picker_queue.getEntry(0)
-                collided_node = entry.getIntoNodePath().findNetTag('tile')
-                sprite = collided_node.getPythonTag("sprite")
+                collided_node = entry.getIntoNodePath()
+                sprite = collided_node.getPythonTag('collision')
                 dist_debug = logging.getLogger("dist_debug")
-                dist_debug.debug(f"click on tile {sprite}")
+                dist_debug.debug(f'click on tile {sprite}')
 
                 sprite.add_wireframe()
                 return Task.cont

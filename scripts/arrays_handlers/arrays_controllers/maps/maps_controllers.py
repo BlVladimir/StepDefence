@@ -6,7 +6,7 @@ from scripts.main_classes.interaction.render_manager import RenderManager
 class MapsController:
     """Обработчик карт"""
     def __init__(self, render:RenderManager):
-        self.__map_node = render.main_node3d.attachNewNode("empty_node_name")
+        self.__map_node = render.main_node3d.attachNewNode("map_node")
         self.__tiles_controller = TilesController(self.__map_node, render.loader)
         self.__map_config = MapsConfig()
 

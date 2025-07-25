@@ -17,13 +17,13 @@ class SpritesGroup:
     def remove(self, sprite:Sprite3D):
         """Удаляет спрайт из группы"""
         if sprite in self.__sprites:
-            sprite.node.removeNode()  # Удаляем из сцены
+            sprite.main_node.removeNode()  # Удаляем из сцены
             self.__sprites.remove(sprite)
 
     def clear(self):
         """Очищает группу"""
         for sprite in self.__sprites:
-            sprite.node.removeNode()
+            sprite.main_node.removeNode()
         self.__sprites.clear()
 
     def sprites(self):
