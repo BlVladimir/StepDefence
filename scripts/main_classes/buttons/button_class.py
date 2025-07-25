@@ -5,7 +5,7 @@ from scripts.interface.i_context import IContext
 from scripts.sprite.rect import Rect2D
 from scripts.sprite.sprite2D import Sprite2D
 from scripts.main_classes.events.event_class import Event
-from scripts.main_classes.interaction.rendermanager import RenderManager
+from scripts.main_classes.interaction.render_manager import RenderManager
 
 
 class Button:

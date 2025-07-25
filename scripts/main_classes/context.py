@@ -12,7 +12,7 @@ from scripts.main_classes.interaction.key_watcher import KeyWatcher
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.events.event_handler import EventHandler
-from scripts.main_classes.interaction.rendermanager import RenderManager
+from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
 from scripts.scene.scene_controller import SceneController
 

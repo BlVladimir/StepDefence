@@ -3,6 +3,7 @@ from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay
 from logging import debug
 from scripts.interface.i_click_handler import IClickHandler
 from scripts.interface.i_context import IContext
+from direct.task import Task
 
 
 class ClickHandler(IClickHandler):
@@ -25,17 +26,18 @@ class ClickHandler(IClickHandler):
 
         self.__context = context
 
-    def check_tiles(self):
+    def check_tiles(self, task):
         """Проверяет, на какой тайл наведена мышка"""
         if self.__mouse_watcher.hasMouse():
             mpos = self.__mouse_watcher.getMouse()
-            self.__picker_ray.setFromLens(self.__cam_node, mpos.x, mpos.y)
+            self.__picker_ray.setFromLens(self.__cam_node.node(), mpos.x, mpos.y)
             self.__picker.traverse(self.__render_root)
 
-            if self.__picker_queue.getNumEntries() > 1:
+            if self.__picker_queue.getNumEntries() > 0:
                 self.__picker_queue.sortEntries()
                 entry = self.__picker_queue.getEntry(0)
+                debug(f'Find {entry.getIntoNodePath().getName()}')
                 debug(f'Find {entry.getIntoNodePath().findNetTag('tile')}')
-                return entry.getIntoNodePath().findNetTag('tile')
+                return Task.cont
         debug('Nothing was find')
-        return None
+        return Task.cont

@@ -10,6 +10,7 @@ class Sprite3D:
         card = CardMaker("image")
         card.setFrame(self._rect.scale)
         self._node = node.attachNewNode(card.generate())
+        self._node.setTag(name_layer, str(layer))
 
         self._node.setBin(name_layer, layer)
         self._node.setDepthTest(False)

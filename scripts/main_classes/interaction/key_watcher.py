@@ -11,9 +11,9 @@ class KeyWatcher(IKeyWatcher):
         self._click_handler = click_handler
 
     @property
-    def mouse_watcher(self):
+    def mouse_watcher(self)->MouseWatcher:
         return self._mouse_watcher
 
     @property
-    def click_handler(self):
+    def click_handler(self)->ClickHandler:
         return self._click_handler

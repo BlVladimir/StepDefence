@@ -1,9 +1,11 @@
+from collections.abc import Callable
+
 from scripts.interface.i_context import IContext
 from scripts.interface.i_key_handler import IKeyHandler
 
 
 class KeyHandler(IKeyHandler):
-    def __init__(self, accept, context:IContext):
+    def __init__(self, accept:Callable, context:IContext):
         self.__accept = accept
         self.__accept("mouse1", lambda: self.on_left_click(context))
 

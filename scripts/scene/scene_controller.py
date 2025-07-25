@@ -1,6 +1,7 @@
 from logging import getLogger
 
-from scripts.main_classes.interaction.rendermanager import RenderManager
+from scripts.interface.i_context import IContext
+from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.events.event_class import Event
 from scripts.scene.scene_classes.scenes.gameplay_scene import GameplayScene
 from scripts.scene.scene_classes.scenes.main_menu_scene import MainMenuScene
@@ -18,7 +19,7 @@ class SceneController(ISceneController):
 
         self.logger = getLogger(__name__)
 
-    def change_scene(self, event:Event):
+    def change_scene(self, event:Event, context:IContext):
         """Меняет сцену"""
         if event.name:
             match event['scene']:
@@ -34,6 +35,7 @@ class SceneController(ISceneController):
                     self.__current_scene.hide()
                     self.__current_scene = self.__gameplay_scene
                     self.__gameplay_scene.create_scene(int(event['scene'])-1)
+                    context.task_mng.append_task('check_tiles', context.key_watcher.click_handler.check_tiles)
                     self.logger.info(f'scene changed on {event['scene']}')
                 case _:
                     self.logger.info('incorrect attributes')

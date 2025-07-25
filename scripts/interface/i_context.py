@@ -23,5 +23,5 @@ class IContext(Protocol):
         ...
 
     @property
-    def taskMgr(self):
+    def task_mng(self):
         ...

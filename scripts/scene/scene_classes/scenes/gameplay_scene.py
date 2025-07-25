@@ -1,5 +1,5 @@
 from scripts.arrays_handlers.gameplay_handler import GameplayHandler
-from scripts.main_classes.interaction.rendermanager import RenderManager
+from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.scene.scene_classes.scenes.abstract_scene import Scene
 from scripts.interface.i_gameplay_scene import IGameplayScene
 

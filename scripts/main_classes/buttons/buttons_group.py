@@ -1,7 +1,8 @@
-from typing import Any
+from typing import Any, Optional
 
 from scripts.interface.i_context import IContext
 from scripts.main_classes.buttons.button_class import Button
+from scripts.main_classes.events.event_class import Event
 from scripts.sprite.sprites_group import SpritesGroup
 
 
@@ -16,7 +17,7 @@ class ButtonsGroup:
         self.__active: bool = True
         self.__buttons: tuple[Button, ...] = buttons
 
-    def action(self, context: IContext) -> Any:
+    def action(self, context: IContext)->Optional[Event]:
         if self.__active:
             for button in self.__buttons:
                 if button.is_pressed(context):

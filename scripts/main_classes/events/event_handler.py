@@ -8,5 +8,5 @@ class EventHandler(IEventHandler):
         """Обработка событий"""
         match event.name:
             case 'change_scene':
-                context.scene_controller.change_scene(event)
+                context.scene_controller.change_scene(event, context)
                 context.buttons_controller.vision_control(context)

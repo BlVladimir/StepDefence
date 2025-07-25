@@ -1,6 +1,6 @@
 from scripts.interface.i_button_controller import IButtonsController
 from scripts.interface.i_context import IContext
-from scripts.main_classes.interaction.rendermanager import RenderManager
+from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.buttons.button_class import Button
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
