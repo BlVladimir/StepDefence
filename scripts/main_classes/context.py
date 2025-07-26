@@ -7,7 +7,7 @@ from scripts.interface.i_render import IRenderManager
 from scripts.interface.i_scene_controller import ISceneController
 from scripts.interface.i_settings import ISettings
 from scripts.interface.i_task_manager import ITaskManager
-from scripts.main_classes.interaction.click_handler import ClickHandler
+from scripts.main_classes.interaction.selected_handler import SelectedHandler
 from scripts.main_classes.interaction.key_watcher import KeyWatcher
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.events.event_class import Event
@@ -23,7 +23,7 @@ class Context(IContext):
         self.__event_handler = EventHandler()
         self._scene_controller = SceneController(render_manager)
         self._render_manager = render_manager
-        click_handler = ClickHandler(camera, mouse_watcher_node, render, self)
+        click_handler = SelectedHandler(camera, mouse_watcher_node, render, self)
         self._key_watcher = KeyWatcher(mouse_watcher_node, click_handler)
         self._settings = Settings()
         self._buttons_controller = ButtonsController(self._render_manager)

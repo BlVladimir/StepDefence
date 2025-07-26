@@ -48,19 +48,6 @@ class Sprite3D:
         self._rect.rotate(angle)
         self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
 
-    # def add_wireframe(self):
-    #     """Добавляет проволочную обводку вокруг объекта"""
-    #     if not self.__frame:
-    #         wireframe = self._node.copy_to(self._node)
-    #         wireframe.set_render_mode_wireframe()
-    #         wireframe.set_color(Vec4(1, 0, 0, 1))
-    #         wireframe.set_light_off(True)
-    #         wireframe.set_bin("fixed", 50)
-    #         wireframe.set_depth_test(False)
-    #         wireframe.set_depth_write(False)
-    #         wireframe.setHpr(self.__rotation)
-    #         self.__frame = wireframe
-
     def add_wireframe(self):
         """Добавляет проволочную обводку вокруг объекта"""
         if not self.__frame:
@@ -77,12 +64,14 @@ class Sprite3D:
 
             self.__frame = wireframe
 
+    def delete_wireframe(self):
+        self.__frame.removeNode()
 
     def update(self, *args, **kwargs):
         pass
 
     @property
-    def main_node(self):
+    def main_node(self)->NodePath:
         return self._main_node
 
     @property

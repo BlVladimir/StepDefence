@@ -2,6 +2,7 @@ from scripts.arrays_handlers.arrays_controllers.enemies.enemies_controller impor
 from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import MapsController
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
 from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.sprite.sprite3D import Sprite3D
 
 
 class MediatorControllers:
@@ -16,3 +17,13 @@ class MediatorControllers:
 
     def remove_scene(self):
         self.__maps_controller.clear_map()
+
+    def select_element(self, sprite:Sprite3D):
+        match sprite.main_node.getName():
+            case 'tile':
+                self.__maps_controller.select_element(sprite)
+
+    def unselect_element(self, sprite:Sprite3D):
+        match sprite.main_node.getName():
+            case 'tile':
+                self.__maps_controller.unselect_element(sprite)

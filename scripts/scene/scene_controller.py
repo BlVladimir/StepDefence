@@ -1,4 +1,4 @@
-from logging import getLogger
+from logging import getLogger, warning
 
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
@@ -7,6 +7,7 @@ from scripts.scene.scene_classes.scenes.gameplay_scene import GameplayScene
 from scripts.scene.scene_classes.scenes.main_menu_scene import MainMenuScene
 from scripts.scene.scene_classes.scenes.settings_scene import SettingsScene
 from scripts.interface.i_scene_controller import ISceneController
+from scripts.sprite.sprite3D import Sprite3D
 
 
 class SceneController(ISceneController):
@@ -35,7 +36,7 @@ class SceneController(ISceneController):
                 case '1' | '2' | '3' | '4' | '5' | '6':
                     self.__current_scene.hide()
                     self.__current_scene = self.__gameplay_scene
-                    self.__gameplay_scene.create_scene(int(event['scene'])-1)
+                    self.__gameplay_scene.create_scene(int(event['scene']) - 1)
                     context.task_mng.append_task('check_tiles', context.key_watcher.click_handler.check_tiles)
                     self.logger.info(f'scene changed on {event['scene']}')
                 case _:
@@ -45,3 +46,15 @@ class SceneController(ISceneController):
 
     def get_name_current_scene(self):
         return self.__current_scene.name()
+
+    def send_sprite_to_selected(self, sprite:Sprite3D):
+        if self.__current_scene == self.__gameplay_scene:
+            self.__gameplay_scene.gameplay_handler.mediator_controllers.select_element(sprite)
+        else:
+            warning('Sprite is selected, but scene is not gameplay')
+
+    def send_sprite_to_unselected(self, sprite:Sprite3D):
+        if self.__current_scene == self.__gameplay_scene:
+            self.__gameplay_scene.gameplay_handler.mediator_controllers.unselect_element(sprite)
+        else:
+            warning('Sprite is unselected, but scene is not gameplay')

@@ -2,13 +2,12 @@ import logging
 
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
 
-from logging import debug
-from scripts.interface.i_click_handler import IClickHandler
+from scripts.interface.i_click_handler import ISelectedHandler
 from scripts.interface.i_context import IContext
 from direct.task import Task
 
 
-class ClickHandler(IClickHandler):
+class SelectedHandler(ISelectedHandler):
     """Обрабатывает клики в трехмерном пространстве"""
 
     def __init__(self, camera_node:NodePath, mouse_watcher:NodePath, render_root:NodePath, context:IContext):
@@ -28,6 +27,8 @@ class ClickHandler(IClickHandler):
 
         self.__context = context
 
+        self.__last_sprite = None
+
     def check_tiles(self, task):
         """Проверяет, на какой тайл наведена мышка"""
         if self.__mouse_watcher.hasMouse():
@@ -40,9 +41,13 @@ class ClickHandler(IClickHandler):
                 entry = self.__picker_queue.getEntry(0)
                 collided_node = entry.getIntoNodePath()
                 sprite = collided_node.getPythonTag('collision')
+
+                self.__context.scene_controller.send_sprite_to_selected(sprite)
+                self.__last_sprite = sprite
                 dist_debug = logging.getLogger("dist_debug")
                 dist_debug.debug(f'click on tile {sprite}')
-
-                sprite.add_wireframe()
                 return Task.cont
+        if self.__last_sprite:
+            self.__context.scene_controller.send_sprite_to_unselected(self.__last_sprite)
+            self.__last_sprite = None
         return Task.cont

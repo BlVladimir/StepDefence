@@ -18,9 +18,6 @@ class AbstractTilesBuilder(ABC):
     def create_tile(self, type_tile:str, rect:Rect3D)->Tile:
         pass
 
-    def clear_node(self):
-        self._maps_node.getChildren().detach()
-
 class TilesPrototype(AbstractTilesBuilder):
     def __init__(self, maps_node:PandaNode, loader):
         super().__init__(maps_node, loader)

@@ -7,14 +7,18 @@ from scripts.interface.i_gameplay_scene import IGameplayScene
 class GameplayScene(Scene, IGameplayScene):
     """Сцена во время игры"""
     def __init__(self, render:RenderManager):
-        self.__gameplay_handler = GameplayHandler(render)
+        self._gameplay_handler = GameplayHandler(render)
 
     def create_scene(self, level):
-        self.__gameplay_handler.create_scene(level)
+        self._gameplay_handler.create_scene(level)
 
     def close_scene(self):
-        self.__gameplay_handler.remove_scene()
+        self._gameplay_handler.remove_scene()
 
     @staticmethod
     def name():
         return 'gameplay'
+
+    @property
+    def gameplay_handler(self):
+        return self._gameplay_handler

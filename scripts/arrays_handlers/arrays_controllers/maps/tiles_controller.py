@@ -1,38 +1,37 @@
 from panda3d.core import PandaNode
 
-from scripts.arrays_handlers.arrays_controllers.maps.finder_track import FinderTrack
+from scripts.arrays_handlers.arrays_controllers.maps.creating_map.finder_track import FinderTrack
+from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_builder import MapTilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
-from scripts.arrays_handlers.arrays_controllers.maps.tiles_builder import TilesBuilder
+from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
+from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.sprite.rect import Rect3D
+from scripts.sprite.sprite3D import Sprite3D
 
 
 class TilesController:
     """Содержит группу всех тайлов"""
-    def __init__(self, maps_node:PandaNode, loader):
-        self.__track = []
-        self.__tiles_builder = TilesBuilder(maps_node, loader)
-        self.__tiles_array = []
-        self.__finder_track = FinderTrack()
+    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader):
+        self.__map_tiles_builder = MapTilesBuilder(maps_config, maps_node, loader)
+        self._selected_tile = None
 
-    def create_map(self, maps_config:MapsConfig, level):
-        """Создает карту"""
-        map_array = maps_config.maps_array[level]
-        self.__track = self.__finder_track.find_track(map_array)
-        half_x, half_y = 0.5*len(map_array[0])*1.2 - 0.1, 0.5*len(map_array)*1.2 - 0.1
-        for y in range(len(map_array)):
-            for x in range(len(map_array[y])):
-                if map_array[y][x] in (1, 2):
-                    if (x, y) in self.__track.keys():
-                        rect = Rect3D(1.2 * x - half_x, 1.2 * y - half_y - 0.2*(self.__track[(x, y)] == 1 or self.__track[(x, y)] == 3), 1, 1.2,
-                                      (1.2 * x - half_x + 0.5, 1.2 * y - half_y + 0.5))
-                        self.__tiles_array.append(self.__tiles_builder.create_tile(maps_config.keys[map_array[y][x]], rect))
-                        self.__tiles_array[len(self.__tiles_array)-1].sprite.rotate((self.__track[(x, y)])*90)
-                    else:
-                        raise ValueError('(x, y) not in track keys')
-                else:
-                    rect = Rect3D(1.2*x - half_x, 1.2*y - half_y, 1, 1)
-                    if map_array[y][x] in maps_config.keys.keys():
-                        self.__tiles_array.append(self.__tiles_builder.create_tile(maps_config.keys[map_array[y][x]], rect))
+    def create_map_tiles(self, level):
+        """Создает тайлы для карты карту"""
+        self.__map_tiles_builder.create_map_tiles(level)
 
-    def clear_tiles(self):
-        self.__tiles_builder.clear_node()
+    def select_tile(self, tile:Sprite3D):
+        if self._selected_tile is None:
+            self._selected_tile = tile
+            tile.add_wireframe()
+        elif not self._selected_tile == tile:
+            self._selected_tile.delete_wireframe()
+            self._selected_tile = tile
+            tile.add_wireframe()
+
+    def unselect_tile(self, tile:Sprite3D):
+        self._selected_tile.delete_wireframe()
+        self._selected_tile = None
+
+    @property
+    def track(self):
+        return self.__map_tiles_builder.track

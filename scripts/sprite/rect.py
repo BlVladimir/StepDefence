@@ -1,4 +1,4 @@
-from math import atan2, degrees, radians, sin, cos, sqrt
+from math import radians, sin, cos
 from typing import Tuple, List
 from unittest import TestCase
 
@@ -134,7 +134,7 @@ class Rect3D:
         return self._height
 
     def __str__(self):
-        return f'Текущий прямоугольник: ширина-{self._width}, высота-{self._height},  X-{self._x}, Y-{self._y}, центр-{self.center}'
+        return f'Текущий прямоугольник: ширина-{round(self._width, 2)}, высота-{round(self._height, 2)},  X-{round(self._x, 2)}, Y-{round(self._y, 2)}, центр-({round(self.center[0], 2)}, {round(self.center[1], 2)})'
 
 class TestRect3D(TestCase):
     def setUp(self):

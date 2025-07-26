@@ -1,12 +1,12 @@
 from panda3d.core import MouseWatcher
 
-from scripts.main_classes.interaction.click_handler import ClickHandler
+from scripts.main_classes.interaction.selected_handler import SelectedHandler
 from scripts.interface.i_key_watcher import IKeyWatcher
 
 
 class KeyWatcher(IKeyWatcher):
     """Передает данные о клавиатуре и мышке context"""
-    def __init__(self, mouse_watcher:MouseWatcher, click_handler:ClickHandler):
+    def __init__(self, mouse_watcher:MouseWatcher, click_handler:SelectedHandler):
         self._mouse_watcher = mouse_watcher
         self._click_handler = click_handler
 
@@ -15,5 +15,5 @@ class KeyWatcher(IKeyWatcher):
         return self._mouse_watcher
 
     @property
-    def click_handler(self)->ClickHandler:
+    def click_handler(self)->SelectedHandler:
         return self._click_handler
