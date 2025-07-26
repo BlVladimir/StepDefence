@@ -50,17 +50,11 @@ class SceneController(ISceneController):
     def send_sprite_to_selected(self, sprite:Sprite3D):
         if self.__current_scene == self.__gameplay_scene:
             self.__gameplay_scene.gameplay_handler.mediator_controllers.select_element(sprite)
-        else:
-            warning('Sprite is selected, but scene is not gameplay')
 
     def send_sprite_to_unselected(self, sprite:Sprite3D):
         if self.__current_scene == self.__gameplay_scene:
-            self.__current_scene.gameplay_handler.mediator_controllers.unselect_element(sprite)
-        else:
-            warning('Sprite is unselected, but scene is not gameplay')
+            self.__gameplay_scene.gameplay_handler.mediator_controllers.unselect_element(sprite)
 
     def send_using_selected_element(self):
         if self.__current_scene == self.__gameplay_scene:
-            self.__current_scene.gameplay_handler.mediator_controllers.using_element()
-        else:
-            warning('Send using selected element, but scene is not gameplay')
+            self.__gameplay_scene.gameplay_handler.mediator_controllers.using_element()

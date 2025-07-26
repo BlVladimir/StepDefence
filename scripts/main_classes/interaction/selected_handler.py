@@ -44,8 +44,6 @@ class SelectedHandler(ISelectedHandler):
 
                 self.__context.scene_controller.send_sprite_to_selected(sprite)
                 self.__last_sprite = sprite
-                dist_debug = logging.getLogger("dist_debug")
-                dist_debug.debug(f'click on tile {sprite}')
                 return Task.cont
         if self.__last_sprite:
             self.__context.scene_controller.send_sprite_to_unselected(self.__last_sprite)

@@ -1,3 +1,5 @@
+from logging import debug
+
 from panda3d.core import NodePath
 
 from scripts.interface.i_button_controller import IButtonsController
