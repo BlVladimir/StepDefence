@@ -41,6 +41,8 @@ class Sprite3D:
 
         self.__frame = None
 
+        self.is_using = False
+
     def rotate(self, angle: int | float = 90):
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
         self.__rotation = Vec3(0, -90, angle)

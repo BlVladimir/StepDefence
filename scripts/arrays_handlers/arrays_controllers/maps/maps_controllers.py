@@ -12,17 +12,25 @@ class MapsController:
         self.__tiles_controller = TilesController(self.__map_config, self.__map_node, render.loader)
 
     def create_map(self, level):
+        """Создать карту"""
         self.__tiles_controller.create_map_tiles(level)
 
     def clear_map(self):
+        """Очистить карту"""
         self.__map_node.getChildren().detach()
 
     def select_element(self, sprite:Sprite3D):
+        """Выделить спрайт"""
         match sprite.main_node.getName():
             case 'tile':
                 self.__tiles_controller.select_tile(sprite)
 
     def unselect_element(self, sprite:Sprite3D):
+        """Отменить выделение у спрайта"""
         match sprite.main_node.getName():
             case 'tile':
-                self.__tiles_controller.unselect_tile(sprite)
+                self.__tiles_controller.unselect_tile()
+
+    def using_element(self):
+        """Назначить спрайт активным"""
+        self.__tiles_controller.using_tile()

@@ -27,3 +27,7 @@ class MediatorControllers:
         match sprite.main_node.getName():
             case 'tile':
                 self.__maps_controller.unselect_element(sprite)
+
+    def using_element(self):
+        """Назначить тайл активным"""
+        self.__maps_controller.using_element()
