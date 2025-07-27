@@ -13,4 +13,3 @@ class KeyHandler(IKeyHandler):
     @staticmethod
     def on_left_click(context:IContext):
         context.scene_controller.send_using_selected_element()
-        context.send_event(context.buttons_controller.action(context))

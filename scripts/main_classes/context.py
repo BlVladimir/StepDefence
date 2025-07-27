@@ -28,7 +28,7 @@ class Context(IContext):
         click_handler = SelectedHandler(camera, mouse_watcher_node, render, self)
         self._key_watcher = KeyWatcher(mouse_watcher_node, click_handler)
         self._settings = Settings()
-        self._buttons_controller = ButtonsController(self._render_manager)
+        self._buttons_controller = ButtonsController(self._render_manager, self)
         self._taskMng = taskMng
 
     def send_event(self, event:Event):

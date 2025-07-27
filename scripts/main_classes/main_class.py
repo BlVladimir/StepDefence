@@ -1,3 +1,4 @@
+from direct.gui.DirectButton import DirectButton
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import WindowProperties, CollisionTraverser
@@ -21,7 +22,7 @@ class StepDefence(ShowBase, IStepDefence):
         # self.cTrav.showCollisions(self.render)
 
         self._set_window_size(800, 600)
-        render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.render2d, set_window_size=self._set_window_size, win=self.win)
+        render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.aspect2d, set_window_size=self._set_window_size, win=self.win)
 
         self.__context = Context(render_manager, self.cam, TaskManager(self.taskMgr), self.mouseWatcherNode, self.render)
 
@@ -30,6 +31,10 @@ class StepDefence(ShowBase, IStepDefence):
         self.__key_handler = KeyHandler(self.accept, self.__context)
 
         self.__draw_basis()
+
+    @staticmethod
+    def click():
+        print('click')
 
     def _set_window_size(self, width, height):
         """Меняет размеры окна"""
