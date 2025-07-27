@@ -1,8 +1,11 @@
+import json
+
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import WindowProperties, CollisionTraverser
 
 from panda3d.core import LineSegs
+import websockets
 
 from scripts.main_classes.interaction.key_handler import KeyHandler
 from scripts.main_classes.context import Context
@@ -30,6 +33,16 @@ class StepDefence(ShowBase, IStepDefence):
         self.__key_handler = KeyHandler(self.accept, self.__context)
 
         self.__draw_basis()
+
+    async def connect_websocket(self):
+        try:
+            async with websockets.connect("ws://localhost:8000/ws") as websocket:
+                print("Подключено к NiceGUI WebSocket!")
+                while True:
+                    message = await websocket.recv()
+                    data = json.loads(message)
+        except Exception as e:
+            print(f"Ошибка WebSocket: {e}")
 
     def _set_window_size(self, width, height):
         """Меняет размеры окна"""
@@ -76,3 +89,7 @@ class StepDefence(ShowBase, IStepDefence):
         lines.draw_to(0, 0, 1)
 
         self.render.attach_new_node(lines.create())
+
+if __name__ == '__main__':
+    game = StepDefence()
+    game.run()
