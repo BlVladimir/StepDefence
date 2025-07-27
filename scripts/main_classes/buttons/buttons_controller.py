@@ -17,6 +17,9 @@ class ButtonsController(IButtonsController):
     def __init__(self, render:RenderManager, context:IContext):
         self.__buttons_node = render.main_node2d.attachNewNode('button_node')
 
+        w = render.win.getXSize()
+        h = render.win.getYSize()
+
         MMSC = 0.3
 
         main_menu_node = self.__buttons_node.attachNewNode('main_menu_buttons_node')
@@ -25,18 +28,25 @@ class ButtonsController(IButtonsController):
         coords = [LVecBase3f(MMSC*2.4, MMSC*1.2), LVecBase3f(MMSC*2.4, -MMSC*1.2), LVecBase3f(0, MMSC*1.2), LVecBase3f(0, -MMSC*1.2), LVecBase3f(-MMSC*2.4, MMSC*1.2), LVecBase3f(-MMSC*2.4, -MMSC*1.2)]
         for i, coord in enumerate(coords):
             buttons_main_menu.append(DirectButton(image = f'images2d/UI/lvl/lvl{i+1}.png',
+                                        parent=main_menu_node,
                                         scale = MMSC,
                                         pos = coord,
                                         command = lambda lvl=i: context.send_event(Event('change_scene', scene=str(lvl))),
-                                        pressEffect = False,
                                         frameColor=((0.5, 0.5, 0.5, 1),
                                                     (0.7, 0.7, 0.7, 1),
                                                     (0.3, 0.3, 0.3, 1))))
         self.__main_menu_group = ButtonsGroup(main_menu_node, init_list=buttons_main_menu)
 
         gameplay_buttons_node = render.main_node2d.attachNewNode('gameplay_buttons_node')
-        # self.__gameplay_group = ButtonsGroup(gameplay_buttons_node, Button(Rect2D(x=width/40, y=width/40, width=width/15, height=width/15, convert=render.convert_coordinate), "images2d/UI/exit_in_main_menu.png", gameplay_buttons_node, render, Event('change_scene', scene='main_menu')))
-        # self.__gameplay_group.hide()
+        self.__gameplay_group = ButtonsGroup(gameplay_buttons_node, DirectButton(image = 'images2d/UI/exit_in_main_menu.png',
+                                        parent=gameplay_buttons_node,
+                                        scale = 0.1,
+                                        pos = LVecBase3f(-w/h + (w/h)*0.075, 0.9),
+                                        command = lambda: context.send_event(Event('change_scene', scene='main_menu')),
+                                        frameColor=((0.5, 0.5, 0.5, 1),
+                                        (0.7, 0.7, 0.7, 1),
+                                        (0.3, 0.3, 0.3, 1))))
+        self.__gameplay_group.hide()
 
     @staticmethod
     def click():
@@ -46,5 +56,7 @@ class ButtonsController(IButtonsController):
         match context.scene_controller.get_name_current_scene():
             case 'main_menu':
                 self.__main_menu_group.show()
+                self.__gameplay_group.hide()
             case 'gameplay':
                 self.__main_menu_group.hide()
+                self.__gameplay_group.show()
