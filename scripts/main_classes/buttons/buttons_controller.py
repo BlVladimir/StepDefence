@@ -2,7 +2,7 @@ from logging import debug
 
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
-from panda3d.core import LVecBase3f
+from panda3d.core import LVecBase3f, Texture, TransparencyAttrib
 
 from scripts.interface.i_button_controller import IButtonsController
 from scripts.interface.i_context import IContext
@@ -13,11 +13,11 @@ from scripts.main_classes.buttons.buttons_group import ButtonsGroup
 
 class ButtonsController(IButtonsController):
     """Класс всех кнопок на сцене"""
-    def __init__(self, render:RenderManager, context:IContext):
-        self.__buttons_node = render.main_node2d.attachNewNode('button_node')
+    def __init__(self, render_manager:RenderManager, context:IContext):
+        self.__buttons_node = render_manager.main_node2d.attachNewNode('button_node')
 
-        w = render.win.getXSize()
-        h = render.win.getYSize()
+        w = render_manager.win.getXSize()
+        h = render_manager.win.getYSize()
 
         MMSC = 0.3
 
@@ -37,7 +37,7 @@ class ButtonsController(IButtonsController):
                                                               (0.3, 0.3, 0.3, 1))))
         self.__main_menu_group = ButtonsGroup(main_menu_node, init_list=buttons_main_menu)
 
-        gameplay_buttons_node = render.main_node2d.attachNewNode('gameplay_buttons_node')
+        gameplay_buttons_node = render_manager.main_node2d.attachNewNode('gameplay_buttons_node')
         self.__gameplay_group = ButtonsGroup(gameplay_buttons_node,
                                              DirectButton(image='images2d/UI/exit_in_main_menu.png',
                                                           parent=gameplay_buttons_node,
@@ -50,11 +50,19 @@ class ButtonsController(IButtonsController):
                                                                       (0.3, 0.3, 0.3, 1))))
         self.__gameplay_group.hide()
 
-        self.__shop_node = render.main_node2d.attachNewNode('shop_node')
+
+        button_texture = render_manager.loader.loadTexture('images2d/tower/common_foundation.png')
+        self.__shop_node = render_manager.main_node2d.attachNewNode('shop_node')
         self.__shop_frame = DirectFrame(parent=self.__shop_node,
                                         frameSize=(0, (w/h)*0.5, -2, 0),
                                         frameColor=(0.5, 0.5, 0.5, 1),
                                         pos=LVecBase3f(-w/h, 1))
+        button_tower = DirectButton(image=button_texture,
+                                    parent=self.__shop_frame,
+                                    scale=0.2,
+                                    pos=LVecBase3f(0.2, -0.2),
+                                    command=lambda: context.send_event(Event('shop', action='tower')))
+        button_tower.setTransparency(TransparencyAttrib.M_none)
         self.__shop_node.hide()
 
     def open_shop(self):
