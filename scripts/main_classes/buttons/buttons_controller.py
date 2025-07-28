@@ -1,6 +1,7 @@
 from logging import debug
 
 from direct.gui.DirectButton import DirectButton
+from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import LVecBase3f
 
 from scripts.interface.i_button_controller import IButtonsController
@@ -49,9 +50,18 @@ class ButtonsController(IButtonsController):
                                                                       (0.3, 0.3, 0.3, 1))))
         self.__gameplay_group.hide()
 
-    @staticmethod
-    def click():
-        print('click')
+        self.__shop_node = render.main_node2d.attachNewNode('shop_node')
+        self.__shop_frame = DirectFrame(parent=self.__shop_node,
+                                        frameSize=(0, (w/h)*0.5, -2, 0),
+                                        frameColor=(0.5, 0.5, 0.5, 1),
+                                        pos=LVecBase3f(-w/h, 1))
+        self.__shop_node.hide()
+
+    def open_shop(self):
+        self.__shop_node.show()
+
+    def close_shop(self):
+        self.__shop_node.hide()
 
     def vision_control(self, context:IContext):
         match context.scene_controller.get_name_current_scene():

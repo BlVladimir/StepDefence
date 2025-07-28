@@ -7,16 +7,18 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_buil
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.interface.i_context import IContext
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 
 
 class TilesController:
     """Содержит группу всех тайлов"""
-    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader):
+    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader, context:IContext):
         self.__map_tiles_builder = MapTilesBuilder(maps_config, maps_node, loader)
         self._selected_tile_sprite = None
         self._using_tile_sprite = None
+        self.__context = context
 
     def create_map_tiles(self, level):
         """Создает тайлы для карты карту"""
@@ -40,8 +42,10 @@ class TilesController:
         """Назначает тайл активным"""
         if not self._using_tile_sprite is None:
             self._using_tile_sprite.is_using = False
+            self.__context.buttons_controller.close_shop()
         if not self._selected_tile_sprite is None:
             self._using_tile_sprite = self._selected_tile_sprite
+            self.__context.buttons_controller.open_shop()
             self._using_tile_sprite.is_using = True
 
     @property

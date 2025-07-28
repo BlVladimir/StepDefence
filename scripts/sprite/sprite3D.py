@@ -1,5 +1,3 @@
-from logging import debug
-
 from scripts.sprite.rect import Rect3D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, NodePath, Vec3
 

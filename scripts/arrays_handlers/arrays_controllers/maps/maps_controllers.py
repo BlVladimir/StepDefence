@@ -1,15 +1,16 @@
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
+from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.sprite.sprite3D import Sprite3D
 
 
 class MapsController:
     """Обработчик карт"""
-    def __init__(self, render:RenderManager):
+    def __init__(self, render:RenderManager, context:IContext):
         self.__map_node = render.main_node3d.attachNewNode("map_node")
         self.__map_config = MapsConfig()
-        self.__tiles_controller = TilesController(self.__map_config, self.__map_node, render.loader)
+        self.__tiles_controller = TilesController(self.__map_config, self.__map_node, render.loader, context)
 
     def create_map(self, level):
         """Создать карту"""

@@ -23,7 +23,7 @@ class Context(IContext):
     """Через этот класс осуществляются все взаимодействия в программе"""
     def __init__(self, render_manager:RenderManager, camera, taskMng:ITaskManager, mouse_watcher_node:NodePath, render):
         self.__event_handler = EventHandler()
-        self._scene_controller = SceneController(render_manager)
+        self._scene_controller = SceneController(render_manager, self)
         self._render_manager = render_manager
         click_handler = SelectedHandler(camera, mouse_watcher_node, render, self)
         self._key_watcher = KeyWatcher(mouse_watcher_node, click_handler)

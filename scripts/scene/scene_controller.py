@@ -12,8 +12,8 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class SceneController(ISceneController):
     """Класс, обрабатывающий сцены"""
-    def __init__(self, render:RenderManager):
-        self.__gameplay_scene = GameplayScene(render)
+    def __init__(self, render:RenderManager, context:IContext):
+        self.__gameplay_scene = GameplayScene(render, context)
         self.__settings_scene = SettingsScene()
         self.__main_menu_scene = MainMenuScene()
         self.__current_scene = self.__main_menu_scene

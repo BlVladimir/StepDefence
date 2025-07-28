@@ -1,12 +1,13 @@
 from scripts.arrays_handlers.parts_handler.mediator_controllers import MediatorControllers
 from scripts.arrays_handlers.parts_handler.shop import Shop
+from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
 
 
 class GameplayHandler:
     """Класс, управляющий геймплеем"""
-    def __init__(self, render:RenderManager):
-        self._mediator_controllers = MediatorControllers(render)
+    def __init__(self, render:RenderManager, context:IContext):
+        self._mediator_controllers = MediatorControllers(render, context)
         self.__shop = Shop()
 
     def create_scene(self, level):
