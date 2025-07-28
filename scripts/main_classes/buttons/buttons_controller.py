@@ -2,7 +2,7 @@ from logging import debug
 
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
-from panda3d.core import LVecBase3f, Texture, TransparencyAttrib
+from panda3d.core import LVecBase3f, Texture, TransparencyAttrib, PNMImage
 
 from scripts.interface.i_button_controller import IButtonsController
 from scripts.interface.i_context import IContext
@@ -51,7 +51,7 @@ class ButtonsController(IButtonsController):
         self.__gameplay_group.hide()
 
 
-        button_texture = render_manager.loader.loadTexture('images2d/tower/common_foundation.png')
+        button_texture = self.__create_texture('images2d/tower/common_foundation.png', 'images2d/tower/common_gun.png')
         self.__shop_node = render_manager.main_node2d.attachNewNode('shop_node')
         self.__shop_frame = DirectFrame(parent=self.__shop_node,
                                         frameSize=(0, (w/h)*0.5, -2, 0),
@@ -61,8 +61,11 @@ class ButtonsController(IButtonsController):
                                     parent=self.__shop_frame,
                                     scale=0.2,
                                     pos=LVecBase3f(0.2, -0.2),
-                                    command=lambda: context.send_event(Event('shop', action='tower')))
-        button_tower.setTransparency(TransparencyAttrib.M_none)
+                                    command=lambda: context.send_event(Event('shop', action='tower')),
+                                    frameColor=((0.5, 0.5, 0.5, 1),
+                                                (0.7, 0.7, 0.7, 1),
+                                                (0.3, 0.3, 0.3, 1)))
+        button_tower.setTransparency(TransparencyAttrib.MAlpha)
         self.__shop_node.hide()
 
     def open_shop(self):
@@ -79,3 +82,21 @@ class ButtonsController(IButtonsController):
             case 'gameplay':
                 self.__main_menu_group.hide()
                 self.__gameplay_group.show()
+
+
+    @staticmethod
+    def __create_texture(first_path:str, second_path:str, xto:int=0, yto:int=0)->Texture:
+        first_image = PNMImage(first_path)
+        second_image = PNMImage(second_path)
+        composed_image = PNMImage(first_image.getXSize(), first_image.getYSize())
+        composed_image.copyFrom(first_image)
+
+        for x in range(second_image.getXSize()):
+            for y in range(second_image.getYSize()):
+                r, g, b, a = second_image.getRed(x, y), second_image.getGreen(x, y), second_image.getBlue(x, y), second_image.getAlpha(x, y)
+                if a > 0:
+                    composed_image.setXelA(xto + x, yto + y, r, g, b, a)
+
+        final_texture = Texture()
+        final_texture.load(composed_image)
+        return final_texture
