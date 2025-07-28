@@ -24,22 +24,21 @@ class TilesController:
 
     def select_tile(self, tile_sprite:Sprite3D):
         """Выделяет тайл"""
-        if not self._selected_tile_sprite == tile_sprite:
-            if self._selected_tile_sprite is not None and not self._selected_tile_sprite.is_using:
-                self._selected_tile_sprite.delete_wireframe()
+        if self._selected_tile_sprite != tile_sprite:
+            if self._selected_tile_sprite is not None and (self._selected_tile_sprite != self._using_tile_sprite):
+                self._selected_tile_sprite.is_using = False
             self._selected_tile_sprite = tile_sprite
-            tile_sprite.add_wireframe()
+            tile_sprite.is_using = True
 
     def unselect_tile(self):
         """Убирает выделение"""
-        if not self._selected_tile_sprite.is_using:
-            self._selected_tile_sprite.delete_wireframe()
+        if self._selected_tile_sprite != self._using_tile_sprite:
+            self._selected_tile_sprite.is_using = False
         self._selected_tile_sprite = None
 
     def using_tile(self):
         """Назначает тайл активным"""
         if not self._using_tile_sprite is None:
-            self._using_tile_sprite.delete_wireframe()
             self._using_tile_sprite.is_using = False
         if not self._selected_tile_sprite is None:
             self._using_tile_sprite = self._selected_tile_sprite

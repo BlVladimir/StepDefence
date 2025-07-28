@@ -41,7 +41,7 @@ class Sprite3D:
 
         self.__frame = None
 
-        self.is_using = False
+        self.__is_using = False
 
     def rotate(self, angle: int | float = 90):
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
@@ -50,7 +50,7 @@ class Sprite3D:
         self._rect.rotate(angle)
         self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
 
-    def add_wireframe(self):
+    def __add_wireframe(self):
         """Добавляет проволочную обводку вокруг объекта"""
         if not self.__frame:
             wireframe = self._texture_node.copyTo(self._main_node)
@@ -66,7 +66,7 @@ class Sprite3D:
 
             self.__frame = wireframe
 
-    def delete_wireframe(self):
+    def __delete_wireframe(self):
         self.__frame.removeNode()
 
     def update(self, *args, **kwargs):
@@ -79,6 +79,18 @@ class Sprite3D:
     @property
     def texture_nose(self):
         return self._texture_node
+
+    @property
+    def is_using(self):
+        return self.__is_using
+
+    @is_using.setter
+    def is_using(self, value:bool):
+        self.__is_using = value
+        if value:
+            self.__add_wireframe()
+        else:
+            self.__delete_wireframe()
 
     def __str__(self):
         return str(self._rect) + f' Node: {self._texture_node.getName()}'
@@ -94,20 +106,4 @@ class CopyingSprite3D(Sprite3D):
         self.__name_layer = name_group
 
     def copy(self, rect:Rect3D):
-        return self.__class__(path_image=self.__path_image, node=self.__node, loader=self.__loader, layer=self.__layer, name_layer=self.__name_layer, rect=rect)
-
-# class TestNode(Sprite3D):
-#     def __init__(self, rect: Rect2D | Rect3D, path_image:str, render:Render):
-#         super().__init__(rect, path_image, render)
-#
-#         card = CardMaker("image1")
-#         card.setFrame(self._rect.scale)
-#         self.child_node = super().node.attachNewNode(card.generate())
-#
-#         self.child_node.setPos(1, 0, 1)
-#
-#         self.child_node.setHpr(0, 0, 0)
-#
-#         texture = render.loader.loadTexture(path_image)
-#         self.child_node.setTexture(texture)
-#         self.child_node.setTransparency(TransparencyAttrib.MAlpha)
+        return self.__class__(path_image=self.__path_image, node=self.__node, loader=self.__loader, number_group=self.__layer, name_group=self.__name_layer, rect=rect)

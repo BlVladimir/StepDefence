@@ -4,7 +4,7 @@ from scripts.main_classes.interaction.render_manager import RenderManager
 
 
 class GameplayHandler:
-    """Класс, управляющий игрой"""
+    """Класс, управляющий геймплеем"""
     def __init__(self, render:RenderManager):
         self._mediator_controllers = MediatorControllers(render)
         self.__shop = Shop()
