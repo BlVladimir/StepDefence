@@ -7,6 +7,8 @@ class Tile:
         self._sprite = sprite
         self._effect = effect
 
+        self._sprite.external_object = self
+
     @property
     def effect(self):
         return self._effect

@@ -10,3 +10,5 @@ class EventHandler(IEventHandler):
             case 'change_scene':
                 context.scene_controller.change_scene(event, context)
                 context.buttons_controller.vision_control(context)
+            case 'buy_tower':
+                context.scene_controller.create_tower_on_current_tile(event['type'])

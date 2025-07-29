@@ -1,5 +1,6 @@
 from logging import getLogger, warning
 
+from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.events.event_class import Event
@@ -58,3 +59,7 @@ class SceneController(ISceneController):
     def send_using_selected_element(self):
         if self.__current_scene == self.__gameplay_scene:
             self.__gameplay_scene.gameplay_handler.mediator_controllers.using_element()
+
+    def create_tower_on_current_tile(self, tower_type:str):
+        if self.__current_scene == self.__gameplay_scene:
+            self.__gameplay_scene.gameplay_handler.mediator_controllers.create_tower(tower_type)

@@ -15,6 +15,7 @@ class Tower:
         self.__radius_strategy = radius_state
 
         self._tower_sprite = sprite
+        self._tower_sprite.external_object = self
 
         self.__visitor_improve = visitor_improve
 

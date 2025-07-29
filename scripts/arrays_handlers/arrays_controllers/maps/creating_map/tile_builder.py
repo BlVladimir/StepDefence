@@ -12,7 +12,7 @@ class AbstractTilesBuilder(ABC):
     """Интерфейс для создания тайлов"""
     def __init__(self, maps_node:PandaNode, loader:Loader):
         self._maps_node = maps_node
-        self.__loader = loader
+        self._loader = loader
 
     @abstractmethod
     def create_tile(self, type_tile:str, rect:Rect3D)->Tile:
@@ -50,7 +50,7 @@ class TilesBuilder(AbstractTilesBuilder):
 
     def  create_tile(self, type_tile:str, rect:Rect3D):
         if type_tile in self.__tiles.keys():
-            sprite = Sprite3D(rect, self.__tiles[type_tile], self._maps_node, self.__loader, 1, 'tile')
+            sprite = Sprite3D(rect, self.__tiles[type_tile], self._maps_node, self._loader, 1, 'tile')
             return Tile(sprite, type_tile)
         else:
             raise ValueError('Incorrect type of tile')

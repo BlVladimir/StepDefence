@@ -49,5 +49,9 @@ class TilesController:
             self._using_tile_sprite.is_using = True
 
     @property
+    def selected_tile(self)->Tile:
+        return self._using_tile_sprite.external_object
+
+    @property
     def track(self):
         return self.__map_tiles_builder.track

@@ -14,7 +14,7 @@ from scripts.sprite.sprite3D import CopyingSprite3D, Sprite3D
 class AbstractTowerBuilder(ABC):
     """Абстракция создания башни"""
     def __init__(self, loader:Loader)->None:
-        self.__loader = loader
+        self._loader = loader
 
 
     @abstractmethod
@@ -42,14 +42,14 @@ class TowerBuilder(AbstractTowerBuilder):
 
         if self.__config.get_gun:
             gun_state = GunState(sprite=Sprite3D(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
-                                                 tile.sprite.main_node, self.__loader, 3, 'gun'))
+                                                 tile.sprite.main_node, self._loader, 3, 'gun'))
         else:
             gun_state = None
 
         Tower(
             type_tower=type_tower,
             sprite=Sprite3D(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
-                            tile.sprite.main_node, self.__loader, 2, 'tower'),
+                            tile.sprite.main_node, self._loader, 2, 'tower'),
             damage_state=damage_state,
             radius_state=radius_state,
             gun_state=gun_state,

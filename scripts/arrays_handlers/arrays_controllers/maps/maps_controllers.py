@@ -1,4 +1,5 @@
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
+from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
@@ -35,3 +36,6 @@ class MapsController:
     def using_element(self):
         """Назначить спрайт активным"""
         self.__tiles_controller.using_tile()
+
+    def get_selected_tile(self)->Tile:
+        return self.__tiles_controller.selected_tile

@@ -61,7 +61,7 @@ class ButtonsController(IButtonsController):
                                     parent=self.__shop_frame,
                                     scale=0.2,
                                     pos=LVecBase3f(0.2, -0.2),
-                                    command=lambda: context.send_event(Event('shop', action='tower')),
+                                    command=lambda: context.send_event(Event('buy_tower', type='basic')),
                                     frameColor=((0.5, 0.5, 0.5, 1),
                                                 (0.7, 0.7, 0.7, 1),
                                                 (0.3, 0.3, 0.3, 1)))

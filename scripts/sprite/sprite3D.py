@@ -4,7 +4,9 @@ from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode
 
 class Sprite3D:
     """Прямоугольный спрайт в 3d"""
-    def __init__(self, rect: Rect3D, path_image:str, node:NodePath, loader, number_group:int, name_group:str):
+    def __init__(self, rect: Rect3D, path_image:str, node:NodePath, loader, number_group:int, name_group:str, external_object=None):
+        self._external_object = external_object
+
         self._rect = rect
         self._main_node = node.attachNewNode(name_group)
 
@@ -93,6 +95,14 @@ class Sprite3D:
     @property
     def rect(self):
         return self._rect
+
+    @property
+    def external_object(self):
+        return self._external_object
+
+    @external_object.setter
+    def external_object(self, value):
+        self._external_object = value
 
     def __str__(self):
         return str(self._rect) + f' Node: {self._texture_node.getName()}'
