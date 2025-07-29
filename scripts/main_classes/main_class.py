@@ -32,6 +32,7 @@ class StepDefence(ShowBase, IStepDefence):
 
         self.__draw_basis()
 
+
     @staticmethod
     def click():
         print('click')

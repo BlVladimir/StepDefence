@@ -4,7 +4,7 @@ from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode
 
 class Sprite3D:
     """Прямоугольный спрайт в 3d"""
-    def __init__(self, rect: Rect3D, path_image:str, node:NodePath, loader, number_group:int, name_group:str, external_object=None):
+    def __init__(self, rect: Rect3D, path_image:str, node:NodePath, loader, name_group:str, number:int, external_object=None, is_main:bool = True):
         self._external_object = external_object
 
         self._rect = rect
@@ -13,9 +13,8 @@ class Sprite3D:
         card = CardMaker(name_group)
         card.setFrame(self._rect.scale)
         self._texture_node = self._main_node.attachNewNode(card.generate())
-        self._texture_node.setTag(name_group, str(number_group))
 
-        self._texture_node.setBin(name_group, number_group)
+        self._texture_node.setBin(name_group, 0)
         self._texture_node.setDepthTest(False)
         self._texture_node.setDepthWrite(False)
 
@@ -35,9 +34,9 @@ class Sprite3D:
         self._collision_node.setPythonTag('collision', self)
         self._collision_node.show()
 
-        self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
-        self.__rotation = Vec3(0, -90, 0)
-        self._main_node.setHpr(self.__rotation)
+        if is_main:
+            self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
+            self._main_node.setHpr(Vec3(0, -90, 0))
 
         self.__frame = None
 
@@ -45,8 +44,7 @@ class Sprite3D:
 
     def rotate(self, angle: int | float = 90):
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
-        self.__rotation = Vec3(0, -90, angle)
-        self._main_node.setHpr(self.__rotation)
+        self._main_node.setHpr(Vec3(0, -90, angle))
         self._rect.rotate(angle)
         self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
 

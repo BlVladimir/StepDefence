@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
+from logging import debug
 
-from panda3d.core import Loader
+from panda3d.core import Loader, CullBinManager
 
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.towers.damage_state_maker import DamageStateMaker
@@ -15,13 +16,17 @@ class AbstractTowerBuilder(ABC):
     """Абстракция создания башни"""
     def __init__(self, loader:Loader)->None:
         self._loader = loader
+        self._counter = 0
 
+        CullBinManager.get_global_ptr().add_bin('tower', CullBinManager.BT_fixed, 2)
+        CullBinManager.get_global_ptr().add_bin('gun', CullBinManager.BT_fixed, 3)
 
     @abstractmethod
     def create_tower(self, type_tower:str, tile:Tile)->None:
         pass
 
-
+    def reset_counter(self):
+        self._counter = 0
 
 
 class TowerBuilder(AbstractTowerBuilder):
@@ -40,18 +45,21 @@ class TowerBuilder(AbstractTowerBuilder):
             case _:
                 raise Exception('Incorrect radius type')
 
-        if self.__config.get_gun:
-            gun_state = GunState(sprite=Sprite3D(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
-                                                 tile.sprite.main_node, self._loader, 3, 'gun'))
+
+        if self.__config.get_gun(type_tower):
+            gun_state = GunState(sprite=Sprite3D(tile.sprite.rect, self.__config.get_gun(type_tower),
+                                                 tile.sprite.main_node, self._loader, 'gun', self._counter, is_main=False))
         else:
             gun_state = None
 
         Tower(
             type_tower=type_tower,
             sprite=Sprite3D(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
-                            tile.sprite.main_node, self._loader, 2, 'tower'),
+                            tile.sprite.main_node, self._loader, 'tower', self._counter, is_main=False),
             damage_state=damage_state,
             radius_state=radius_state,
             gun_state=gun_state,
             visitor_improve=self.__config.get_visitor_improve(type_tower)
         )
+
+        self._counter += 1

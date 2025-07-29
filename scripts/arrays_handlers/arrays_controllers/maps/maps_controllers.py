@@ -20,6 +20,7 @@ class MapsController:
     def clear_map(self):
         """Очистить карту"""
         self.__map_node.getChildren().detach()
+        self.__tiles_controller.reset_tiles()
 
     def select_element(self, sprite:Sprite3D):
         """Выделить спрайт"""

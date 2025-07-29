@@ -24,13 +24,13 @@ class ButtonsController(IButtonsController):
         main_menu_node = self.__buttons_node.attachNewNode('main_menu_buttons_node')
 
         buttons_main_menu = []
-        coords = [LVecBase3f(MMSC*2.4, MMSC*1.2), LVecBase3f(MMSC*2.4, -MMSC*1.2), LVecBase3f(0, MMSC*1.2), LVecBase3f(0, -MMSC*1.2), LVecBase3f(-MMSC*2.4, MMSC*1.2), LVecBase3f(-MMSC*2.4, -MMSC*1.2)]
+        coords = [LVecBase3f(-MMSC*2.4, MMSC*1.2), LVecBase3f(0, MMSC*1.2), LVecBase3f(MMSC*2.4, MMSC*1.2), LVecBase3f(-MMSC*2.4, -MMSC*1.2), LVecBase3f(0, -MMSC*1.2), LVecBase3f(MMSC*2.4, -MMSC*1.2)]
         for i, coord in enumerate(coords):
             buttons_main_menu.append(DirectButton(image=f'images2d/UI/lvl/lvl{i + 1}.png',
                                                   parent=main_menu_node,
                                                   scale=MMSC,
                                                   pos=coord,
-                                                  command=lambda lvl=i: context.send_event(
+                                                  command=lambda lvl=i+1: context.send_event(
                                                       Event('change_scene', scene=str(lvl))),
                                                   frameColor=((0.5, 0.5, 0.5, 1),
                                                               (0.7, 0.7, 0.7, 1),

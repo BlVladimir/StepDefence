@@ -48,6 +48,9 @@ class TilesController:
             self.__context.buttons_controller.open_shop()
             self._using_tile_sprite.is_using = True
 
+    def reset_tiles(self):
+        self.__map_tiles_builder.reset_map()
+
     @property
     def selected_tile(self)->Tile:
         return self._using_tile_sprite.external_object

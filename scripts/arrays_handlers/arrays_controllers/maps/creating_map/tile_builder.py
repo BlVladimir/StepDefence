@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from panda3d.core import PandaNode, Loader
+from panda3d.core import PandaNode, Loader, CullBinManager
 
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
@@ -13,10 +13,16 @@ class AbstractTilesBuilder(ABC):
     def __init__(self, maps_node:PandaNode, loader:Loader):
         self._maps_node = maps_node
         self._loader = loader
+        self._counter = 0
+
+        CullBinManager.get_global_ptr().add_bin('tile', CullBinManager.BT_fixed, 1)
 
     @abstractmethod
     def create_tile(self, type_tile:str, rect:Rect3D)->Tile:
         pass
+
+    def reset_counter(self):
+        self._counter = 0
 
 class TilesPrototype(AbstractTilesBuilder):
     def __init__(self, maps_node:PandaNode, loader):
@@ -50,7 +56,8 @@ class TilesBuilder(AbstractTilesBuilder):
 
     def  create_tile(self, type_tile:str, rect:Rect3D):
         if type_tile in self.__tiles.keys():
-            sprite = Sprite3D(rect, self.__tiles[type_tile], self._maps_node, self._loader, 1, 'tile')
+            sprite = Sprite3D(rect, self.__tiles[type_tile], self._maps_node, self._loader, 'tile', self._counter)
+            self._counter += 1
             return Tile(sprite, type_tile)
         else:
             raise ValueError('Incorrect type of tile')

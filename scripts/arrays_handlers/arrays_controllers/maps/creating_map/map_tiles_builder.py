@@ -33,6 +33,9 @@ class MapTilesBuilder:
                     if map_array[y][x] in self.__maps_config.keys.keys():
                         self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
 
+    def reset_map(self):
+        self.__tiles_builder.reset_counter()
+
     @property
     def track(self):
         return self._track

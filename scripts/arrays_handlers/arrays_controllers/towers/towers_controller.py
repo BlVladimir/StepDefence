@@ -11,3 +11,6 @@ class TowersController:
 
     def create_tower(self, type_tower:str, tile:Tile):
         self.__tower_builder.create_tower(type_tower, tile)
+
+    def clear_towers(self):
+        self.__tower_builder.reset_counter()
