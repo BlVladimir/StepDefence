@@ -1,42 +1,50 @@
+from __future__ import annotations
+
 from scripts.sprite.rect import Rect3D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, NodePath, Vec3
 
-
 class Sprite3D:
     """Прямоугольный спрайт в 3d"""
-    def __init__(self, rect: Rect3D, path_image:str, node:NodePath, loader, name_group:str, number:int, external_object=None, is_main:bool = True):
+    def __init__(self, rect: Rect3D, path_image:str, parent:NodePath|Sprite3D, loader, name_group:str, number:int, external_object=None):
         self._external_object = external_object
 
         self._rect = rect
-        self._main_node = node.attachNewNode(name_group)
 
-        card = CardMaker(name_group)
-        card.setFrame(self._rect.scale)
-        self._texture_node = self._main_node.attachNewNode(card.generate())
+        def create_child_nodes(node:NodePath):
+            card = CardMaker(name_group)
+            card.setFrame(self._rect.scale)
+            self._texture_node = node.attachNewNode(card.generate())
 
-        self._texture_node.setBin(name_group, 0)
-        self._texture_node.setDepthTest(False)
-        self._texture_node.setDepthWrite(False)
+            self._texture_node.setBin(name_group, number)
+            self._texture_node.setDepthTest(False)
+            self._texture_node.setDepthWrite(False)
 
-        texture = loader.loadTexture(path_image)
-        self._texture_node.setTexture(texture)
-        self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
+            texture = loader.loadTexture(path_image)
+            self._texture_node.setTexture(texture)
+            self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
 
-        collision = CollisionNode(name_group)
-        collision.addSolid(CollisionPolygon(
-            Point3(-rect.width/2, 0, -rect.height/2),
-            Point3(-rect.width/2, 0, rect.height/2),
-            Point3(rect.width/2, 0, rect.height/2),
-            Point3(rect.width/2, 0, -rect.height/2)
-        ))
-        # collision.setPythonTag('collision', self)
-        self._collision_node = self._main_node.attachNewNode(collision)
-        self._collision_node.setPythonTag('collision', self)
-        self._collision_node.show()
+            collision = CollisionNode(name_group)
+            collision.addSolid(CollisionPolygon(
+                Point3(-rect.width / 2, 0, -rect.height / 2),
+                Point3(-rect.width / 2, 0, rect.height / 2),
+                Point3(rect.width / 2, 0, rect.height / 2),
+                Point3(rect.width / 2, 0, -rect.height / 2)
+            ))
 
-        if is_main:
+            self._collision_node = node.attachNewNode(collision)
+            self._collision_node.setPythonTag('collision', self)
+            self._collision_node.show()
+
+        if isinstance(parent, NodePath):
+            self._main_node = parent.attachNewNode(name_group)
+            create_child_nodes(self._main_node)
             self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
             self._main_node.setHpr(Vec3(0, -90, 0))
+        elif isinstance(parent, Sprite3D):
+            self._main_node = parent._main_node.attachNewNode(name_group)
+            create_child_nodes(self._main_node)
+        else:
+            raise ValueError('Incorrect type of parent')
 
         self.__frame = None
 
@@ -107,10 +115,10 @@ class Sprite3D:
 
 
 class CopyingSprite3D(Sprite3D):
-    def __init__(self, path_image:str, node:PandaNode, loader, number_group:int, name_group:str, rect:Rect3D = Rect3D(0, 0, 0, 0)):
-        super().__init__(rect, path_image, node, loader, number_group, name_group)
+    def __init__(self, path_image:str, parent:PandaNode, loader, number_group:int, name_group:str, rect:Rect3D = Rect3D(0, 0, 0, 0)):
+        super().__init__(rect, path_image, parent, loader, number_group, name_group)
         self.__path_image = path_image
-        self.__node = node
+        self.__node = parent
         self.__loader = loader
         self.__layer = number_group
         self.__name_layer = name_group

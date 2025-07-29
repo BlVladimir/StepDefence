@@ -48,14 +48,14 @@ class TowerBuilder(AbstractTowerBuilder):
 
         if self.__config.get_gun(type_tower):
             gun_state = GunState(sprite=Sprite3D(tile.sprite.rect, self.__config.get_gun(type_tower),
-                                                 tile.sprite.main_node, self._loader, 'gun', self._counter, is_main=False))
+                                                 tile.sprite, self._loader, 'gun', self._counter))
         else:
             gun_state = None
 
         Tower(
             type_tower=type_tower,
             sprite=Sprite3D(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
-                            tile.sprite.main_node, self._loader, 'tower', self._counter, is_main=False),
+                            tile.sprite, self._loader, 'tower', self._counter),
             damage_state=damage_state,
             radius_state=radius_state,
             gun_state=gun_state,
