@@ -90,6 +90,10 @@ class Sprite3D:
         else:
             self.__delete_wireframe()
 
+    @property
+    def rect(self):
+        return self._rect
+
     def __str__(self):
         return str(self._rect) + f' Node: {self._texture_node.getName()}'
 

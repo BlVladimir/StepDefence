@@ -1,3 +1,5 @@
+from typing import Dict
+
 from scripts.arrays_handlers.arrays_controllers.towers.states.damage_state import DamageState
 
 
@@ -31,7 +33,7 @@ class DamageStateMaker:
         enemy.increase_additional_money(kwargs['additional_money'])
         func(enemy, kwargs)
 
-    def create_state(self, characteristic_dict:dict)->DamageState:
+    def create_state(self, characteristic_dict:Dict)->DamageState:
         states = []
         for i in self.__priority_array:
             if i in characteristic_dict.keys():

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from scripts.arrays_handlers.arrays_controllers.towers.states.damage_state import DamageState
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.sprite.sprite3D import Sprite3D
@@ -5,7 +7,7 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class Tower:
     """Класс башни"""
-    def __init__(self, type_tower: str, sprite:Sprite3D, damage_state:'DamageState', gun_state:'GunState', radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove'):
+    def __init__(self, type_tower: str, sprite:Sprite3D, damage_state:'DamageState', gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove'):
         self.__type_tower = type_tower
 
         self.__damage_state = damage_state

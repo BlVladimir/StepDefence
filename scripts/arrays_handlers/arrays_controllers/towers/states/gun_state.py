@@ -12,11 +12,3 @@ class GunState:
     @property
     def gun_sprite(self):
         return self.__sprite
-
-class NullGunStrategy:
-    def rotate_gun(self):
-        pass
-
-    @property
-    def gun_sprite(self):
-        return None
