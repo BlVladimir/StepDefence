@@ -1,4 +1,4 @@
-from panda3d.core import NodePath
+from panda3d.core import NodePath, Loader
 
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.finder_track import FinderTrack
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
@@ -7,7 +7,7 @@ from scripts.sprite.rect import Rect3D
 
 
 class MapTilesBuilder:
-    def __init__(self, maps_config:MapsConfig, maps_node:NodePath, loader):
+    def __init__(self, maps_config:MapsConfig, maps_node:NodePath, loader:Loader):
         self.__maps_config = maps_config
         self.__tiles_builder = TilesBuilder(maps_node, loader)
         self.__finder_track = FinderTrack()

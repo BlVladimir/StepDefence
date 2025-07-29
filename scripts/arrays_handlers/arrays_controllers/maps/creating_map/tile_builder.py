@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from panda3d.core import PandaNode
+from panda3d.core import PandaNode, Loader
 
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
@@ -10,7 +10,7 @@ from scripts.sprite.sprite3D import CopyingSprite3D, Sprite3D
 
 class AbstractTilesBuilder(ABC):
     """Интерфейс для создания тайлов"""
-    def __init__(self, maps_node:PandaNode, loader):
+    def __init__(self, maps_node:PandaNode, loader:Loader):
         self._maps_node = maps_node
         self._loader = loader
 
