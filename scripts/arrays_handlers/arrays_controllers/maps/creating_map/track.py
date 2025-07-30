@@ -20,7 +20,6 @@ class Track:
         rect = self._first_tile.sprite.rect
         pos = Vec2(rect.x, rect.y)
         scale = 1.2*min(rect.width, rect.height)  # 1.2 от промежутка
-        debug(value)
         self._track = []
         for i, rotate in enumerate(value):
             debug(i+1)
@@ -41,12 +40,12 @@ class Track:
                 raise ValueError('tiles look at each other')
 
             rotation_matrix = Mat3.rotateMat(rotate*90)
-            debug(one_move)
             for j in range(len(one_move)):
                 one_move[j] = rotation_matrix.xform_vec(one_move[j])
 
             self._track.append(one_move)
             pos = one_move[3]
+            debug(pos)
 
     def get_division_vec(self)->Vec2:
         scale = min(self._first_tile.sprite.rect.width, self._first_tile.sprite.rect.height)
