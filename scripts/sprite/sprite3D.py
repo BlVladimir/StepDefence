@@ -46,6 +46,8 @@ class Sprite3D:
         else:
             raise ValueError('Incorrect type of parent')
 
+        self._main_node.setPythonTag('sprite', self)
+
         self.__frame = None
 
         self.__is_using = False

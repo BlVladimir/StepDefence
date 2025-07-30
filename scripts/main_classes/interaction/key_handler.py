@@ -9,7 +9,12 @@ class KeyHandler(IKeyHandler):
     def __init__(self, accept:Callable, context:IContext):
         self.__accept = accept
         self.__accept("mouse1", lambda: self.on_left_click(context))
+        self.__accept("enter", lambda: self.on_enter_click(context))
 
     @staticmethod
     def on_left_click(context:IContext):
         context.scene_controller.send_using_selected_element()
+
+    @staticmethod
+    def on_enter_click(context:IContext):
+        context.scene_controller.next_round()

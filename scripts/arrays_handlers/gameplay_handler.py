@@ -14,6 +14,9 @@ class GameplayHandler:
     def remove_scene(self):
         self._mediator_controllers.remove_scene()
 
+    def next_round(self):
+        self._mediator_controllers.next_round()
+
     @property
     def mediator_controllers(self):
         return self._mediator_controllers

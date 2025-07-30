@@ -44,3 +44,7 @@ class MapsController:
     @property
     def first_tile(self)->Tile:
         return self.__tiles_controller.first_tile
+
+    @property
+    def track(self):
+        return self.__tiles_controller.track

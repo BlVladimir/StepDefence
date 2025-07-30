@@ -1,17 +1,17 @@
 from random import choices, randrange, choice, random
-from unittest import TestCase
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
+from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.sprite.rect import Rect3D
-from scripts.sprite.sprite3D import Sprite3D
 
 
 class EnemiesController:
     """Обработчик врагов"""
-    def __init__(self, render:RenderManager):
-        self.__enemies_builder = EnemiesBuilder(render.main_node3d.attachNewNode('enemies'), render.loader)
+    def __init__(self, render:RenderManager, track:Track):
+        self._enemies_node = render.main_node3d.attachNewNode('enemies')
+        self.__enemies_builder = EnemiesBuilder(self._enemies_node, render.loader, track)
         self.__type_tuple = ('basic', 'big', 'armored', 'regen')
 
 
@@ -38,3 +38,9 @@ class EnemiesController:
                                         width=0.5*size,
                                         height=0.5*size))
         return rects
+
+    def move_enemies(self)->None:
+        enemies = self._enemies_node.getChildren()
+
+        for i in range(len(enemies)):
+            enemies[i].getPythonTag('sprite').external_object.move()

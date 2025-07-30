@@ -63,3 +63,7 @@ class SceneController(ISceneController):
     def create_tower_on_current_tile(self, tower_type:str):
         if self.__current_scene == self.__gameplay_scene:
             self.__gameplay_scene.gameplay_handler.mediator_controllers.create_tower(tower_type)
+
+    def next_round(self):
+        if self.__current_scene == self.__gameplay_scene:
+            self.__gameplay_scene.gameplay_handler.mediator_controllers.next_round()

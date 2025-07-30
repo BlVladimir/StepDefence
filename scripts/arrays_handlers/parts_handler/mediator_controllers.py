@@ -10,9 +10,9 @@ from scripts.sprite.sprite3D import Sprite3D
 class MediatorControllers:
     """Посредник между контроллерами основных классов"""
     def __init__(self, render_manager:RenderManager, context:IContext):
-        self.__enemies_controller = EnemiesController(render_manager)
         self.__towers_controller = TowersController(render_manager.loader)
         self.__maps_controller = MapsController(render_manager, context)
+        self.__enemies_controller = EnemiesController(render_manager, self.__maps_controller.track)
 
         self._current_wave = 0
 
@@ -51,3 +51,6 @@ class MediatorControllers:
     def using_element(self):
         """Назначить тайл активным"""
         self.__maps_controller.using_element()
+
+    def next_round(self):
+        self.__enemies_controller.move_enemies()
