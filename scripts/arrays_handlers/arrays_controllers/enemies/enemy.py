@@ -1,5 +1,6 @@
 from direct.interval.LerpInterval import LerpPosInterval
 from direct.interval.MetaInterval import Sequence
+from panda3d.core import Vec3
 
 from scripts.arrays_handlers.arrays_controllers.enemies.effects.bezier_curve_maker import BezierCurveMaker
 from scripts.arrays_handlers.arrays_controllers.enemies.effects.effect_state import EffectState
@@ -30,12 +31,15 @@ class Enemy:
             points[i] += self.__track.get_division_vec()
         movement_array = self.__bezier_curve_maker.generate_uniform_points(points[0], points[1], points[2], points[3])
 
+        for i in range(len(movement_array)):
+            movement_array[i] = Vec3(movement_array[i].x, movement_array[i].y, 0)
+
         intervals = []
         for i in range(1, len(movement_array)):
             intervals.append(
                 LerpPosInterval(
                     self._sprite.main_node,  # Ваша нода
-                    duration=0.1,
+                    duration=3,
                     pos=movement_array[i],
                     startPos=movement_array[i - 1]
                 )

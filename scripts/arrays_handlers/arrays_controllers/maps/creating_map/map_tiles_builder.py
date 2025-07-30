@@ -39,7 +39,7 @@ class MapTilesBuilder:
                     if map_array[y][x] in self.__maps_config.keys.keys():
                         self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
         self._track.set_first_tile(self._first_tile)
-        self._track.track = track
+        self._track.track = list(track.values())
 
     def reset_map(self):
         self.__tiles_builder.reset_counter()

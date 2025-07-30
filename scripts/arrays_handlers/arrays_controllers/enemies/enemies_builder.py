@@ -31,7 +31,8 @@ class EnemiesBuilder:
                        loader=self.__loader, name_group='enemy', number=self._counter),
               parameters['health'] + self.__config.get_wave_health_modifier(wave),
               EffectState(effects),
-              self.__bezier_curve_maker)
+              self.__bezier_curve_maker,
+              self.__track)
         self._counter += 1
 
     def clear_enemies(self):

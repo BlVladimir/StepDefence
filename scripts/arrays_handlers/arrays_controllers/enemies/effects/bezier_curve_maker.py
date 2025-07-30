@@ -10,7 +10,9 @@ class BezierCurveMaker:
     @staticmethod
     def __bezier_curve_point(p0:Vec2, p1:Vec2, p2:Vec2, p3:Vec2, t:float)->Vec2:
         """Возвращает точку на кривой Безье для параметра t"""
-        return (1-t)**3 * p0 + 3*(1-t)**2*t * p1 + 3*(1-t)*t**2 * p2 + t**3 * p3
+        x = (1-t)**3 * p0.x + 3*(1-t)**2*t * p1.x + 3*(1-t)*t**2 * p2.x + t**3 * p3.x
+        y = (1-t)**3 * p0.y + 3*(1-t)**2*t * p1.y + 3*(1-t)*t**2 * p2.y + t**3 * p3.y
+        return Vec2(x, y)
 
     def __calculate_curve_length(self, p0:Vec2, p1:Vec2, p2:Vec2, p3:Vec2, samples:int)->float:
         """Вычисляет приблизительную длину кривой Безье"""
@@ -31,7 +33,7 @@ class BezierCurveMaker:
 
         while high - low > self.__EPSILON:
             mid = (low + high) / 2
-            current_distance = self.__calculate_curve_length(p0, p1, p2, p3, mid * self.__SAMPLES)
+            current_distance = self.__calculate_curve_length(p0, p1, p2, p3, round(mid * self.__SAMPLES))
 
             if current_distance < target_distance:
                 low = mid
