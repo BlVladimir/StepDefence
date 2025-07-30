@@ -111,17 +111,15 @@ class Sprite3D:
         self._external_object = value
 
     def __str__(self):
-        return str(self._rect) + f' Node: {self._texture_node.getName()}'
+        return str(self._rect) + f' Node: {self._main_node.getName()}'
 
 
 class CopyingSprite3D(Sprite3D):
-    def __init__(self, path_image:str, parent:PandaNode, loader, number_group:int, name_group:str, rect:Rect3D = Rect3D(0, 0, 0, 0)):
-        super().__init__(rect, path_image, parent, loader, number_group, name_group)
+    def __init__(self, path_image:str, parent:PandaNode, loader, name_group:str, rect:Rect3D = Rect3D(0, 0, 0, 0)):
+        super().__init__(rect, path_image, parent, loader, name_group, 0)
         self.__path_image = path_image
-        self.__node = parent
         self.__loader = loader
-        self.__layer = number_group
         self.__name_layer = name_group
 
-    def copy(self, rect:Rect3D):
-        return self.__class__(path_image=self.__path_image, node=self.__node, loader=self.__loader, number_group=self.__layer, name_group=self.__name_layer, rect=rect)
+    def copy(self, rect:Rect3D, parent:NodePath|Sprite3D, number:int):
+        return Sprite3D(path_image=self.__path_image, parent=parent, loader=self.__loader, number=number, name_group=self.__name_layer, rect=rect)

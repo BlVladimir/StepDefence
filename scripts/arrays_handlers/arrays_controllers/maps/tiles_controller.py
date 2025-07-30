@@ -45,11 +45,17 @@ class TilesController:
             self.__context.buttons_controller.close_shop()
         if not self._selected_tile_sprite is None:
             self._using_tile_sprite = self._selected_tile_sprite
-            self.__context.buttons_controller.open_shop()
             self._using_tile_sprite.is_using = True
+            if self._using_tile_sprite.external_object.effect != 'road' and not self._using_tile_sprite.main_node.find('tower'):
+                self.__context.buttons_controller.open_shop()
+
 
     def reset_tiles(self):
         self.__map_tiles_builder.reset_map()
+
+    @property
+    def first_tile(self)->Tile:
+        return self.__map_tiles_builder.first_tile
 
     @property
     def selected_tile(self)->Tile:

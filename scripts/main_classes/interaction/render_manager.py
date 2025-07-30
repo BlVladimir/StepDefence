@@ -1,3 +1,6 @@
+from direct.showbase import Loader
+from panda3d.core import NodePath
+
 from scripts.sprite.convert_coordinate import ConvertCoordinate
 from scripts.interface.i_render import IRenderManager
 
@@ -13,15 +16,15 @@ class RenderManager(IRenderManager):
         self._convert_coordinate = ConvertCoordinate(self)
 
     @property
-    def main_node3d(self):
+    def main_node3d(self)->NodePath:
         return self._main_node3d
 
     @property
-    def loader(self):
+    def loader(self)->Loader:
         return self._loader
 
     @property
-    def main_node2d(self):
+    def main_node2d(self)->NodePath:
         return self._main_node2d
 
     @property

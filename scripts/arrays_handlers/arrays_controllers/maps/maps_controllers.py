@@ -40,3 +40,7 @@ class MapsController:
 
     def get_selected_tile(self)->Tile:
         return self.__tiles_controller.selected_tile
+
+    @property
+    def first_tile(self)->Tile:
+        return self.__tiles_controller.first_tile

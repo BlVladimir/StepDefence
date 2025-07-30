@@ -12,3 +12,4 @@ class EventHandler(IEventHandler):
                 context.buttons_controller.vision_control(context)
             case 'buy_tower':
                 context.scene_controller.create_tower_on_current_tile(event['type'])
+                context.buttons_controller.close_shop()

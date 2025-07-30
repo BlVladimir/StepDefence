@@ -34,10 +34,10 @@ class SceneController(ISceneController):
                     self.__current_scene = self.__settings_scene
                     self.__gameplay_scene.close_scene()
                     self.logger.info(f'scene changed on {event['scene']}')
-                case '1' | '2' | '3' | '4' | '5' | '6':
+                case '0' | '1' | '2' | '3' | '4' | '5':
                     self.__current_scene.hide()
                     self.__current_scene = self.__gameplay_scene
-                    self.__gameplay_scene.create_scene(int(event['scene']) - 1)
+                    self.__gameplay_scene.create_scene(int(event['scene']))
                     context.task_mng.append_task('check_tiles', context.key_watcher.click_handler.check_tiles)
                     self.logger.info(f'scene changed on {event['scene']}')
                 case _:

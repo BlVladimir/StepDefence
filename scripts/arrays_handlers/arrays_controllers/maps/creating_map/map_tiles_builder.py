@@ -3,6 +3,7 @@ from panda3d.core import NodePath, Loader
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.finder_track import FinderTrack
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
+from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.sprite.rect import Rect3D
 
 
@@ -12,6 +13,8 @@ class MapTilesBuilder:
         self.__tiles_builder = TilesBuilder(maps_node, loader)
         self.__finder_track = FinderTrack()
         self._track = None
+
+        self._first_tile = None
 
     def create_map_tiles(self, level):
         """Создает тайлы для карты карту"""
@@ -28,6 +31,8 @@ class MapTilesBuilder:
                         tile.sprite.rotate((self._track[(x, y)]) * 90)
                     else:
                         raise ValueError('(x, y) not in track keys')
+                    if map_array[y][x] == 2:
+                        self._first_tile = tile
                 else:
                     rect = Rect3D(1.2 * x - half_x, 1.2 * y - half_y, 1, 1)
                     if map_array[y][x] in self.__maps_config.keys.keys():
@@ -35,6 +40,11 @@ class MapTilesBuilder:
 
     def reset_map(self):
         self.__tiles_builder.reset_counter()
+        self._first_tile = None
+
+    @property
+    def first_tile(self)->Tile:
+        return self._first_tile
 
     @property
     def track(self):

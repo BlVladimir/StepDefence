@@ -30,7 +30,7 @@ class ButtonsController(IButtonsController):
                                                   parent=main_menu_node,
                                                   scale=MMSC,
                                                   pos=coord,
-                                                  command=lambda lvl=i+1: context.send_event(
+                                                  command=lambda lvl=i: context.send_event(
                                                       Event('change_scene', scene=str(lvl))),
                                                   frameColor=((0.5, 0.5, 0.5, 1),
                                                               (0.7, 0.7, 0.7, 1),
