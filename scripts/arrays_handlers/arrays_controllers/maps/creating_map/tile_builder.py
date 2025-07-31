@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 from panda3d.core import PandaNode, Loader, CullBinManager
 
-from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import CopyingSprite3D, Sprite3D
@@ -54,10 +53,10 @@ class TilesBuilder(AbstractTilesBuilder):
                         'poison':'images2d/tile/poison_up.png',
                         'additional_money':'images2d/tile/money_up.png'}
 
-    def  create_tile(self, type_tile:str, rect:Rect3D):
-        if type_tile in self.__tiles.keys():
+    def  create_tile(self, type_tile:str, rect:Rect3D)->Tile:
+        try:
             sprite = Sprite3D(rect, self.__tiles[type_tile], self._maps_node, self._loader, 'tile', self._counter)
             self._counter += 1
             return Tile(sprite, type_tile)
-        else:
-            raise ValueError('Incorrect type of tile')
+        except KeyError:
+            raise KeyError('Incorrect type of tile')

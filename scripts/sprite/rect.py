@@ -1,71 +1,50 @@
-from math import radians, sin, cos
-from typing import Tuple
+from logging import warning
 from unittest import TestCase
 
-from panda3d.core import Vec3
-
-from scripts.sprite.convert_coordinate import ConvertCoordinate
+from panda3d.core import Vec2, Mat3
 
 class Rect3D:
-    class RotationMatrix:
-        def __init__(self, angle: int | float):
-            rad_angle = radians(angle)
-            self.__matrix = ((cos(rad_angle), -sin(rad_angle)), (sin(rad_angle), cos(rad_angle)))
+    """Класс для хранения и преобразования координат"""
+    def __init__(self, top_left:Vec2, width, height, rotation_center:Vec2 = Vec2(0, 0)):
+        self._top_left = top_left
+        self._top_right = top_left + Vec2(width, 0)
+        self._bottom_right = top_left + Vec2(width, height)
+        self._bottom_left = top_left + Vec2(0, height)
 
-        def rotate_point(self, point:Tuple[int | float, int | float]):
-            return [point[0]*self.__matrix[0][0] + point[1]*self.__matrix[0][1], point[0]*self.__matrix[1][0] + point[1]*self.__matrix[1][1]]
-
-    def __init__(self, x, y, width, height, rotation_center:Tuple = (0, 0)):
-        self._x = x
-        self._y = y
         self._width = width
         self._height = height
         self.__rotation_center = rotation_center
-        self.__started_scale = (self._width, self._height)
 
-    def move(self, vector: Vec3):
+    def move(self, vector:Vec2)->None:
         """Двигает прямоугольник на заданный вектор"""
-        self._x += vector.x
-        self._y += vector.y
+        self._top_left += vector
+        self._top_right += vector
+        self._bottom_right += vector
+        self._bottom_left += vector
 
-    def is_point_in(self, point:Tuple[float, float]):
-        """Проверяет, находится ли точка внутри прямоугольника"""
-        top_left = (self._x, self._y)
-        bottom_right = (self._x + self._width, self._y + self._height)
-        if top_left[0] <= point[0] <= bottom_right[0] and bottom_right[1] <= point[1] <= top_left[1]:
-            return True
-        else:
-            return False
-
-    def rotate(self, angle: int | float = 90, name_point:str = 'rotation_center'):
+    def rotate(self, angle: int | float = 90, name_point:str = 'rotation_center')->None:
         """Поворачивает прямоугольник на угол вокруг заданной точки"""
         match name_point:
             case 'rotation_center':
                 point = self.__rotation_center
             case _:
-                print('Naim point is not dedicate')
+                warning('Naim point is not dedicate')
                 point = self.__rotation_center
 
-        rotation_matrix = self.RotationMatrix(angle)
-        x = self._x - point[0]
-        y = self._y - point[1]
-        center = rotation_matrix.rotate_point((self.center[0] - point[0], self.center[1] - point[1]))
+        r_mat = Mat3.rotateMat(angle)
 
-        a, c = rotation_matrix.rotate_point((x, y)), rotation_matrix.rotate_point((x+self.__started_scale[0], y+self.__started_scale[1])),
-        b, d = rotation_matrix.rotate_point((x+self.__started_scale[0], y)), rotation_matrix.rotate_point((x, y+self.__started_scale[1])),
+        self._top_left, self._bottom_right = point + r_mat.xform_vec(self._bottom_left-point), point + r_mat.xform_vec(self._top_right-point)
+        self._top_right, self._bottom_left = point + r_mat.xform_vec(self._top_right-point), point + r_mat.xform_vec(self._bottom_left-point)
 
-        self._width = max(abs(a[0]-c[0]), abs(b[0]-d[0]))
-        self._height = max(abs(a[1] - c[1]), abs(b[1] - d[1]))
-
-        self._x = center[0]+point[0]-self._width/2
-        self._y = center[1]+point[1]-self._height/2
+        self._width = max(abs(self._top_right.x-self._bottom_left.x), abs(self._top_left.x-self._bottom_right.x))
+        self._height = max(abs(self._top_right.y-self._bottom_left.y), abs(self._top_left.y-self._bottom_right.y))
 
 
 
     @property
-    def center(self):
+    def center(self)->Vec2:
         """Центр прямоугольника"""
-        center = (self._x + self._width / 2, self._y + self._height / 2)
+        center = Vec2(self._top_left.x + self._width / 2, self._top_left.y + self._height / 2)
         return center
 
     @property
@@ -74,23 +53,23 @@ class Rect3D:
         return -self._width/2, self._width/2, -self._height/2, self._height/2
 
     @property
-    def x(self):
-        return self._x
+    def x(self)->float:
+        return self._top_left.x
 
     @property
-    def y(self):
-        return self._y
+    def y(self)->float:
+        return self._top_left.y
 
     @property
-    def width(self):
+    def width(self)->float:
         return self._width
 
     @property
-    def height(self):
+    def height(self)->float:
         return self._height
 
     def __str__(self):
-        return f'Текущий прямоугольник: ширина-{round(self._width, 2)}, высота-{round(self._height, 2)},  X-{round(self._x, 2)}, Y-{round(self._y, 2)}, центр-({round(self.center[0], 2)}, {round(self.center[1], 2)})'
+        return f'Текущий прямоугольник: ширина-{round(self._width, 2)}, высота-{round(self._height, 2)},  X-{round(self._top_left.x, 2)}, Y-{round(self._top_left.y, 2)}, центр-({round(self.center[0], 2)}, {round(self.center[1], 2)})'
 
 class TestRect3D(TestCase):
     def setUp(self):

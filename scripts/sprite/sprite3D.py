@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from scripts.sprite.rect import Rect3D
-from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, NodePath, Vec3
+from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, \
+    NodePath, Vec3, Vec2
+
 
 class Sprite3D:
     """Прямоугольный спрайт в 3d"""
@@ -38,7 +40,7 @@ class Sprite3D:
         if isinstance(parent, NodePath):
             self._main_node = parent.attachNewNode(name_group)
             create_child_nodes(self._main_node)
-            self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
+            self._main_node.setPos(self._rect.x, self._rect.y, 0)
             self._main_node.setHpr(Vec3(0, -90, 0))
         elif isinstance(parent, Sprite3D):
             self._main_node = parent._main_node.attachNewNode(name_group)
@@ -56,7 +58,7 @@ class Sprite3D:
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
         self._main_node.setHpr(Vec3(0, -90, angle))
         self._rect.rotate(angle)
-        self._main_node.setPos(self._rect.center[0], self._rect.center[1], 0)
+        self._main_node.setPos(self._rect.x, self._rect.y, 0)
 
     def __add_wireframe(self):
         """Добавляет проволочную обводку вокруг объекта"""
@@ -83,10 +85,6 @@ class Sprite3D:
     @property
     def main_node(self)->NodePath:
         return self._main_node
-
-    @property
-    def texture_nose(self):
-        return self._texture_node
 
     @property
     def is_using(self):
@@ -117,7 +115,7 @@ class Sprite3D:
 
 
 class CopyingSprite3D(Sprite3D):
-    def __init__(self, path_image:str, parent:PandaNode, loader, name_group:str, rect:Rect3D = Rect3D(0, 0, 0, 0)):
+    def __init__(self, path_image:str, parent:PandaNode, loader, name_group:str, rect:Rect3D = Rect3D(Vec2(0, 0), 0, 0)):
         super().__init__(rect, path_image, parent, loader, name_group, 0)
         self.__path_image = path_image
         self.__loader = loader

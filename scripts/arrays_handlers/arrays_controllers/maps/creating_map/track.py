@@ -38,7 +38,6 @@ class Track:
             else:
                 error(value)
                 raise ValueError('tiles look at each other')
-
             rotation_matrix = Mat3.rotateMat(-rotate*90)
             for j in (range(len(one_move))):
                 one_move[j] = rotation_matrix.xform_vec(one_move[j])

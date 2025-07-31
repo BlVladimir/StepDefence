@@ -2,13 +2,10 @@ from logging import warning
 
 from panda3d.core import PandaNode
 
-from scripts.arrays_handlers.arrays_controllers.maps.creating_map.finder_track import FinderTrack
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_builder import MapTilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
-from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.interface.i_context import IContext
-from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 
 

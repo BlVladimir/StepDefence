@@ -1,5 +1,7 @@
 from random import choices, randrange, choice, random
 
+from panda3d.core import Vec2
+
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
@@ -33,8 +35,8 @@ class EnemiesController:
         for y in (0, 1):
             for x in (0, 1):
                 if (x, y) in points:
-                    rects.append(Rect3D(x=rect.x + 1/6*size*(1+2*x) - 0.25*size + 1/6*size*random(),
-                                        y=rect.y + 1/6*size*(1+2*y) - 0.25*size + 1/6*size*random(),
+                    rects.append(Rect3D(top_left=Vec2(rect.x + 1/6*size*(1+2*x) - 0.25*size + 1/6*size*random(),
+                                        rect.y + 1/6*size*(1+2*y) - 0.25*size + 1/6*size*random()),
                                         width=0.5*size,
                                         height=0.5*size))
         return rects
