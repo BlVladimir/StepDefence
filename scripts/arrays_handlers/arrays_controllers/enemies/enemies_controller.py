@@ -3,8 +3,8 @@ from random import choices, randrange, choice, random
 from panda3d.core import Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
+from scripts.arrays_handlers.arrays_controllers.enemies.movement.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
-from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.sprite.rect import Rect3D
 
@@ -12,44 +12,17 @@ from scripts.sprite.rect import Rect3D
 class EnemiesController:
     """Обработчик врагов"""
     def __init__(self, render:RenderManager, track:Track):
-        self._enemies_node = render.main_node3d.attachNewNode('enemies')
-        self._track_node = render.main_node3d.attachNewNode('track')
-        self.__enemies_builder = EnemiesBuilder(self._enemies_node, render.loader, track, self._track_node)
-        self.__type_tuple = ('basic', 'big', 'armored', 'regen')
+        self._enemies_node = render.main_node3d.attachNewNode('enemy')
+        self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, render, track)
 
 
     def clear_enemies(self)->None:
         """Удаоляет врагов"""
-        self.__enemies_builder.clear_enemies()
-        self._track_node.getChildren().detach()
+        self.__group_enemies_builder.clear_enemies()
 
-    def create_enemy(self, wave:int, level:int, tile:Rect3D)->None:
+    def create_enemies(self, wave:int, level:int, tile:Rect3D)->None:
         """Создает врагов"""
-        rects, poses_on_tile, started_divisiones = self.__create_rects(tile, randrange(1, 4))
-        try:
-            for i in range(len(rects)):
-                self.__enemies_builder.create_enemy(wave, rects[i], choice(self.__type_tuple[0:level+2] if level < 3 else self.__type_tuple), poses_on_tile[i], started_divisiones[i])
-        except KeyError:
-            raise KeyError('len(rects) != len(poses_on_tile)')
-
-    @staticmethod
-    def __create_rects(rect:Rect3D, count:int):
-        rects = []
-        poses_on_tile = []
-        started_divisiones = []
-        points = choices(((0, 0), (1, 0), (0, 1), (1, 1)), k=count)
-        size = rect.width
-        for y in (0, 1):
-            for x in (0, 1):
-                if (x, y) in points:
-                    pos_on_tile = Vec2(1/6*size*(1+3*x), - 1/6*size*(1+3*y))
-                    started_division = Vec2(1/6*size*random(), -1/6*size*random())
-                    rects.append(Rect3D(top_left=Vec2(rect.x, rect.y) + started_division + pos_on_tile + Vec2(-0.25*size, 0.25*size),
-                                        width=0.5*size,
-                                        height=0.5*size))
-                    poses_on_tile.append(pos_on_tile)
-                    started_divisiones.append(started_division)
-        return rects, poses_on_tile, started_divisiones
+        self.__group_enemies_builder.create_enemies(wave, level, tile)
 
     def move_enemies(self)->None:
         enemies = self._enemies_node.getChildren()
