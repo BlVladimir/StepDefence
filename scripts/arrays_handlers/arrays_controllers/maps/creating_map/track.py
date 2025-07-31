@@ -19,7 +19,7 @@ class Track:
     @track.setter
     def track(self, value:List[int]):
         rect = self._first_tile.sprite.rect
-        pos = Vec2(0, 0)
+        pos = Vec2(rect.x, rect.y)
         scale = 1.2*min(rect.width, rect.height)  # 1.2 от промежутка
         self._track = []
         for i, rotate in enumerate(value):

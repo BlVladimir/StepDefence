@@ -1,4 +1,4 @@
-from panda3d.core import NodePath, CullBinManager
+from panda3d.core import NodePath, CullBinManager, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.effects.bezier_curve_maker import BezierCurveMaker
 from scripts.arrays_handlers.arrays_controllers.enemies.effects.effect_state import EffectState
@@ -26,7 +26,7 @@ class EnemiesBuilder:
         CullBinManager.get_global_ptr().add_bin('lines', CullBinManager.BT_fixed, 50)
 
 
-    def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str)->None:
+    def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2)->None:
         parameters = self.__config.get_started_characteristic(type_enemy)
         effects = parameters.copy()
         effects.pop('health')
@@ -36,6 +36,7 @@ class EnemiesBuilder:
               EffectState(effects),
               self.__bezier_curve_maker,
               self.__track,
+              pos_on_tile,
               self._track_node)
         self._counter += 1
 

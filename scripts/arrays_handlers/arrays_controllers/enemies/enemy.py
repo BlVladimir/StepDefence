@@ -12,7 +12,7 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class Enemy:
     """Класс врагов"""
-    def __init__(self, sprite:Sprite3D, health:int, effect_state:EffectState, bezier_curve_maker:BezierCurveMaker, track:Track, track_node:NodePath):
+    def __init__(self, sprite:Sprite3D, health:int, effect_state:EffectState, bezier_curve_maker:BezierCurveMaker, track:Track, pos_on_tile:Vec2, track_node:NodePath):
         self._sprite = sprite
         self._sprite.external_object = self
 
@@ -28,13 +28,17 @@ class Enemy:
 
         self._track_node = track_node
 
+        self.__pos_on_tile = pos_on_tile
+        self.__previous_division_vec = Vec2(0, 0)
+
     def move(self):
         """Двигает всех врагов"""
         points = self.__track.track[self.__current_tile]
         for i in (0, 1, 2, 3):
-            points[i] += self._sprite.rect.center
+            points[i] += self.__pos_on_tile
         division_vec = self.__track.get_division_vec()
-        movement_array = self.__bezier_curve_maker.generate_uniform_points(points[0], points[1], points[2]+division_vec, points[3]+division_vec)
+        movement_array = self.__bezier_curve_maker.generate_uniform_points(points[0] + self.__previous_division_vec, points[1] + self.__previous_division_vec, points[2] + division_vec, points[3] + division_vec)
+        self.__previous_division_vec = division_vec
 
         for i in range(len(movement_array)):
             movement_array[i] = Vec3(movement_array[i].x, movement_array[i].y, 0)
