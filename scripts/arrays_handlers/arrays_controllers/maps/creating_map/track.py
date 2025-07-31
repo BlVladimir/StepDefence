@@ -23,17 +23,16 @@ class Track:
         scale = 1.2*min(rect.width, rect.height)  # 1.2 от промежутка
         self._track = []
         for i, rotate in enumerate(value):
-            difference = value[i+1] - rotate if i+2 < len(value) else 0
-
+            difference = value[i+1] - rotate if i+1 < len(value) else 0
             if difference == 3:
-                difference = 1
-            elif difference == -3:
                 difference = -1
+            elif difference == -3:
+                difference = 1
             if difference in (-1, 0, 1):
                 one_move = [Vec2(0, 0),
-                             Vec2(0, scale * 0.5 if difference != 0 else 1 / 3 * scale),
-                             Vec2(scale * 0.2 * difference if difference != 0 else -1 / 3 * scale,
-                                        1 / 3 * scale if difference == 0 else 0),
+                             Vec2(0, scale * 0.5),
+                             Vec2(-scale * 0.3 * difference if difference != 0 else 0,
+                                        0.75 * scale if difference == 0 else scale),
                              Vec2(0, scale)]
             else:
                 error(value)

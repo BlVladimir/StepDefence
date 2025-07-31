@@ -32,9 +32,7 @@ class Enemy:
         """Двигает всех врагов"""
         points = self.__track.track[self.__current_tile]
         for i in (0, 1, 2, 3):
-            debug(f'Node:{self._sprite.rect.center}, pos:{points[i]}')
             points[i] += self._sprite.rect.center
-            debug(f'Node:{self._sprite.main_node}, pos:{points[i]}')
         division_vec = self.__track.get_division_vec()
         movement_array = self.__bezier_curve_maker.generate_uniform_points(points[0], points[1], points[2]+division_vec, points[3]+division_vec)
 
