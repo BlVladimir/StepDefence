@@ -34,7 +34,6 @@ class BezierCurveMaker:
         for i in range(99):
 
             current_distance = self.__calculate_curve_length(p0, p1, p2, p3, round(t * self.__SAMPLES))
-            debug(f'{segment_length}, {abs(current_distance - target_distance)}')
             if abs(current_distance - target_distance) < segment_length:
                 return t
 

@@ -12,13 +12,15 @@ from panda3d.core import Loader
 
 class EnemiesBuilder:
     """Создает врагов"""
-    def __init__(self, node:NodePath, loader:Loader, track:Track):
+    def __init__(self, node:NodePath, loader:Loader, track:Track, track_node:NodePath):
         self.__config = EnemiesConfig()
         self.__enemies_node = node
         self.__loader = loader
         self.__bezier_curve_maker = BezierCurveMaker()
         self._counter = 0
         self.__track = track
+
+        self._track_node = track_node
 
         CullBinManager.get_global_ptr().add_bin('enemy', CullBinManager.BT_fixed, 4)
         CullBinManager.get_global_ptr().add_bin('lines', CullBinManager.BT_fixed, 50)
@@ -33,7 +35,8 @@ class EnemiesBuilder:
               parameters['health'] + self.__config.get_wave_health_modifier(wave),
               EffectState(effects),
               self.__bezier_curve_maker,
-              self.__track)
+              self.__track,
+              self._track_node)
         self._counter += 1
 
     def clear_enemies(self):

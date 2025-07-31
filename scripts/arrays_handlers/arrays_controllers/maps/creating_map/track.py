@@ -1,3 +1,4 @@
+from copy import deepcopy
 from random import random
 from typing import List
 from logging import error, debug
@@ -13,16 +14,15 @@ class Track:
 
     @property
     def track(self)->List[Vec2]:
-        return self._track
+        return deepcopy(self._track)
 
     @track.setter
     def track(self, value:List[int]):
         rect = self._first_tile.sprite.rect
-        pos = Vec2(rect.x, rect.y)
+        pos = Vec2(0, 0)
         scale = 1.2*min(rect.width, rect.height)  # 1.2 от промежутка
         self._track = []
         for i, rotate in enumerate(value):
-            debug(i+1)
             difference = value[i+1] - rotate if i+2 < len(value) else 0
 
             if difference == 3:
@@ -45,7 +45,7 @@ class Track:
 
             self._track.append(one_move)
             pos = one_move[3]
-            debug(pos)
+        debug(self._track)
 
     def get_division_vec(self)->Vec2:
         scale = min(self._first_tile.sprite.rect.width, self._first_tile.sprite.rect.height)

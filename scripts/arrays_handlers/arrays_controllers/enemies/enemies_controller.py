@@ -13,13 +13,15 @@ class EnemiesController:
     """Обработчик врагов"""
     def __init__(self, render:RenderManager, track:Track):
         self._enemies_node = render.main_node3d.attachNewNode('enemies')
-        self.__enemies_builder = EnemiesBuilder(self._enemies_node, render.loader, track)
+        self._track_node = render.main_node3d.attachNewNode('track')
+        self.__enemies_builder = EnemiesBuilder(self._enemies_node, render.loader, track, self._track_node)
         self.__type_tuple = ('basic', 'big', 'armored', 'regen')
 
 
     def clear_enemies(self)->None:
         """Удаоляет врагов"""
         self.__enemies_builder.clear_enemies()
+        self._track_node.getChildren().detach()
 
     def create_enemy(self, wave:int, level:int, tile:Tile)->None:
         """Создает врагов"""
