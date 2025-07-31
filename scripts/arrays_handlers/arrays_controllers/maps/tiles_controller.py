@@ -6,6 +6,7 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_buil
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.interface.i_context import IContext
+from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 
 
@@ -51,8 +52,8 @@ class TilesController:
         self.__map_tiles_builder.reset_map()
 
     @property
-    def first_tile(self)->Tile:
-        return self.__map_tiles_builder.first_tile
+    def first_tile_rect(self)->Rect3D:
+        return self.__map_tiles_builder.first_tile_rect
 
     @property
     def selected_tile(self)->Tile:

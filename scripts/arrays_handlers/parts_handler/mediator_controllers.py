@@ -27,7 +27,7 @@ class MediatorControllers:
         self.__towers_controller.create_tower(type_tower, self.__maps_controller.get_selected_tile())
 
     def create_enemy(self, level:int, wave:int):
-        self.__enemies_controller.create_enemy(wave, level, self.__maps_controller.first_tile)
+        self.__enemies_controller.create_enemy(wave, level, self.__maps_controller.first_tile_rect)
 
     def remove_scene(self):
         """Очистка карты"""

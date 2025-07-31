@@ -3,6 +3,7 @@ from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 
 
@@ -42,8 +43,8 @@ class MapsController:
         return self.__tiles_controller.selected_tile
 
     @property
-    def first_tile(self)->Tile:
-        return self.__tiles_controller.first_tile
+    def first_tile_rect(self)->Rect3D:
+        return self.__tiles_controller.first_tile_rect
 
     @property
     def track(self):

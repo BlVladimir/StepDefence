@@ -23,32 +23,33 @@ class EnemiesController:
         self.__enemies_builder.clear_enemies()
         self._track_node.getChildren().detach()
 
-    def create_enemy(self, wave:int, level:int, tile:Tile)->None:
+    def create_enemy(self, wave:int, level:int, tile:Rect3D)->None:
         """Создает врагов"""
-        rects, poses_on_tile = self.__create_rects(tile, randrange(1, 4))
+        rects, poses_on_tile, started_divisiones = self.__create_rects(tile, randrange(1, 4))
         try:
             for i in range(len(rects)):
-                self.__enemies_builder.create_enemy(wave, rects[i], choice(self.__type_tuple[0:level+2] if level < 3 else self.__type_tuple), poses_on_tile[i])
+                self.__enemies_builder.create_enemy(wave, rects[i], choice(self.__type_tuple[0:level+2] if level < 3 else self.__type_tuple), poses_on_tile[i], started_divisiones[i])
         except KeyError:
             raise KeyError('len(rects) != len(poses_on_tile)')
 
     @staticmethod
-    def __create_rects(tile:Tile, count:int):
+    def __create_rects(rect:Rect3D, count:int):
         rects = []
         poses_on_tile = []
+        started_divisiones = []
         points = choices(((0, 0), (1, 0), (0, 1), (1, 1)), k=count)
-        rect = tile.sprite.rect
-        size = min(rect.width, rect.height)
+        size = rect.width
         for y in (0, 1):
             for x in (0, 1):
                 if (x, y) in points:
-                    pos_on_tile = Vec2(1/6*size*(1+3*x) - 0.25*size, - 1/6*size*(1+3*y) - 0.25*size)
-                    rects.append(Rect3D(top_left=Vec2(rect.x + 1/6*size*random(),
-                                        rect.y - 1/6*size*random())+pos_on_tile,
+                    pos_on_tile = Vec2(1/6*size*(1+3*x), - 1/6*size*(1+3*y))
+                    started_division = Vec2(1/6*size*random(), -1/6*size*random())
+                    rects.append(Rect3D(top_left=Vec2(rect.x, rect.y) + started_division + pos_on_tile + Vec2(-0.25*size, 0.25*size),
                                         width=0.5*size,
                                         height=0.5*size))
                     poses_on_tile.append(pos_on_tile)
-        return rects, poses_on_tile
+                    started_divisiones.append(started_division)
+        return rects, poses_on_tile, started_divisiones
 
     def move_enemies(self)->None:
         enemies = self._enemies_node.getChildren()

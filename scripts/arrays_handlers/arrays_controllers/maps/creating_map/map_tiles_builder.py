@@ -17,7 +17,7 @@ class MapTilesBuilder:
         self.__finder_track = FinderTrack()
         self._track = Track()
 
-        self._first_tile = None
+        self._first_tile_rect = None
 
     def create_map_tiles(self, level:int):
         """Создает тайлы для карты карту"""
@@ -36,23 +36,23 @@ class MapTilesBuilder:
                         error(f'key: {(x, y)}, track: {track}')
                         raise KeyError('(x, y) not in track keys')
                     if map_array[y][x] == 2:
-                        self._first_tile = tile
+                        self._first_tile_rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1)
                 else:
                     rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1)
                     if map_array[y][x] in self.__maps_config.keys.keys():
                         self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
-        self._track.set_first_tile(self._first_tile)
+        self._track.set_first_tile(self._first_tile_rect)
         self._track.track = list(track.values())
         debug(track)
 
     def reset_map(self)->None:
         """Удаляет карту"""
         self.__tiles_builder.reset_counter()
-        self._first_tile = None
+        self._first_tile_rect = None
 
     @property
-    def first_tile(self)->Tile:
-        return self._first_tile
+    def first_tile_rect(self)->Rect3D:
+        return self._first_tile_rect
 
     @property
     def track(self)->Track:

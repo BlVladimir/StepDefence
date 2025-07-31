@@ -5,12 +5,13 @@ from logging import error, debug
 from panda3d.core import Vec2, Mat3
 
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.sprite.rect import Rect3D
 
 
 class Track:
     def __init__(self):
         self._track = []
-        self._first_tile = None
+        self._first_tile_rect = None
 
     @property
     def track(self)->List[Vec2]:
@@ -18,9 +19,8 @@ class Track:
 
     @track.setter
     def track(self, value:List[int]):
-        rect = self._first_tile.sprite.rect
-        pos = Vec2(rect.x, rect.y)
-        scale = 1.2*min(rect.width, rect.height)  # 1.2 от промежутка
+        pos = Vec2(self._first_tile_rect.x, self._first_tile_rect.y)
+        scale = 1.2*self._first_tile_rect.width  # 1.2 от промежутка
         self._track = []
         for i, rotate in enumerate(value):
             difference = value[i+1] - rotate if i+1 < len(value) else 0
@@ -47,8 +47,8 @@ class Track:
         debug(self._track)
 
     def get_division_vec(self)->Vec2:
-        scale = min(self._first_tile.sprite.rect.width, self._first_tile.sprite.rect.height)
+        scale = min(self._first_tile_rect.width, self._first_tile_rect.height)
         return Vec2(1/6*scale*random(), 1/6*scale*random())
 
-    def set_first_tile(self, value:Tile):
-        self._first_tile = value
+    def set_first_tile(self, value:Rect3D)->None:
+        self._first_tile_rect = value
