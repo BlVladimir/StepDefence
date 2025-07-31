@@ -1,6 +1,8 @@
+from logging import debug
+
 from direct.interval.LerpInterval import LerpPosInterval
 from direct.interval.MetaInterval import Sequence
-from panda3d.core import Vec3
+from panda3d.core import Vec3, LineSegs
 
 from scripts.arrays_handlers.arrays_controllers.enemies.effects.bezier_curve_maker import BezierCurveMaker
 from scripts.arrays_handlers.arrays_controllers.enemies.effects.effect_state import EffectState
@@ -35,15 +37,28 @@ class Enemy:
             movement_array[i] = Vec3(movement_array[i].x, movement_array[i].y, 0)
 
         intervals = []
+
+        lines = LineSegs()
+        lines.setColor(1, 1, 0, 1)
+        lines.setThickness(2)
+        lines.moveTo(movement_array[0])
         for i in range(1, len(movement_array)):
             intervals.append(
                 LerpPosInterval(
                     self._sprite.main_node,  # Ваша нода
-                    duration=3,
+                    duration=0.05,
                     pos=movement_array[i],
                     startPos=movement_array[i - 1]
                 )
             )
+            lines.drawTo(movement_array[i])
 
+        line_node = self._sprite.main_node.parent.parent.attachNewNode(lines.create())
+        line_node.setBin('lines', 0)
+        line_node.setDepthTest(False)
+        line_node.setDepthWrite(False)
+        debug(line_node)
+
+        self.__current_tile += 1
         sequence = Sequence(*intervals)
         sequence.start()

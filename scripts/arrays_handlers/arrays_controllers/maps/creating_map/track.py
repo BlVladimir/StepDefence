@@ -30,18 +30,19 @@ class Track:
             elif difference == -3:
                 difference = -1
             if difference in (-1, 0, 1):
-                one_move = [pos,
-                             pos + Vec2(0, -scale * 0.5 if difference != 0 else -1 / 3 * scale),
-                             pos + Vec2(-scale * 0.2 * difference if difference != 0 else 1 / 3 * scale,
-                                        -1 / 3 * scale if difference == 0 else 0),
-                             pos + Vec2(0, -scale)]
+                one_move = [Vec2(0, 0),
+                             Vec2(0, scale * 0.5 if difference != 0 else 1 / 3 * scale),
+                             Vec2(scale * 0.2 * difference if difference != 0 else -1 / 3 * scale,
+                                        1 / 3 * scale if difference == 0 else 0),
+                             Vec2(0, scale)]
             else:
                 error(value)
                 raise ValueError('tiles look at each other')
 
-            rotation_matrix = Mat3.rotateMat(rotate*90)
-            for j in range(len(one_move)):
+            rotation_matrix = Mat3.rotateMat(-rotate*90)
+            for j in (range(len(one_move))):
                 one_move[j] = rotation_matrix.xform_vec(one_move[j])
+                one_move[j] += pos
 
             self._track.append(one_move)
             pos = one_move[3]

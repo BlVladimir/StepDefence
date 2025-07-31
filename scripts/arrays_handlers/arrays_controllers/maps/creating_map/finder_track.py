@@ -4,7 +4,7 @@ from unittest import TestCase
 class FinderTrack:
     """Класс для поиска пути"""
     def __init__(self):
-        self.__directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 0: вверх, 1: вправо, 2: вниз, 3: влево
+        self.__directions = [(0, -1), (1, 0), (0, 1), (-1, 0)]  # 0: вверх, 1: вправо, 2: вниз, 3: влево
 
     def find_track(self, array):
         """Ищет кротчайший путь"""
@@ -55,5 +55,5 @@ class TestFinderTrack(TestCase):
              [0, 1, 1, 1, 4],
              [4, 2, 4, 0, 4]]
 
-        self.assertEqual(self.finder.find_track(a), [0, 3, 3, 0, 0, 1, 1, 0, 3, 3, 3, 2, 3])
-        self.assertEqual(self.finder.find_track(b), [1, 0, 0, 1, 1, 2, 2, 1])
+        self.assertEqual(self.finder.find_track(a), [1, 2, 2, 1, 1, 0, 0, 1, 2, 2, 2, 3, 2])
+        self.assertEqual(self.finder.find_track(b), [0, 1, 1, 0, 0, 3, 3, 0])

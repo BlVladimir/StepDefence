@@ -26,7 +26,7 @@ class StepDefence(ShowBase, IStepDefence):
 
         self.__context = Context(render_manager, self.cam, TaskManager(self.taskMgr), self.mouseWatcherNode, self.render)
 
-        self.__context.task_mng.append_task("SpinCameraTask", self.spinCameraTask)
+        self.__context.task_mng.append_task("SpinCameraTask", self.fixCameraTask)
 
         self.__key_handler = KeyHandler(self.accept, self.__context)
 

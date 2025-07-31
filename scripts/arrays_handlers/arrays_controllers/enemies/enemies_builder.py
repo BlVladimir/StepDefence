@@ -21,6 +21,7 @@ class EnemiesBuilder:
         self.__track = track
 
         CullBinManager.get_global_ptr().add_bin('enemy', CullBinManager.BT_fixed, 4)
+        CullBinManager.get_global_ptr().add_bin('lines', CullBinManager.BT_fixed, 50)
 
 
     def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str)->None:
