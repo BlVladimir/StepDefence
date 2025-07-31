@@ -40,7 +40,7 @@ class Sprite3D:
         if isinstance(parent, NodePath):
             self._main_node = parent.attachNewNode(name_group)
             create_child_nodes(self._main_node)
-            self._main_node.setPos(self._rect.x, self._rect.y, 0)
+            self._main_node.setPos(self._rect.center.x, self._rect.center.y, 0)
             self._main_node.setHpr(Vec3(0, -90, 0))
         elif isinstance(parent, Sprite3D):
             self._main_node = parent._main_node.attachNewNode(name_group)
@@ -56,9 +56,9 @@ class Sprite3D:
 
     def rotate(self, angle: int | float = 90):
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
-        self._main_node.setHpr(Vec3(0, -90, angle))
+        self._main_node.setHpr(Vec3(0, -90, -angle))
         self._rect.rotate(angle)
-        self._main_node.setPos(self._rect.x, self._rect.y, 0)
+        self._main_node.setPos(self._rect.center.x, self._rect.center.y, 0)
 
     def __add_wireframe(self):
         """Добавляет проволочную обводку вокруг объекта"""

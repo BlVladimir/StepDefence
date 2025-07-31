@@ -51,17 +51,11 @@ class StepDefence(ShowBase, IStepDefence):
         angleRadians = radians(angleDegrees)
         self.camera.setPos(17 * sin(angleRadians), -17 * cos(angleRadians), 10)
         self.camera.setHpr(angleDegrees, -25, 0)
-        """angleDegrees = 7
-        angleRadians = radians(angleDegrees)
-        self.camera.setPos(17 * sin(angleRadians), -17 * cos(angleRadians), 10)
-        self.camera.setHpr(angleDegrees, -25, 0)"""
         return Task.cont
 
     def fixCameraTask(self, task):
-        angleDegrees = 7
-        angleRadians = radians(angleDegrees)
-        self.camera.setPos(17 * sin(angleRadians), -17 * cos(angleRadians), 10)
-        self.camera.setHpr(angleDegrees, -25, 0)
+        self.camera.setPos(0, 0, 13)
+        self.camera.setHpr(0, -90, 0)
         return Task.cont
 
     def __draw_basis(self):

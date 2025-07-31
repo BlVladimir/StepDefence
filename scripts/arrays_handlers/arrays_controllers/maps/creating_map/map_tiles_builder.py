@@ -28,17 +28,17 @@ class MapTilesBuilder:
             for x in range(len(map_array[y])):
                 if map_array[y][x] in (1, 2):
                     try:
-                        rect = Rect3D(Vec2(1.2 * x - half_x, 1.2 * y - half_y), 1, 1.2,
-                                      Vec2(1.2 * x - half_x + 0.5, 1.2 * y - half_y + 0.5))
+                        rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y + 0.2), 1, 1.2,
+                                      Vec2(1.2 * x - half_x + 0.5, - 1.2 * y + half_y - 0.5))
                         tile = self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
-                        tile.sprite.rotate((track[(x, y)]) * 90)
+                        tile.sprite.rotate(-(track[(x, y)]) * 90)
                     except KeyError:
                         error(f'key: {(x, y)}, track: {track}')
                         raise KeyError('(x, y) not in track keys')
                     if map_array[y][x] == 2:
                         self._first_tile = tile
                 else:
-                    rect = Rect3D(Vec2(1.2 * x - half_x, 1.2 * y - half_y), 1, 1)
+                    rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1)
                     if map_array[y][x] in self.__maps_config.keys.keys():
                         self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
         self._track.set_first_tile(self._first_tile)

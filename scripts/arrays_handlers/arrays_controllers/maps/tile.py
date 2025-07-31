@@ -10,11 +10,11 @@ class Tile:
         self._sprite.external_object = self
 
     @property
-    def effect(self):
+    def effect(self)->str:
         return self._effect
 
     @property
-    def sprite(self):
+    def sprite(self)->Sprite3D:
         return self._sprite
 
 
