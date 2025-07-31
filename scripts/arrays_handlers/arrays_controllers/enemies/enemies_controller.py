@@ -42,7 +42,7 @@ class EnemiesController:
         for y in (0, 1):
             for x in (0, 1):
                 if (x, y) in points:
-                    pos_on_tile = Vec2(1/6*size*(1+3*x), - 1/6*size*(1+3*y))
+                    pos_on_tile = Vec2(1/6*size*(1+3*x) - 0.25*size, - 1/6*size*(1+3*y) - 0.25*size)
                     rects.append(Rect3D(top_left=Vec2(rect.x + 1/6*size*random(),
                                         rect.y - 1/6*size*random())+pos_on_tile,
                                         width=0.5*size,
