@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from logging import debug, warn
+
 from scripts.sprite.rect import Rect3D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, \
     NodePath, Vec3, Vec2
@@ -7,7 +9,7 @@ from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode
 
 class Sprite3D:
     """Прямоугольный спрайт в 3d"""
-    def __init__(self, rect: Rect3D, path_image:str, parent:NodePath|Sprite3D, loader, name_group:str, number:int, external_object=None):
+    def __init__(self, rect: Rect3D, path_image:str, parent:NodePath|Sprite3D, loader, name_group:str, number:int, external_object=None, debug_mode:bool=True):
         self._external_object = external_object
 
         self._rect = rect
@@ -35,7 +37,8 @@ class Sprite3D:
 
             self._collision_node = node.attachNewNode(collision)
             self._collision_node.setPythonTag('collision', self)
-            self._collision_node.show()
+            if debug_mode:
+                self._collision_node.show()
 
         if isinstance(parent, NodePath):
             self._main_node = parent.attachNewNode(name_group)

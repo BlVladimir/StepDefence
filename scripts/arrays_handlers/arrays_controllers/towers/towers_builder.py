@@ -9,6 +9,7 @@ from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import G
 from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state import RoundRadius
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.towers_config import TowersConfig
+from scripts.main_classes.settings import Settings
 from scripts.sprite.sprite3D import CopyingSprite3D, Sprite3D
 
 
@@ -22,7 +23,7 @@ class AbstractTowerBuilder(ABC):
         CullBinManager.get_global_ptr().add_bin('gun', CullBinManager.BT_fixed, 3)
 
     @abstractmethod
-    def create_tower(self, type_tower:str, tile:Tile)->None:
+    def create_tower(self, type_tower:str, tile:Tile, settings:Settings)->None:
         pass
 
     def reset_counter(self):
@@ -36,7 +37,7 @@ class TowerBuilder(AbstractTowerBuilder):
         self.__config = TowersConfig()
         self.__damage_states_maker = DamageStateMaker()
 
-    def create_tower(self, type_tower:str, tile:Tile)->None:
+    def create_tower(self, type_tower:str, tile:Tile, settings:Settings)->None:
         damage_state = self.__damage_states_maker.create_state(self.__config.get_started_characteristic_dict(type_tower))
 
         match self.__config.get_radius(type_tower).type_radius:
@@ -55,7 +56,7 @@ class TowerBuilder(AbstractTowerBuilder):
         Tower(
             type_tower=type_tower,
             sprite=Sprite3D(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
-                            tile.sprite, self._loader, 'tower', self._counter),
+                            tile.sprite, self._loader, 'tower', self._counter, settings.debug_mode),
             damage_state=damage_state,
             radius_state=radius_state,
             gun_state=gun_state,

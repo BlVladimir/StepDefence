@@ -3,20 +3,22 @@ from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 
 
 class MapsController:
     """Обработчик карт"""
-    def __init__(self, render:RenderManager, context:IContext):
+    def __init__(self, render:RenderManager, context:IContext, settings:Settings):
         self.__map_node = render.main_node3d.attachNewNode("map_node")
         self.__map_config = MapsConfig()
         self.__tiles_controller = TilesController(self.__map_config, self.__map_node, render.loader, context)
+        self._settings = settings
 
     def create_map(self, level):
         """Создать карту"""
-        self.__tiles_controller.create_map_tiles(level)
+        self.__tiles_controller.create_map_tiles(level, self._settings)
 
     def clear_map(self):
         """Очистить карту"""

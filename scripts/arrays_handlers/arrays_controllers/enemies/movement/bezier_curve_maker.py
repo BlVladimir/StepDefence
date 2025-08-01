@@ -1,9 +1,8 @@
-from logging import debug
-
 from panda3d.core import Vec2
 
 
 class BezierCurveMaker:
+    """Создает множество точек по кривой Безье"""
     def __init__(self):
         self.__SAMPLES = 100
         self.__NUM_POINTS = 30

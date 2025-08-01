@@ -7,6 +7,7 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder i
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 
 
@@ -19,7 +20,7 @@ class MapTilesBuilder:
 
         self._first_tile_rect = None
 
-    def create_map_tiles(self, level:int):
+    def create_map_tiles(self, level:int, settings:Settings):
         """Создает тайлы для карты карту"""
         map_array = self.__maps_config.maps_array[level]
         track = self.__finder_track.find_track(map_array)
@@ -30,7 +31,7 @@ class MapTilesBuilder:
                     try:
                         rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y + 0.2), 1, 1.2,
                                       Vec2(1.2 * x - half_x + 0.5, - 1.2 * y + half_y - 0.5))
-                        tile = self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
+                        tile = self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect, settings)
                         tile.sprite.rotate(-(track[(x, y)]) * 90)
                     except KeyError:
                         error(f'key: {(x, y)}, track: {track}')
@@ -40,7 +41,7 @@ class MapTilesBuilder:
                 else:
                     rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1)
                     if map_array[y][x] in self.__maps_config.keys.keys():
-                        self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
+                        self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect, settings)
         self._track.set_first_tile(self._first_tile_rect)
         self._track.track = list(track.values())
         debug(track)

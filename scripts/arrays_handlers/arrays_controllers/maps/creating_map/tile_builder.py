@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from panda3d.core import PandaNode, Loader, CullBinManager
 
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import CopyingSprite3D, Sprite3D
 
@@ -17,29 +18,29 @@ class AbstractTilesBuilder(ABC):
         CullBinManager.get_global_ptr().add_bin('tile', CullBinManager.BT_fixed, 1)
 
     @abstractmethod
-    def create_tile(self, type_tile:str, rect:Rect3D)->Tile:
+    def create_tile(self, type_tile:str, rect:Rect3D, settings:Settings)->Tile:
         pass
 
     def reset_counter(self):
         self._counter = 0
 
-class TilesPrototype(AbstractTilesBuilder):
-    def __init__(self, maps_node:PandaNode, loader):
-        super().__init__(maps_node, loader)
-        self.__tiles = {'road':CopyingSprite3D('images2d/tile/for_enemies.png', super()._maps_node, super().__loader, 1, 'tile'),
-                        'base':CopyingSprite3D('images2d/tile/common_building.png', super()._maps_node, super().__loader, 1, 'tile'),
-                        'basic':CopyingSprite3D('images2d/tile/common_building.png', super()._maps_node, super().__loader, 1, 'tile'),
-                        'increase_damage':CopyingSprite3D('images2d/tile/damage_up.png', super()._maps_node, super().__loader, 1, 'tile'),
-                        'increase_radius':CopyingSprite3D('images2d/tile/radius_up.png', super()._maps_node, super().__loader, 1, 'tile'),
-                        'piercing_armor':CopyingSprite3D('images2d/tile/piercing_armor.png', super()._maps_node, super().__loader, 1, 'tile'),
-                        'poison':CopyingSprite3D('images2d/tile/poison_up.png', super()._maps_node, super().__loader, 1, 'tile'),
-                        'additional_money':CopyingSprite3D('images2d/tile/money_up.png', super()._maps_node, super().__loader, 1, 'tile')}
-
-    def  create_tile(self, type_tile:str, rect:Rect3D):
-        if type_tile in self.__tiles.keys():
-            return Tile(self.__tiles[type_tile].copy(rect), type_tile)
-        else:
-            raise ValueError('Incorrect type of tile')
+# class TilesPrototype(AbstractTilesBuilder):
+#     def __init__(self, maps_node:PandaNode, loader):
+#         super().__init__(maps_node, loader)
+#         self.__tiles = {'road':CopyingSprite3D('images2d/tile/for_enemies.png', super()._maps_node, super().__loader, 1, 'tile'),
+#                         'base':CopyingSprite3D('images2d/tile/common_building.png', super()._maps_node, super().__loader, 1, 'tile'),
+#                         'basic':CopyingSprite3D('images2d/tile/common_building.png', super()._maps_node, super().__loader, 1, 'tile'),
+#                         'increase_damage':CopyingSprite3D('images2d/tile/damage_up.png', super()._maps_node, super().__loader, 1, 'tile'),
+#                         'increase_radius':CopyingSprite3D('images2d/tile/radius_up.png', super()._maps_node, super().__loader, 1, 'tile'),
+#                         'piercing_armor':CopyingSprite3D('images2d/tile/piercing_armor.png', super()._maps_node, super().__loader, 1, 'tile'),
+#                         'poison':CopyingSprite3D('images2d/tile/poison_up.png', super()._maps_node, super().__loader, 1, 'tile'),
+#                         'additional_money':CopyingSprite3D('images2d/tile/money_up.png', super()._maps_node, super().__loader, 1, 'tile')}
+#
+#     def  create_tile(self, type_tile:str, rect:Rect3D, settings:Settings):
+#         if type_tile in self.__tiles.keys():
+#             return Tile(self.__tiles[type_tile].copy(rect), type_tile)
+#         else:
+#             raise ValueError('Incorrect type of tile')
 
 class TilesBuilder(AbstractTilesBuilder):
     def __init__(self, maps_node:PandaNode, loader):
@@ -53,9 +54,9 @@ class TilesBuilder(AbstractTilesBuilder):
                         'poison':'images2d/tile/poison_up.png',
                         'additional_money':'images2d/tile/money_up.png'}
 
-    def  create_tile(self, type_tile:str, rect:Rect3D)->Tile:
+    def  create_tile(self, type_tile:str, rect:Rect3D, settings:Settings)->Tile:
         try:
-            sprite = Sprite3D(rect, self.__tiles[type_tile], self._maps_node, self._loader, 'tile', self._counter)
+            sprite = Sprite3D(rect, self.__tiles[type_tile], self._maps_node, self._loader, 'tile', self._counter, debug_mode=settings.debug_mode)
             self._counter += 1
             return Tile(sprite, type_tile)
         except KeyError:

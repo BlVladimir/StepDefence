@@ -4,6 +4,7 @@ from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.events.event_class import Event
+from scripts.main_classes.settings import Settings
 from scripts.scene.scene_classes.scenes.gameplay_scene import GameplayScene
 from scripts.scene.scene_classes.scenes.main_menu_scene import MainMenuScene
 from scripts.scene.scene_classes.scenes.settings_scene import SettingsScene
@@ -13,8 +14,8 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class SceneController(ISceneController):
     """Класс, обрабатывающий сцены"""
-    def __init__(self, render:RenderManager, context:IContext):
-        self.__gameplay_scene = GameplayScene(render, context)
+    def __init__(self, render:RenderManager, context:IContext, settings:Settings):
+        self.__gameplay_scene = GameplayScene(render, context, settings)
         self.__settings_scene = SettingsScene()
         self.__main_menu_scene = MainMenuScene()
         self.__current_scene = self.__main_menu_scene
@@ -38,7 +39,7 @@ class SceneController(ISceneController):
                     self.__current_scene.hide()
                     self.__current_scene = self.__gameplay_scene
                     self.__gameplay_scene.create_scene(int(event['scene']))
-                    context.task_mng.append_task('check_tiles', context.key_watcher.click_handler.check_tiles)
+                    context.task_mng.append_task('check_tiles', context.key_watcher.click_handler.check_collision)
                     self.logger.info(f'scene changed on {event['scene']}')
                 case _:
                     self.logger.info('incorrect attributes')

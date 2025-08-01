@@ -29,7 +29,7 @@ class SelectedHandler(ISelectedHandler):
 
         self.__last_sprite = None
 
-    def check_tiles(self, task):
+    def check_collision(self, task):
         """Проверяет, на какой тайл наведена мышка"""
         if self.__mouse_watcher.hasMouse():
             mpos = self.__mouse_watcher.getMouse()

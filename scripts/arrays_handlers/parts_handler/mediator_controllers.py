@@ -4,15 +4,16 @@ from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.main_classes.settings import Settings
 from scripts.sprite.sprite3D import Sprite3D
 
 
 class MediatorControllers:
     """Посредник между контроллерами основных классов"""
-    def __init__(self, render_manager:RenderManager, context:IContext):
-        self.__towers_controller = TowersController(render_manager.loader)
-        self.__maps_controller = MapsController(render_manager, context)
-        self.__enemies_controller = EnemiesController(render_manager, self.__maps_controller.track)
+    def __init__(self, render_manager:RenderManager, context:IContext, settings:Settings):
+        self.__towers_controller = TowersController(render_manager.loader,settings)
+        self.__maps_controller = MapsController(render_manager, context, settings)
+        self.__enemies_controller = EnemiesController(render_manager, self.__maps_controller.track, settings)
 
         self._current_wave = 0
 

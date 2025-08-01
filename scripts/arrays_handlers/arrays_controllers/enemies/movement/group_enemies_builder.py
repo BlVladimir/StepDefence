@@ -5,10 +5,12 @@ from panda3d.core import NodePath, Vec2
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 
 
 class GroupEnemiesBuilder:
+    """Создает группу врагов"""
     def __init__(self, enemies_node:NodePath, render:RenderManager, track:Track):
         self._enemies_node = enemies_node
         self._track_node = render.main_node3d.attachNewNode('track')
@@ -20,12 +22,12 @@ class GroupEnemiesBuilder:
         self._enemies_node.getChildren().detach()
         self._track_node.getChildren().detach()
 
-    def create_enemies(self, wave:int, level:int, tile:Rect3D)->None:
+    def create_enemies(self, wave:int, level:int, tile:Rect3D, settings:Settings)->None:
         """Создает врагов"""
         rects, poses_on_tile, started_divisiones = self.__create_rects(tile, randrange(1, 4))
         try:
             for i in range(len(rects)):
-                self.__enemies_builder.create_enemy(wave, rects[i], choice(self.__type_tuple[0:level+2] if level < 3 else self.__type_tuple), poses_on_tile[i], started_divisiones[i])
+                self.__enemies_builder.create_enemy(wave, rects[i], choice(self.__type_tuple[0:level+2] if level < 3 else self.__type_tuple), poses_on_tile[i], started_divisiones[i], settings)
         except KeyError:
             raise KeyError('len(rects) != len(poses_on_tile)')
 

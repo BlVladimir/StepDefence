@@ -8,7 +8,8 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import T
 
 
 class MovementCalculator:
-    def __init__(self, bezier_curve_maker:BezierCurveMaker, pos_on_tile:Vec2, started_division_vec:Vec2, track:Track, track_node:NodePath):
+    """Расчитывает траекторию движения"""
+    def __init__(self, bezier_curve_maker:BezierCurveMaker, pos_on_tile:Vec2, started_division_vec:Vec2, track:Track, track_node:NodePath, debug_mode:bool = True):
         self.__bezier_curve_maker = bezier_curve_maker
         self.__pos_on_tile = pos_on_tile
         self.__previous_division_vec = started_division_vec
@@ -16,6 +17,8 @@ class MovementCalculator:
         self.__current_tile = 0
         self.__track = track
         self._track_node = track_node
+        if not debug_mode:
+            self._track_node.hide()
 
     def get_movement_array(self, draw_track:bool)->List[Vec3]:
         """Расчитывает массив точек"""

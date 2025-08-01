@@ -6,6 +6,7 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_buil
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.interface.i_context import IContext
+from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 
@@ -18,9 +19,9 @@ class TilesController:
         self._using_tile_sprite = None
         self.__context = context
 
-    def create_map_tiles(self, level):
+    def create_map_tiles(self, level, settings:Settings):
         """Создает тайлы для карты карту"""
-        self.__map_tiles_builder.create_map_tiles(level)
+        self.__map_tiles_builder.create_map_tiles(level, settings)
 
     def select_tile(self, tile_sprite:Sprite3D):
         """Выделяет тайл"""
