@@ -29,16 +29,19 @@ class DistinctDebugHandler(logging.Handler):
     """Фильтрует повторяющиеся DEBUG логи"""
     def __init__(self):
         super().__init__()
-        self.last_msg = None
+        self.last_msg = []
         self.level = logging.DEBUG
 
     def emit(self, record):
 
         formatted_msg = self.format(record)
 
-        if formatted_msg != self.last_msg:
-            self.last_msg = formatted_msg
+        if not formatted_msg in self.last_msg:
+            self.last_msg += [formatted_msg]
             print(formatted_msg)
+
+        if len(self.last_msg) > 4:
+            self.last_msg.pop(0)
 
 def setup_logging():
     """Настройка логирования"""

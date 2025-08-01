@@ -22,7 +22,6 @@ class MovementCalculator:
 
     def get_movement_array(self, draw_track:bool)->List[Vec3]:
         """Расчитывает массив точек"""
-        debug(self.__pos_on_tile)
         points = self.__track.track[self.__current_tile]
         for i in (0, 1, 2, 3):
             points[i] += self.__pos_on_tile

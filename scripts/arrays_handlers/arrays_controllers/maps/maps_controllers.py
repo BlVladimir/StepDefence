@@ -29,17 +29,17 @@ class MapsController:
         """Выделить спрайт"""
         match sprite.main_node.getName():
             case 'tile':
-                self.__tiles_controller.select_tile(sprite)
+                self.__tiles_controller.handle_tile_action('select', sprite)
 
     def unselect_element(self, sprite:Sprite3D):
         """Отменить выделение у спрайта"""
         match sprite.main_node.getName():
             case 'tile':
-                self.__tiles_controller.unselect_tile()
+                self.__tiles_controller.handle_tile_action('unselect')
 
     def using_element(self):
         """Назначить спрайт активным"""
-        self.__tiles_controller.using_tile()
+        self.__tiles_controller.handle_tile_action('using')
 
     def get_selected_tile(self)->Tile:
         return self.__tiles_controller.selected_tile

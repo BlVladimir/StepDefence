@@ -1,14 +1,14 @@
 from copy import deepcopy
 from random import random
 from typing import List
-from logging import error, debug
+from logging import error
 from panda3d.core import Vec2, Mat3
 
-from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.sprite.rect import Rect3D
 
 
 class Track:
+    """Класс пути врага"""
     def __init__(self):
         self._track = []
         self._first_tile_rect = None
@@ -17,8 +17,7 @@ class Track:
     def track(self)->List[Vec2]:
         return deepcopy(self._track)
 
-    @track.setter
-    def track(self, value:List[int]):
+    def set_track(self, value:List[int]):
         pos = Vec2(self._first_tile_rect.x, self._first_tile_rect.y)
         scale = 1.2*self._first_tile_rect.width  # 1.2 от промежутка
         self._track = []
@@ -44,7 +43,6 @@ class Track:
 
             self._track.append(one_move)
             pos = one_move[3]
-        debug(self._track)
 
     def get_division_vec(self)->Vec2:
         scale = min(self._first_tile_rect.width, self._first_tile_rect.height)

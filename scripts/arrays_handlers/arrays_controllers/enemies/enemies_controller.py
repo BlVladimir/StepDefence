@@ -1,8 +1,12 @@
+from logging import debug
+
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
+from scripts.arrays_handlers.parts_handler.using_element_controller import UsingElementController
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
+from scripts.sprite.sprite3D import Sprite3D
 
 
 class EnemiesController:
@@ -12,6 +16,8 @@ class EnemiesController:
         self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, render, track)
 
         self._settings = settings
+
+        self.__enemies_selector = UsingElementController()
 
 
     def clear_enemies(self)->None:
@@ -27,3 +33,13 @@ class EnemiesController:
 
         for i in range(len(enemies)):
             enemies[i].getPythonTag('sprite').external_object.move()
+
+    def handle_enemy_action(self, action: str, enemy:Sprite3D = None) -> None:
+        """Обрабатывает действия с врагами"""
+        match action:
+            case 'select':
+                self.__enemies_selector.select_sprite(enemy)
+            case 'unselect':
+                self.__enemies_selector.unselect_sprite()
+            case 'using':
+                self.__enemies_selector.using_sprite()

@@ -42,16 +42,21 @@ class MediatorControllers:
         match sprite.main_node.getName():
             case 'tile':
                 self.__maps_controller.select_element(sprite)
+            case 'enemy':
+                self.__enemies_controller.handle_enemy_action('select', sprite)
 
     def unselect_element(self, sprite:Sprite3D):
         """Снять выделение???"""
         match sprite.main_node.getName():
             case 'tile':
                 self.__maps_controller.unselect_element(sprite)
+            case 'enemy':
+                self.__enemies_controller.handle_enemy_action('unselect')
 
     def using_element(self):
         """Назначить тайл активным"""
         self.__maps_controller.using_element()
+        self.__enemies_controller.handle_enemy_action('using')
 
     def next_round(self):
         self.__enemies_controller.move_enemies()

@@ -1,4 +1,5 @@
 import logging
+from logging import debug
 
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
 
@@ -27,7 +28,7 @@ class SelectedHandler(ISelectedHandler):
 
         self.__context = context
 
-        self.__last_sprite = None
+        self.__last_sprite = set()
 
     def check_collision(self, task):
         """Проверяет, на какой тайл наведена мышка"""
@@ -38,14 +39,22 @@ class SelectedHandler(ISelectedHandler):
 
             if self.__picker_queue.getNumEntries() > 0:
                 self.__picker_queue.sortEntries()
-                entry = self.__picker_queue.getEntry(0)
-                collided_node = entry.getIntoNodePath()
-                sprite = collided_node.getPythonTag('collision')
+                not_selected = self.__last_sprite.difference(self.__picker_queue.getEntries())
+                for sprite in not_selected:
+                    self.__context.scene_controller.send_sprite_to_unselected(sprite)
+                    debug(f'Unselected sprite: {sprite}')
+                self.__last_sprite.difference_update(not_selected)
+                for entry in self.__picker_queue.getEntries():
+                    collided_node = entry.getIntoNodePath()
+                    sprite = collided_node.getPythonTag('collision')
 
-                self.__context.scene_controller.send_sprite_to_selected(sprite)
-                self.__last_sprite = sprite
+                    self.__context.scene_controller.send_sprite_to_selected(sprite)
+                    self.__last_sprite.add(sprite)
+                    debug(f'Selected sprite: {sprite}')
                 return Task.cont
         if self.__last_sprite:
-            self.__context.scene_controller.send_sprite_to_unselected(self.__last_sprite)
-            self.__last_sprite = None
+            for sprite in self.__last_sprite:
+                self.__context.scene_controller.send_sprite_to_unselected(sprite)
+                debug(f'Unselected sprite: {sprite}')
+            self.__last_sprite.clear()
         return Task.cont

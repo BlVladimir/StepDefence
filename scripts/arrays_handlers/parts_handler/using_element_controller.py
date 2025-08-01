@@ -20,7 +20,7 @@ class UsingElementController:
 
     def unselect_sprite(self)->None:
         """Убирает выделение"""
-        if self._selected_sprite != self._using_sprite:
+        if self._selected_sprite and self._selected_sprite != self._using_sprite:
             self._selected_sprite.is_using = False
         self._selected_sprite = None
 

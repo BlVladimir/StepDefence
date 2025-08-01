@@ -1,4 +1,4 @@
-from logging import error, debug
+from logging import error
 
 from panda3d.core import NodePath, Loader, Vec2
 
@@ -6,7 +6,6 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.finder_track i
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
-from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 
@@ -43,8 +42,7 @@ class MapTilesBuilder:
                     if map_array[y][x] in self.__maps_config.keys.keys():
                         self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect, settings)
         self._track.set_first_tile(self._first_tile_rect)
-        self._track.track = list(track.values())
-        debug(track)
+        self._track.set_track(list(track.values()))
 
     def reset_map(self)->None:
         """Удаляет карту"""
