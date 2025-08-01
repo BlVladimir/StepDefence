@@ -1,3 +1,7 @@
+from typing import Optional
+
+from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane
+
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
@@ -16,9 +20,16 @@ class MapsController:
         self.__tiles_controller = TilesController(self.__map_config, self.__map_node, render.loader, context)
         self._settings = settings
 
+        self._global_collision_node = None
+
     def create_map(self, level):
         """Создать карту"""
         self.__tiles_controller.create_map_tiles(level, self._settings)
+
+        global_collision = CollisionNode('global_collision')
+        global_collision.addSolid(CollisionPlane(Plane(Vec3(0.0, 0.0, 1), Point3(0.0, 0.0, 0.0))))
+
+        self._global_collision_node = self.__map_node.attachNewNode(global_collision)
 
     def clear_map(self):
         """Очистить карту"""
@@ -41,7 +52,7 @@ class MapsController:
         """Назначить спрайт активным"""
         self.__tiles_controller.handle_tile_action('using')
 
-    def get_selected_tile(self)->Tile:
+    def get_selected_tile(self)->Optional[Tile]:
         return self.__tiles_controller.selected_tile
 
     @property

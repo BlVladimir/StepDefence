@@ -2,6 +2,7 @@ from panda3d.core import Loader
 
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.towers.towers_builder import TowerBuilder
+from scripts.arrays_handlers.parts_handler.using_element_controller import UsingElementController
 from scripts.main_classes.settings import Settings
 
 

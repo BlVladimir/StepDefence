@@ -15,6 +15,8 @@ class Rect3D:
         self._height = height
         self.__rotation_center = rotation_center
 
+        self.__started_rect = {'top_left':self._top_left, 'top_right':self._top_right, 'bottom_right':self._bottom_right, 'bottom_left':self._bottom_left, 'center':self.center}
+
     def move(self, vector:Vec2)->None:
         """Двигает прямоугольник на заданный вектор"""
         self._top_left += vector
@@ -31,11 +33,13 @@ class Rect3D:
                 warning('Naim point is not dedicate')
                 point = self.__rotation_center
 
-        center = self.center
+        rt = self.__started_rect  # начальный rect
+
+        center = rt['center']
         r_mat = Mat3.rotateMat(angle)
 
-        self._top_left, self._bottom_right = point + r_mat.xform_vec(self._bottom_left-point), point + r_mat.xform_vec(self._top_right-point)
-        self._top_right, self._bottom_left = point + r_mat.xform_vec(self._top_right-point), point + r_mat.xform_vec(self._bottom_left-point)
+        self._top_left, self._bottom_right = point + r_mat.xform_vec(rt['bottom_left']-point), point + r_mat.xform_vec(rt['top_right']-point)
+        self._top_right, self._bottom_left = point + r_mat.xform_vec(rt['top_right']-point), point + r_mat.xform_vec(rt['bottom_left']-point)
         center = point + r_mat.xform_vec(center-point)
 
         self._width = max(abs(self._top_right.x-self._bottom_left.x), abs(self._top_left.x-self._bottom_right.x))
@@ -77,6 +81,22 @@ class Rect3D:
 
     def __str__(self):
         return f'Текущий прямоугольник: ширина-{round(self._width, 2)}, высота-{round(self._height, 2)},  X-{round(self._top_left.x, 2)}, Y-{round(self._top_left.y, 2)}, центр-({round(self.center[0], 2)}, {round(self.center[1], 2)})'
+
+    @property
+    def top_left(self)->Vec2:
+        return self._top_left
+
+    @property
+    def top_right(self)->Vec2:
+        return self._top_right
+
+    @property
+    def bottom_right(self)->Vec2:
+        return self._bottom_right
+
+    @property
+    def bottom_left(self)->Vec2:
+        return self._bottom_left
 
 class TestRect3D(TestCase):
     def setUp(self):

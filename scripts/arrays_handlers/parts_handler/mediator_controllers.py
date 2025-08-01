@@ -1,6 +1,11 @@
+from typing import Optional
+
+from panda3d.core import Point3
+
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_controller import EnemiesController
 from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import MapsController
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
 from scripts.interface.i_context import IContext
 from scripts.main_classes.interaction.render_manager import RenderManager
@@ -60,3 +65,16 @@ class MediatorControllers:
 
     def next_round(self):
         self.__enemies_controller.move_enemies()
+
+    def __get_selected_tower(self)->Optional[Tower]:
+        tile = self.__maps_controller.get_selected_tile()
+        if tile:
+            tower_node = tile.sprite.main_node.find('tower')
+            if tower_node:
+                return tower_node.getPythonTag('sprite').external_object
+        return None
+
+    def rotate_gun(self, mouse_point:Point3)->None:
+        tower = self.__get_selected_tower()
+        if tower:
+            tower.rotate(mouse_point)

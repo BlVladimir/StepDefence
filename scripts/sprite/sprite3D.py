@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from logging import debug, warn
+from logging import debug
+from termios import VSTOP
 
 from scripts.sprite.rect import Rect3D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, \
@@ -36,18 +37,24 @@ class Sprite3D:
             ))
 
             self._collision_node = node.attachNewNode(collision)
+            self._collision_node.setName('sprite_collision')
             self._collision_node.setPythonTag('collision', self)
             if debug_mode:
                 self._collision_node.show()
+
+        self.__rotation_vec = Vec3(0, 0, 0)
+        self.__convert_vec = Vec3(0, 0, 0)
 
         if isinstance(parent, NodePath):
             self._main_node = parent.attachNewNode(name_group)
             create_child_nodes(self._main_node)
             self._main_node.setPos(self._rect.center.x, self._rect.center.y, 0)
-            self._main_node.setHpr(Vec3(0, -90, 0))
+            self.__rotation_vec += Vec3(0, -90, 0)
+            self._main_node.setHpr(self.__rotation_vec)
         elif isinstance(parent, Sprite3D):
             self._main_node = parent._main_node.attachNewNode(name_group)
             create_child_nodes(self._main_node)
+            self.__convert_vec = Vec3(parent._rect.center.x, parent._rect.center.y, 0)
         else:
             raise ValueError('Incorrect type of parent')
 
@@ -59,9 +66,9 @@ class Sprite3D:
 
     def rotate(self, angle: int | float = 90):
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
-        self._main_node.setHpr(Vec3(0, -90, -angle))
+        self._main_node.setHpr(self.__rotation_vec + Vec3(0, 0, -angle))
         self._rect.rotate(angle)
-        self._main_node.setPos(self._rect.center.x, self._rect.center.y, 0)
+        self._main_node.setPos(Vec3(self._rect.center.x, self._rect.center.y, 0)-self.__convert_vec)
 
     def __add_wireframe(self):
         """Добавляет проволочную обводку вокруг объекта"""

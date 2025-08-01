@@ -68,3 +68,9 @@ class SceneController(ISceneController):
     def next_round(self):
         if self.__current_scene == self.__gameplay_scene:
             self.__gameplay_scene.gameplay_handler.mediator_controllers.next_round()
+
+    def send_tower_event(self, event:Event):
+        if self.__current_scene == self.__gameplay_scene:
+            match event.name:
+                case 'rotate_gun':
+                    self.__gameplay_scene.gameplay_handler.mediator_controllers.rotate_gun(event['mouse_point'])

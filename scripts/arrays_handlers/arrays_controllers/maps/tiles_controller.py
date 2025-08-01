@@ -1,4 +1,5 @@
 from logging import warning, error
+from typing import Optional
 
 from panda3d.core import PandaNode
 
@@ -51,8 +52,10 @@ class TilesController:
         return self.__map_tiles_builder.first_tile_rect
 
     @property
-    def selected_tile(self)->Tile:
-        return self.__tile_selector.using_tile_sprite.external_object
+    def selected_tile(self)->Optional[Tile]:
+        if self.__tile_selector.using_tile_sprite:
+            return self.__tile_selector.using_tile_sprite.external_object
+        return None
 
     @property
     def track(self):

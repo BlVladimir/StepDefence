@@ -1,5 +1,7 @@
 from typing import Optional
 
+from panda3d.core import Point3
+
 from scripts.arrays_handlers.arrays_controllers.towers.states.damage_state import DamageState
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.sprite.sprite3D import Sprite3D
@@ -28,3 +30,6 @@ class Tower:
     def upgrade(self)->None:
         self.__damage_state.upgrade(self.__visitor_improve)
         self.__radius_strategy.upgrade(self.__visitor_improve)
+
+    def rotate(self, mouse_point:Point3):
+        self.__gun_strategy.rotate_gun(mouse_point)

@@ -38,7 +38,7 @@ class MapTilesBuilder:
                     if map_array[y][x] == 2:
                         self._first_tile_rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1)
                 else:
-                    rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1)
+                    rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1, Vec2(1.2 * x - half_x + 0.5, - 1.2 * y + half_y - 0.5))
                     if map_array[y][x] in self.__maps_config.keys.keys():
                         self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect, settings)
         self._track.set_first_tile(self._first_tile_rect)
