@@ -1,6 +1,5 @@
 from logging import getLogger
 
-from scripts.interface.i_context import IContext
 from scripts.main_classes.event_bus import EventBus
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
@@ -11,7 +10,7 @@ from scripts.scene.scene_classes.scenes.settings_scene import SettingsScene
 
 class SceneController:
     """Класс, обрабатывающий сцены"""
-    def __init__(self, render:RenderManager, context:IContext, settings:Settings):
+    def __init__(self, render:RenderManager, context:'IContext', settings:Settings):
 
         self.__gameplay_scene = GameplayScene(render, context, settings)
         self.__settings_scene = SettingsScene()

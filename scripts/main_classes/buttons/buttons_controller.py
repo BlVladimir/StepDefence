@@ -1,10 +1,7 @@
-from logging import debug
-
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import LVecBase3f, Texture, TransparencyAttrib, PNMImage
 
-from scripts.interface.i_context import IContext
 from scripts.main_classes.event_bus import EventBus
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
@@ -12,7 +9,7 @@ from scripts.main_classes.buttons.buttons_group import ButtonsGroup
 
 class ButtonsController:
     """Класс всех кнопок на сцене"""
-    def __init__(self, render_manager:RenderManager, context:IContext):
+    def __init__(self, render_manager:RenderManager, context:'IContext'):
         self.__buttons_node = render_manager.main_node2d.attachNewNode('button_node')
 
         w = render_manager.win.getXSize()
@@ -71,7 +68,7 @@ class ButtonsController:
     def close_shop(self):
         self.__shop_node.hide()
 
-    def vision_control(self, context:IContext):
+    def vision_control(self, context:'IContext'):
         match context.scene_controller.get_name_current_scene():
             case 'main_menu':
                 self.__main_menu_group.show()

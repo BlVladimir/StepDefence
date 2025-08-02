@@ -1,7 +1,6 @@
 from scripts.scene.scene_classes.scenes.abstract_scene import Scene
-from scripts.interface.i_settings_scene import ISettingsScene
 
-class SettingsScene(Scene, ISettingsScene):
+class SettingsScene(Scene):
     """Сцена настроек"""
     @staticmethod
     def name():

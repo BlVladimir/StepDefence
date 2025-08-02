@@ -1,15 +1,11 @@
 from __future__ import annotations
 
-from typing import Optional, Any
-
-from panda3d.core import Point3
+from typing import Optional
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_controller import EnemiesController
 from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import MapsController
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
-from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
-from scripts.interface.i_context import IContext
 from scripts.main_classes.event_bus import EventBus
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
@@ -18,7 +14,7 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class MediatorControllers:
     """Посредник между контроллерами основных классов"""
-    def __init__(self, render_manager:RenderManager, context:IContext, settings:Settings):
+    def __init__(self, render_manager:RenderManager, context:'IContext', settings:Settings):
         self.__towers_controller = TowersController(render_manager.loader,settings, self, context)
         self.__maps_controller = MapsController(render_manager, context, settings)
         self.__enemies_controller = EnemiesController(render_manager, self.__maps_controller.track, settings)

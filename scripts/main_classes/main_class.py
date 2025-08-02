@@ -1,4 +1,3 @@
-from direct.gui.DirectButton import DirectButton
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import WindowProperties, CollisionTraverser
@@ -9,11 +8,10 @@ from scripts.main_classes.interaction.key_handler import KeyHandler
 from scripts.main_classes.context import Context
 from scripts.main_classes.interaction.render_manager import RenderManager
 from math import radians, sin, cos
-from scripts.interface.i_main_class import IStepDefence
 from scripts.main_classes.task_manager import TaskManager
 
 
-class StepDefence(ShowBase, IStepDefence):
+class StepDefence(ShowBase):
     """Главный класс, осуществляющий взаимодействие программы с пользователем"""
     def __init__(self):
         ShowBase.__init__(self)

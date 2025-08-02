@@ -1,6 +1,5 @@
-from scripts.interface.i_settings import ISettings
 
-class Settings(ISettings):
+class Settings:
     """Содержит поля для глобальных настроек игры"""
     def __init__(self):
         self._debug_mode = True

@@ -1,10 +1,9 @@
 from panda3d.core import MouseWatcher
 
 from scripts.main_classes.interaction.selected_handler import SelectedHandler
-from scripts.interface.i_key_watcher import IKeyWatcher
 
 
-class KeyWatcher(IKeyWatcher):
+class KeyWatcher:
     """Передает данные о клавиатуре и мышке context"""
     def __init__(self, mouse_watcher:MouseWatcher, click_handler:SelectedHandler):
         self._mouse_watcher = mouse_watcher

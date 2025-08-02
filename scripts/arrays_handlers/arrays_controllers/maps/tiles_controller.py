@@ -1,4 +1,3 @@
-from logging import warning, error
 from typing import Optional
 
 from panda3d.core import PandaNode
@@ -7,7 +6,6 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_buil
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.parts_handler.using_element_controller import UsingElementController
-from scripts.interface.i_context import IContext
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
@@ -15,7 +13,7 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class TilesController:
     """Содержит группу всех тайлов"""
-    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader, context:IContext):
+    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader, context:'IContext'):
         self.__map_tiles_builder = MapTilesBuilder(maps_config, maps_node, loader)
         self.__tile_selector = UsingElementController(using_action=self.__using_action, unused_action=lambda cont=context: cont.buttons_controller.close_shop())
         self.__context = context

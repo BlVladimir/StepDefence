@@ -1,21 +1,17 @@
+from __future__ import annotations
+
 from panda3d.core import NodePath
 
-from scripts.interface.i_context import IContext
-from scripts.interface.i_key_watcher import IKeyWatcher
-from scripts.interface.i_render import IRenderManager
-from scripts.interface.i_settings import ISettings
-from scripts.interface.i_task_manager import ITaskManager
-from scripts.main_classes.interaction.selected_handler import SelectedHandler
-from scripts.main_classes.interaction.key_watcher import KeyWatcher
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
-from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.main_classes.interaction.key_watcher import KeyWatcher
+from scripts.main_classes.interaction.selected_handler import SelectedHandler
 from scripts.main_classes.settings import Settings
 from scripts.scene.scene_controller import SceneController
 
 
-class Context(IContext):
+class Context:
     """Через этот класс осуществляются все взаимодействия в программе"""
-    def __init__(self, render_manager:RenderManager, camera, taskMng:ITaskManager, mouse_watcher_node:NodePath, render):
+    def __init__(self, render_manager:'RenderManager', camera, taskMng:'TaskManager', mouse_watcher_node:NodePath, render):
         self._settings = Settings()
         self._scene_controller = SceneController(render_manager, self, self._settings)
         self._render_manager = render_manager
@@ -26,25 +22,25 @@ class Context(IContext):
         self._taskMng = taskMng
 
     @property
-    def scene_controller(self)->SceneController:
+    def scene_controller(self)->'SceneController':
         return self._scene_controller
 
     @property
-    def render_manager(self)->IRenderManager:
+    def render_manager(self)->'RenderManager':
         return self._render_manager
 
     @property
-    def key_watcher(self)->IKeyWatcher:
+    def key_watcher(self)->'KeyWatcher':
         return self._key_watcher
 
     @property
-    def settings(self)->ISettings:
+    def settings(self)->'Settings':
         return self._settings
 
     @property
-    def buttons_controller(self)->ButtonsController:
+    def buttons_controller(self)->'ButtonsController':
         return self._buttons_controller
 
     @property
-    def task_mng(self)->ITaskManager:
+    def task_mng(self)->'TaskManager':
         return self._taskMng

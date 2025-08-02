@@ -1,18 +1,13 @@
-from logging import debug
-
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
-
-from scripts.interface.i_click_handler import ISelectedHandler
-from scripts.interface.i_context import IContext
 from direct.task import Task
 
 from scripts.main_classes.event_bus import EventBus
 
 
-class SelectedHandler(ISelectedHandler):
+class SelectedHandler:
     """Обрабатывает клики в трехмерном пространстве"""
 
-    def __init__(self, camera_node:NodePath, mouse_watcher:NodePath, render_root:NodePath, context:IContext):
+    def __init__(self, camera_node:NodePath, mouse_watcher:NodePath, render_root:NodePath, context:'IContext'):
         self.__cam_node = camera_node
         self.__mouse_watcher = mouse_watcher
         self.__render_root = render_root
