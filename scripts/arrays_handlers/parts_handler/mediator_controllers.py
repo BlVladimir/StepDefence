@@ -29,6 +29,8 @@ class MediatorControllers:
         EventBus.subscribe('unselect_element', lambda event_type, data: self.__unselect_element(data))
         EventBus.subscribe('select_element', lambda event_type, data: self.__select_element(data))
 
+
+
     def create_scene(self, level):
         """Создание карты"""
         self.__maps_controller.create_map(level)
@@ -65,22 +67,6 @@ class MediatorControllers:
         """Назначить тайл активным"""
         self.__maps_controller.using_element()
         self.__enemies_controller.handle_enemy_action('using')
-
-    def next_round(self):
-        self.__enemies_controller.move_enemies()
-
-    def __get_selected_tower(self)->Optional[Tower]:
-        tile = self.__maps_controller.get_selected_tile()
-        if tile:
-            tower_node = tile.sprite.main_node.find('tower')
-            if tower_node:
-                return tower_node.getPythonTag('sprite').external_object
-        return None
-
-    def rotate_gun(self, mouse_point:Point3)->None:
-        tower = self.__get_selected_tower()
-        if tower:
-            tower.rotate(mouse_point)
 
     @property
     def selected_tile(self)->Optional[Tile]:

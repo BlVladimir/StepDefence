@@ -7,7 +7,6 @@ from scripts.interface.i_context import IContext
 from direct.task import Task
 
 from scripts.main_classes.event_bus import EventBus
-from scripts.main_classes.events.event_class import Event
 
 
 class SelectedHandler(ISelectedHandler):
@@ -54,8 +53,7 @@ class SelectedHandler(ISelectedHandler):
                         EventBus.publish('select_element', sprite)
                     elif collided_node.getName() == 'global_collision':
                         point = entry.getSurfacePoint(self.__render_root)
-                        self.__context.scene_controller.send_tower_event(Event(name='rotate_gun', mouse_point=point))
-                        self.__context.scene_controller.send_tower_event(Event(name='rotate_gun', mouse_point=point))
+                        EventBus.publish('rotate_gun', point)
                 return Task.cont
         if self.__last_sprite:
             for sprite in self.__last_sprite:

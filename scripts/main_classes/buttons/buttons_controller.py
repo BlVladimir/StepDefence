@@ -4,15 +4,13 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import LVecBase3f, Texture, TransparencyAttrib, PNMImage
 
-from scripts.interface.i_button_controller import IButtonsController
 from scripts.interface.i_context import IContext
 from scripts.main_classes.event_bus import EventBus
 from scripts.main_classes.interaction.render_manager import RenderManager
-from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
 
 
-class ButtonsController(IButtonsController):
+class ButtonsController:
     """Класс всех кнопок на сцене"""
     def __init__(self, render_manager:RenderManager, context:IContext):
         self.__buttons_node = render_manager.main_node2d.attachNewNode('button_node')
@@ -31,8 +29,7 @@ class ButtonsController(IButtonsController):
                                                   parent=main_menu_node,
                                                   scale=MMSC,
                                                   pos=coord,
-                                                  command=lambda lvl=i: context.send_event(
-                                                      Event('change_scene', scene=str(lvl))),
+                                                  command=lambda lvl=i: EventBus.publish('change_scene', str(lvl)),
                                                   frameColor=((0.5, 0.5, 0.5, 1),
                                                               (0.7, 0.7, 0.7, 1),
                                                               (0.3, 0.3, 0.3, 1))))
@@ -44,8 +41,7 @@ class ButtonsController(IButtonsController):
                                                           parent=gameplay_buttons_node,
                                                           scale=0.1,
                                                           pos=LVecBase3f(-w / h + (w / h) * 0.075, 0.9),
-                                                          command=lambda: context.send_event(
-                                                              Event('change_scene', scene='main_menu')),
+                                                          command=lambda: EventBus.publish('change_scene', 'main_menu'),
                                                           frameColor=((0.5, 0.5, 0.5, 1),
                                                                       (0.7, 0.7, 0.7, 1),
                                                                       (0.3, 0.3, 0.3, 1))))
