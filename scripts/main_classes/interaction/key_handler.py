@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from scripts.main_classes.event_bus import EventBus
+from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class KeyHandler:

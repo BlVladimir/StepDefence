@@ -1,20 +1,19 @@
 from random import randrange, choice, choices, random
 
-from panda3d.core import NodePath, Vec2
+from panda3d.core import NodePath, Vec2, Loader
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
-from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 
 
 class GroupEnemiesBuilder:
     """Создает группу врагов"""
-    def __init__(self, enemies_node:NodePath, render:RenderManager, track:Track):
+    def __init__(self, enemies_node:NodePath, track_node:NodePath, loader:Loader, track:Track):
         self._enemies_node = enemies_node
-        self._track_node = render.main_node3d.attachNewNode('track')
-        self.__enemies_builder = EnemiesBuilder(self._enemies_node, render.loader, track, self._track_node)
+        self._track_node = track_node
+        self.__enemies_builder = EnemiesBuilder(self._enemies_node, loader, track, self._track_node)
         self.__type_tuple = ('basic', 'big', 'armored', 'regen')
 
     def clear_enemies(self)->None:

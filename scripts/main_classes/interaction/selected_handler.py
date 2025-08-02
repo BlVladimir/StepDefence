@@ -1,7 +1,7 @@
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
 from direct.task import Task
 
-from scripts.main_classes.event_bus import EventBus
+from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class SelectedHandler:

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane
+from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane, NodePath, Loader
 
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
@@ -13,10 +13,10 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class MapsController:
     """Обработчик карт"""
-    def __init__(self, render:RenderManager, context:'IContext', settings:Settings):
-        self.__map_node = render.main_node3d.attachNewNode("map_node")
+    def __init__(self,scene_gameplay_node:NodePath, loader:Loader, settings:Settings):
+        self.__map_node = scene_gameplay_node.attachNewNode("map_node")
         self.__map_config = MapsConfig()
-        self.__tiles_controller = TilesController(self.__map_config, self.__map_node, render.loader, context)
+        self.__tiles_controller = TilesController(self.__map_config, self.__map_node, loader)
         self._settings = settings
 
         self._global_collision_node = None

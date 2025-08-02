@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import Optional
 
+from panda3d.core import NodePath, Loader
+
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_controller import EnemiesController
 from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import MapsController
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
-from scripts.main_classes.event_bus import EventBus
+from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
 from scripts.sprite.sprite3D import Sprite3D
@@ -14,10 +16,10 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class MediatorControllers:
     """Посредник между контроллерами основных классов"""
-    def __init__(self, render_manager:RenderManager, context:'IContext', settings:Settings):
-        self.__towers_controller = TowersController(render_manager.loader,settings, self, context)
-        self.__maps_controller = MapsController(render_manager, context, settings)
-        self.__enemies_controller = EnemiesController(render_manager, self.__maps_controller.track, settings)
+    def __init__(self, scene_gameplay_node:NodePath, loader:Loader, context:'IContext', settings:Settings):
+        self.__towers_controller = TowersController(loader, settings, self, context)
+        self.__maps_controller = MapsController(scene_gameplay_node, loader, settings)
+        self.__enemies_controller = EnemiesController(scene_gameplay_node, loader, self.__maps_controller.track, settings)
 
         self._current_wave = 0
 

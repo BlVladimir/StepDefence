@@ -6,7 +6,7 @@ from panda3d.core import Loader, Point3
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.towers_builder import TowerBuilder
-from scripts.main_classes.event_bus import EventBus
+from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class TowersController:

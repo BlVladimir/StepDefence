@@ -8,7 +8,7 @@ from scripts.main_classes.interaction.key_handler import KeyHandler
 from scripts.main_classes.context import Context
 from scripts.main_classes.interaction.render_manager import RenderManager
 from math import radians, sin, cos
-from scripts.main_classes.task_manager import TaskManager
+from scripts.main_classes.interaction.task_manager import TaskManager
 
 
 class StepDefence(ShowBase):

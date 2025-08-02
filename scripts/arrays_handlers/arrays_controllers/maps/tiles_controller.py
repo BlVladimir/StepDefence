@@ -5,7 +5,8 @@ from panda3d.core import PandaNode
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_builder import MapTilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
-from scripts.arrays_handlers.parts_handler.using_element_controller import UsingElementController
+from scripts.arrays_handlers.using_element_controller import UsingElementController
+from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
@@ -13,10 +14,9 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class TilesController:
     """Содержит группу всех тайлов"""
-    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader, context:'IContext'):
+    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader):
         self.__map_tiles_builder = MapTilesBuilder(maps_config, maps_node, loader)
-        self.__tile_selector = UsingElementController(using_action=self.__using_action, unused_action=lambda cont=context: cont.buttons_controller.close_shop())
-        self.__context = context
+        self.__tile_selector = UsingElementController(using_action=self.__using_action, unused_action=lambda: EventBus.publish('close_shop'))
 
     def create_map_tiles(self, level, settings:Settings):
         """Создает тайлы для карты карту"""
@@ -28,7 +28,7 @@ class TilesController:
 
     def __using_action(self):
         if self.__tile_selector.using_tile_sprite.external_object.effect != 'road' and not self.__tile_selector.using_tile_sprite.main_node.find('tower'):
-            self.__context.buttons_controller.open_shop()
+            EventBus.publish('open_shop')
 
     def handle_tile_action(self, action: str, tile_sprite: Sprite3D = None) -> None:
         """Обрабатывает действия с тайлами.

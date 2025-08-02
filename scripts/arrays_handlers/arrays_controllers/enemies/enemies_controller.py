@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+from panda3d.core import NodePath, Loader
+
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
-from scripts.arrays_handlers.parts_handler.using_element_controller import UsingElementController
-from scripts.main_classes.event_bus import EventBus
-from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.arrays_handlers.using_element_controller import UsingElementController
+from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
@@ -12,9 +13,10 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class EnemiesController:
     """Обработчик врагов"""
-    def __init__(self, render:RenderManager, track:Track, settings:Settings):
-        self._enemies_node = render.main_node3d.attachNewNode('enemy')
-        self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, render, track)
+    def __init__(self, scene_gameplay_node:NodePath, loader:Loader, track:Track, settings:Settings):
+        self._enemies_node = scene_gameplay_node.attachNewNode('enemy')
+        self._track_node = scene_gameplay_node.attachNewNode('track')
+        self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, self._track_node, loader, track)
 
         self._settings = settings
 
