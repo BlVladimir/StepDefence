@@ -1,8 +1,9 @@
-from logging import debug
+from __future__ import annotations
 
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.parts_handler.using_element_controller import UsingElementController
+from scripts.main_classes.event_bus import EventBus
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
@@ -19,6 +20,8 @@ class EnemiesController:
 
         self.__enemies_selector = UsingElementController()
 
+        EventBus.subscribe('next_round', lambda event_type, data: self.__move_enemies())
+
 
     def clear_enemies(self)->None:
         """Удаоляет врагов"""
@@ -28,7 +31,7 @@ class EnemiesController:
         """Создает врагов"""
         self.__group_enemies_builder.create_enemies(wave, level, tile, self._settings)
 
-    def move_enemies(self)->None:
+    def __move_enemies(self)->None:
         enemies = self._enemies_node.getChildren()
 
         for i in range(len(enemies)):

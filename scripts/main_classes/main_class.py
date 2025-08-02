@@ -28,7 +28,7 @@ class StepDefence(ShowBase, IStepDefence):
 
         self.__context.task_mng.append_task("SpinCameraTask", self.fixCameraTask)
 
-        self.__key_handler = KeyHandler(self.accept, self.__context)
+        self.__key_handler = KeyHandler(self.accept)
 
         self.__draw_basis()
 

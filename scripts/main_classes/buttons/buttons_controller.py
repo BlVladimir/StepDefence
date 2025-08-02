@@ -6,6 +6,7 @@ from panda3d.core import LVecBase3f, Texture, TransparencyAttrib, PNMImage
 
 from scripts.interface.i_button_controller import IButtonsController
 from scripts.interface.i_context import IContext
+from scripts.main_classes.event_bus import EventBus
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.events.event_class import Event
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
@@ -61,7 +62,7 @@ class ButtonsController(IButtonsController):
                                     parent=self.__shop_frame,
                                     scale=0.2,
                                     pos=LVecBase3f(0.2, -0.2),
-                                    command=lambda: context.send_event(Event('buy_tower', type='basic')),
+                                    command=lambda: EventBus.publish('buy_tower', 'basic'),
                                     frameColor=((0.5, 0.5, 0.5, 1),
                                                 (0.7, 0.7, 0.7, 1),
                                                 (0.3, 0.3, 0.3, 1)))

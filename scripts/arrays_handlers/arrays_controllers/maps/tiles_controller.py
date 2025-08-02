@@ -17,7 +17,7 @@ class TilesController:
     """Содержит группу всех тайлов"""
     def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader, context:IContext):
         self.__map_tiles_builder = MapTilesBuilder(maps_config, maps_node, loader)
-        self.__tile_selector = UsingElementController(using_action=self.using_action, unused_action=lambda cont=context: cont.buttons_controller.close_shop())
+        self.__tile_selector = UsingElementController(using_action=self.__using_action, unused_action=lambda cont=context: cont.buttons_controller.close_shop())
         self.__context = context
 
     def create_map_tiles(self, level, settings:Settings):
@@ -28,7 +28,7 @@ class TilesController:
         """Очищает карту"""
         self.__map_tiles_builder.reset_map()
 
-    def using_action(self):
+    def __using_action(self):
         if self.__tile_selector.using_tile_sprite.external_object.effect != 'road' and not self.__tile_selector.using_tile_sprite.main_node.find('tower'):
             self.__context.buttons_controller.open_shop()
 

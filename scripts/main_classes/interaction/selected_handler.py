@@ -1,4 +1,3 @@
-import logging
 from logging import debug
 
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
@@ -7,6 +6,7 @@ from scripts.interface.i_click_handler import ISelectedHandler
 from scripts.interface.i_context import IContext
 from direct.task import Task
 
+from scripts.main_classes.event_bus import EventBus
 from scripts.main_classes.events.event_class import Event
 
 
@@ -43,18 +43,15 @@ class SelectedHandler(ISelectedHandler):
                 self.__picker_queue.sortEntries()
                 not_selected = self.__last_sprite.difference(self.__picker_queue.getEntries())
                 for sprite in not_selected:
-                    self.__context.scene_controller.send_sprite_to_unselected(sprite)
-                    debug(f'Unselected sprite: {sprite}')
+                    EventBus.publish('unselect_element', sprite)
                 self.__last_sprite.difference_update(not_selected)
                 for entry in self.__picker_queue.getEntries():
                     collided_node = entry.getIntoNodePath()
 
                     if collided_node.getName() == 'sprite_collision':
                         sprite = collided_node.getPythonTag('collision')
-
-                        self.__context.scene_controller.send_sprite_to_selected(sprite)
                         self.__last_sprite.add(sprite)
-                        debug(f'Selected sprite: {sprite}')
+                        EventBus.publish('select_element', sprite)
                     elif collided_node.getName() == 'global_collision':
                         point = entry.getSurfacePoint(self.__render_root)
                         self.__context.scene_controller.send_tower_event(Event(name='rotate_gun', mouse_point=point))
@@ -62,7 +59,6 @@ class SelectedHandler(ISelectedHandler):
                 return Task.cont
         if self.__last_sprite:
             for sprite in self.__last_sprite:
-                self.__context.scene_controller.send_sprite_to_unselected(sprite)
-                debug(f'Unselected sprite: {sprite}')
+                EventBus.publish('unselect_element', sprite)
             self.__last_sprite.clear()
         return Task.cont
