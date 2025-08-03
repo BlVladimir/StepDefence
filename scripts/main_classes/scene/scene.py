@@ -8,7 +8,7 @@ class Scene:
         self._scene_node = sprites_factory.create3Dnode(name)
         self._name = name
 
-        self._buttons_node = sprites_factory.create3Dnode(name + '_buttons')
+        self._buttons_node = sprites_factory.create2Dnode(name + '_buttons')
         self.__buttons_controller = ButtonsController(sprites_factory.relationship, self._buttons_node)
 
     def hide(self)->None:

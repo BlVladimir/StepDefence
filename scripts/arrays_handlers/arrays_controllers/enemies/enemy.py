@@ -25,7 +25,7 @@ class Enemy:
     def move(self):
         """Двигает всех врагов"""
         intervals = []
-        movement_array = self.__movement_calculator.get_movement_array(True)
+        movement_array = self.__movement_calculator.get_movement_array()
         for i in range(1, len(movement_array)):
             intervals.append(
                 LerpPosInterval(

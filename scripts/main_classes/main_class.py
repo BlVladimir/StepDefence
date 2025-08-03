@@ -39,8 +39,6 @@ class StepDefence(ShowBase):
 
         self.__draw_basis()
 
-        EventBus.publish('change_scene', '0')
-
     @staticmethod
     def click():
         print('click')
