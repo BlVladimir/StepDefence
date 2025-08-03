@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import copy
+
 from scripts.sprite.rect import Rect3D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, \
     NodePath, Vec3, Vec2
@@ -56,11 +58,8 @@ class Sprite3D:
             raise ValueError('Incorrect type of parent')
 
         self._main_node.setPythonTag('sprite', self)
-
         self.__frame = None
-
         self.__is_using = False
-
         self._debug_mode = debug_mode
 
     def rotate(self, angle: int | float = 90):
@@ -109,7 +108,7 @@ class Sprite3D:
 
     @property
     def rect(self):
-        return self._rect
+        return copy.copy(self._rect)
 
     @property
     def external_object(self):
