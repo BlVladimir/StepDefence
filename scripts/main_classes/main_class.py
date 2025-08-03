@@ -4,6 +4,7 @@ from panda3d.core import WindowProperties, CollisionTraverser
 
 from panda3d.core import LineSegs
 
+from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.interaction.key_handler import KeyHandler
 from scripts.main_classes.context import Context
 from scripts.main_classes.interaction.render_manager import RenderManager
@@ -24,7 +25,7 @@ class StepDefence(ShowBase):
 
         self.__context = Context(render_manager, self.cam, TaskManager(self.taskMgr), self.mouseWatcherNode, self.render)
 
-        self.__context.task_mng.append_task("SpinCameraTask", self.fixCameraTask)
+        EventBus.publish('append_task', ['fix_camera_task', self.fixCameraTask])
 
         self.__key_handler = KeyHandler(self.accept)
 

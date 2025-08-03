@@ -27,20 +27,20 @@ class SceneController:
                 self.__current_scene.hide()
                 self.__current_scene = self.__main_menu_scene
                 self.__current_scene.show()
-                self.__context.task_mng.remove_task('check_tiles')
+                EventBus.publish('remove_task', 'check_tiles')
                 self.logger.info(f'scene changed on {name_scene}')
             case 'settings':
                 self.__current_scene.hide()
                 self.__current_scene = self.__settings_scene
                 self.__current_scene.show()
-                self.__context.task_mng.remove_task('check_tiles')
+                EventBus.publish('remove_task', 'check_tiles')
                 self.logger.info(f'scene changed on {name_scene}')
             case '0' | '1' | '2' | '3' | '4' | '5':
                 self.__current_scene.hide()
                 self.__current_scene = self.__gameplay_scene
                 self.__current_scene.level = int(name_scene)
                 self.__current_scene.show()
-                self.__context.task_mng.append_task('check_tiles', self.__context.key_watcher.click_handler.check_collision)
+                EventBus.publish('append_task', ['check_tiles', self.__context.click_handler.check_collision])
                 self.logger.info(f'scene changed on {name_scene}')
             case _:
                 self.logger.info('incorrect attributes')
