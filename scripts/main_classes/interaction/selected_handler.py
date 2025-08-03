@@ -7,7 +7,7 @@ from scripts.main_classes.interaction.event_bus import EventBus
 class SelectedHandler:
     """Обрабатывает клики в трехмерном пространстве"""
 
-    def __init__(self, camera_node:NodePath, mouse_watcher:NodePath, render_root:NodePath, context:'IContext'):
+    def __init__(self, camera_node:NodePath, mouse_watcher:NodePath, render_root:NodePath):
         self.__cam_node = camera_node
         self.__mouse_watcher = mouse_watcher
         self.__render_root = render_root
@@ -22,11 +22,15 @@ class SelectedHandler:
 
         self.__picker.addCollider(picker_np, self.__picker_queue)
 
-        self.__context = context
-
         self.__last_sprite = set()
 
-    def check_collision(self, task):
+        EventBus.subscribe('turn_on_gameplay_task', lambda event_type, data:
+        EventBus.publish('append_task', ['check_collision', self.__check_collision]))
+
+        EventBus.subscribe('turn_off_gameplay_task', lambda event_type, data:
+                           EventBus.publish('remove_task', 'check_collision'))
+
+    def __check_collision(self, task):
         """Проверяет, на какой тайл наведена мышка"""
         if self.__mouse_watcher.hasMouse():
             mpos = self.__mouse_watcher.getMouse()

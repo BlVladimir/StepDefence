@@ -1,15 +1,15 @@
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
-from scripts.main_classes.interaction.render_manager import RenderManager
+from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class Scene:
     """Стандартная сцена"""
-    def __init__(self, render_manager:RenderManager, name:str):
-        self._scene_node = render_manager.main_node3d.attachNewNode(name)
+    def __init__(self, sprites_factory:SpritesFactory, name:str):
+        self._scene_node = sprites_factory.create3Dnode(name)
         self._name = name
 
-        self._buttons_node = render_manager.main_node2d.attachNewNode(name)
-        self.__buttons_controller = ButtonsController(render_manager.win, self._buttons_node)
+        self._buttons_node = sprites_factory.create3Dnode(name + '_buttons')
+        self.__buttons_controller = ButtonsController(sprites_factory.relationship, self._buttons_node)
 
     def hide(self)->None:
         """Скрывает сцену"""

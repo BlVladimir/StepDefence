@@ -9,15 +9,16 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import T
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
-from panda3d.core import Loader
+
+from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class EnemiesBuilder:
     """Создает врагов"""
-    def __init__(self, node:NodePath, loader:Loader, track:Track, track_node:NodePath):
+    def __init__(self, node:NodePath, sprites_factory:SpritesFactory, track:Track, track_node:NodePath):
         self.__config = EnemiesConfig()
         self.__enemies_node = node
-        self.__loader = loader
+        self.__sprites_factory = sprites_factory
         self.__bezier_curve_maker = BezierCurveMaker()
         self._counter = 0
         self.__track = track
@@ -28,15 +29,16 @@ class EnemiesBuilder:
         CullBinManager.get_global_ptr().add_bin('lines', CullBinManager.BT_fixed, 50)
 
 
-    def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2, settings:Settings)->None:
+    def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2)->None:
         parameters = self.__config.get_started_characteristic(type_enemy)
         effects = parameters.copy()
         effects.pop('health')
-        Enemy(Sprite3D(rect=rect, path_image=self.__config.get_image_enemy(type_enemy), parent=self.__enemies_node,
-                       loader=self.__loader, name_group='enemy', number=self._counter, debug_mode=settings.debug_mode),
+        sprite = self.__sprites_factory.create_sprite(rect, self.__config.get_image_enemy(type_enemy), self.__enemies_node,
+                                                      'enemy', self._counter)
+        Enemy(sprite,
               parameters['health'] + self.__config.get_wave_health_modifier(wave),
               EffectState(effects),
-              MovementCalculator(self.__bezier_curve_maker, pos_on_tile, started_division_vec, self.__track, self._track_node, settings.debug_mode))
+              MovementCalculator(self.__bezier_curve_maker, pos_on_tile, started_division_vec, self.__track, self._track_node, sprite.debug_mode))
         self._counter += 1
 
     def clear_enemies(self):

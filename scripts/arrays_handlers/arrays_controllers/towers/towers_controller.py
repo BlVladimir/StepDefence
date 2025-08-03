@@ -7,21 +7,20 @@ from panda3d.core import Loader, Point3
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.towers_builder import TowerBuilder
 from scripts.main_classes.interaction.event_bus import EventBus
+from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class TowersController:
     """Обработчик башен"""
-    def __init__(self, loader:Loader, settings:'Settings', mediator:'MediatorControllers', context:'IContext'):
-        self.__tower_builder = TowerBuilder(loader)
-        self._settings = settings
+    def __init__(self, sprites_factory:SpritesFactory, mediator: 'MediatorControllers'):
+        self.__tower_builder = TowerBuilder(sprites_factory)
         self.__mediator = mediator
-        self.__context = context
 
         EventBus.subscribe('buy_tower', lambda event_type, data: self.__create_tower(data))
         EventBus.subscribe('rotate_gun', lambda event_type, data: self.__rotate_gun(data))
 
     def __create_tower(self, type_tower:str):
-        self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile, self._settings)
+        self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile)
         EventBus.publish('close_shop')
 
     def clear_towers(self):

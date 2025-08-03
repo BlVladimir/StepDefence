@@ -1,5 +1,5 @@
 from direct.gui.DirectButton import DirectButton
-from panda3d.core import Vec3
+from panda3d.core import Vec3, NodePath
 
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
@@ -7,8 +7,8 @@ from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class MainMenuButtonsController(ButtonsController):
-    def __init__(self, win, buttons_node):
-        super().__init__(win , buttons_node)
+    def __init__(self, relationship:float, buttons_node:NodePath):
+        super().__init__(relationship , buttons_node)
 
         MMSC = 0.3
 

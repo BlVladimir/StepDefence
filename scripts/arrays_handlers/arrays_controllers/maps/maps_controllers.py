@@ -5,25 +5,24 @@ from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane, Nod
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
-from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
+from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class MapsController:
     """Обработчик карт"""
-    def __init__(self,scene_gameplay_node:NodePath, loader:Loader, settings:Settings):
+    def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory):
         self.__map_node = scene_gameplay_node.attachNewNode("map_node")
         self.__map_config = MapsConfig()
-        self.__tiles_controller = TilesController(self.__map_config, self.__map_node, loader)
-        self._settings = settings
+        self.__tiles_controller = TilesController(self.__map_config, self.__map_node, sprites_factory)
 
         self._global_collision_node = None
 
     def create_map(self, level):
         """Создать карту"""
-        self.__tiles_controller.create_map_tiles(level, self._settings)
+        self.__tiles_controller.create_map_tiles(level)
 
         global_collision = CollisionNode('global_collision')
         global_collision.addSolid(CollisionPlane(Plane(Vec3(0.0, 0.0, 1), Point3(0.0, 0.0, 0.0))))

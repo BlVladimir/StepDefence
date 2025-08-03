@@ -1,6 +1,6 @@
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
-from panda3d.core import Vec3, TransparencyAttrib, Texture, PNMImage
+from panda3d.core import Vec3, TransparencyAttrib, Texture, PNMImage, NodePath
 
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
@@ -8,8 +8,8 @@ from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class GameplayButtonsController(ButtonsController):
-    def __init__(self, win, buttons_node):
-        super().__init__(win , buttons_node)
+    def __init__(self, relationship:float, buttons_node:NodePath):
+        super().__init__(relationship , buttons_node)
 
         self.__gameplay_group = ButtonsGroup(self._buttons_node,
                                              DirectButton(image='images2d/UI/exit_in_main_menu.png',

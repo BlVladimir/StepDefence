@@ -1,25 +1,25 @@
 from logging import error
 
-from panda3d.core import NodePath, Loader, Vec2
+from panda3d.core import NodePath, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.finder_track import FinderTrack
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
-from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
+from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class MapTilesBuilder:
-    def __init__(self, maps_config:MapsConfig, maps_node:NodePath, loader:Loader):
+    def __init__(self, maps_config:MapsConfig, maps_node:NodePath, sprites_factory:SpritesFactory):
         self.__maps_config = maps_config
-        self.__tiles_builder = TilesBuilder(maps_node, loader)
+        self.__tiles_builder = TilesBuilder(maps_node, sprites_factory)
         self.__finder_track = FinderTrack()
         self._track = Track()
 
         self._first_tile_rect = None
 
-    def create_map_tiles(self, level:int, settings:Settings):
+    def create_map_tiles(self, level:int):
         """Создает тайлы для карты карту"""
         map_array = self.__maps_config.maps_array[level]
         track = self.__finder_track.find_track(map_array)
@@ -30,7 +30,7 @@ class MapTilesBuilder:
                     try:
                         rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y + 0.2), 1, 1.2,
                                       Vec2(1.2 * x - half_x + 0.5, - 1.2 * y + half_y - 0.5))
-                        tile = self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect, settings)
+                        tile = self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
                         tile.sprite.rotate(-(track[(x, y)]) * 90)
                     except KeyError:
                         error(f'key: {(x, y)}, track: {track}')
@@ -40,7 +40,7 @@ class MapTilesBuilder:
                 else:
                     rect = Rect3D(Vec2(1.2 * x - half_x, - 1.2 * y + half_y), 1, 1, Vec2(1.2 * x - half_x + 0.5, - 1.2 * y + half_y - 0.5))
                     if map_array[y][x] in self.__maps_config.keys.keys():
-                        self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect, settings)
+                        self.__tiles_builder.create_tile(self.__maps_config.keys[map_array[y][x]], rect)
         self._track.set_first_tile(self._first_tile_rect)
         self._track.set_track(list(track.values()))
 

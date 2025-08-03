@@ -6,10 +6,14 @@ from panda3d.core import LineSegs
 
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.interaction.key_handler import KeyHandler
-from scripts.main_classes.context import Context
 from scripts.main_classes.interaction.render_manager import RenderManager
 from math import radians, sin, cos
+
+from scripts.main_classes.interaction.selected_handler import SelectedHandler
 from scripts.main_classes.interaction.task_manager import TaskManager
+from scripts.main_classes.scene.scene_controller import SceneController
+from scripts.main_classes.settings import Settings
+from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class StepDefence(ShowBase):
@@ -18,12 +22,16 @@ class StepDefence(ShowBase):
         ShowBase.__init__(self)
         self.cTrav = CollisionTraverser()
 
-        # self.cTrav.showCollisions(self.render)
-
         self._set_window_size(800, 600)
         render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.aspect2d, set_window_size=self._set_window_size, win=self.win)
 
-        self.__context = Context(render_manager, self.cam, TaskManager(self.taskMgr), self.mouseWatcherNode, self.render)
+        self.__settings = Settings()
+        self.__sprites_factory = SpritesFactory(self.__settings, render_manager)
+
+        self.__click_handler = SelectedHandler(self.cam, self.mouseWatcherNode, self.render)
+
+        self.__taskMng = TaskManager(self.taskMgr)
+        self.__scene_controller = SceneController(self.__sprites_factory)
 
         EventBus.publish('append_task', ['fix_camera_task', self.fixCameraTask])
 
@@ -31,6 +39,7 @@ class StepDefence(ShowBase):
 
         self.__draw_basis()
 
+        EventBus.publish('change_scene', '0')
 
     @staticmethod
     def click():

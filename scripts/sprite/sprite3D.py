@@ -61,6 +61,8 @@ class Sprite3D:
 
         self.__is_using = False
 
+        self._debug_mode = debug_mode
+
     def rotate(self, angle: int | float = 90):
         """Поворачивает спрайт на угол, кратный 90, вокруг заданной точки"""
         self._main_node.setHpr(self.__rotation_vec + Vec3(0, 0, -angle))
@@ -116,6 +118,10 @@ class Sprite3D:
     @external_object.setter
     def external_object(self, value):
         self._external_object = value
+
+    @property
+    def debug_mode(self)->bool:
+        return self._debug_mode
 
     def __str__(self):
         return str(self._rect) + f' Node: {self._main_node.getName()}'

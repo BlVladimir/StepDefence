@@ -19,8 +19,9 @@ class MovementCalculator:
         self._track_node = track_node
         if not debug_mode:
             self._track_node.hide()
+        self.__debug_mode = debug_mode
 
-    def get_movement_array(self, draw_track:bool)->List[Vec3]:
+    def get_movement_array(self)->List[Vec3]:
         """Расчитывает массив точек"""
         points = self.__track.track[self.__current_tile]
         for i in (0, 1, 2, 3):
@@ -37,7 +38,7 @@ class MovementCalculator:
 
         self.__current_tile += 1
 
-        if draw_track:
+        if self.__debug_mode:
             lines = LineSegs()
             lines.setColor(1, 1, 0, 1)
             lines.setThickness(2)

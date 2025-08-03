@@ -10,17 +10,18 @@ from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
+from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class TilesController:
     """Содержит группу всех тайлов"""
-    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, loader):
-        self.__map_tiles_builder = MapTilesBuilder(maps_config, maps_node, loader)
+    def __init__(self, maps_config:MapsConfig, maps_node:PandaNode, sprites_factory:SpritesFactory):
+        self.__map_tiles_builder = MapTilesBuilder(maps_config, maps_node, sprites_factory)
         self.__tile_selector = UsingElementController(using_action=self.__using_action, unused_action=lambda: EventBus.publish('close_shop'))
 
-    def create_map_tiles(self, level, settings:Settings):
+    def create_map_tiles(self, level):
         """Создает тайлы для карты карту"""
-        self.__map_tiles_builder.create_map_tiles(level, settings)
+        self.__map_tiles_builder.create_map_tiles(level)
 
     def reset_tiles(self):
         """Очищает карту"""
