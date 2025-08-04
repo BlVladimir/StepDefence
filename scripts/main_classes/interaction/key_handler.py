@@ -11,7 +11,7 @@ class KeyHandler:
 
     @staticmethod
     def on_left_click():
-        EventBus.publish('using_element')
+        EventBus.publish('right_click')
 
     @staticmethod
     def on_enter_click():

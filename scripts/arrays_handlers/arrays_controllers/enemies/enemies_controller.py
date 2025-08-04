@@ -13,14 +13,16 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class EnemiesController:
     """Обработчик врагов"""
-    def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory, track:Track):
+    def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory, track:Track, mediator_controllers: 'MediatorControllers'):
         self._enemies_node = scene_gameplay_node.attachNewNode('enemy')
         self._track_node = scene_gameplay_node.attachNewNode('track')
         self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, self._track_node, sprites_factory, track)
 
-        self.__enemies_selector = UsingElementController()
+        self.__enemies_selector = UsingElementController(using_action=self.__using_enemy)
+        self.__mediator_controller = mediator_controllers
 
         EventBus.subscribe('next_round', lambda event_type, data: self.__move_enemies())
+
 
 
     def clear_enemies(self)->None:
@@ -46,3 +48,10 @@ class EnemiesController:
                 self.__enemies_selector.unselect_sprite()
             case 'using':
                 self.__enemies_selector.using_sprite()
+
+    def __using_enemy(self)->None:
+        tower = self.__mediator_controller.selected_tile.tower if self.__mediator_controller.selected_tile else None
+        if tower and tower.is_enemy_in_radius(self.__enemies_selector.sel_using_sprite):
+            self.__enemies_selector.unused_sprite()
+            pass  # логика выстрела
+

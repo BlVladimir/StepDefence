@@ -43,7 +43,7 @@ class TowerBuilder(AbstractTowerBuilder):
 
         match self.__config.get_radius(type_tower).type_radius:
             case 'round':
-                radius_state = RoundRadius(self.__config.get_radius(type_tower).value)
+                radius_state = RoundRadius(self.__config.get_radius(type_tower).value, tile.sprite.rect.center)
             case _:
                 raise Exception('Incorrect radius type')
 

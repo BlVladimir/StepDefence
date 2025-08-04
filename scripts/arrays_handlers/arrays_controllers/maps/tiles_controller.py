@@ -28,7 +28,7 @@ class TilesController:
         self.__map_tiles_builder.reset_map()
 
     def __using_action(self):
-        if self.__tile_selector.using_tile_sprite.external_object.effect != 'road' and not self.__tile_selector.using_tile_sprite.main_node.find('tower'):
+        if self.__tile_selector.sel_using_sprite.external_object.effect != 'road' and not self.__tile_selector.sel_using_sprite.main_node.find('tower'):
             EventBus.publish('open_shop')
 
     def handle_tile_action(self, action: str, tile_sprite: Sprite3D = None) -> None:
@@ -52,8 +52,8 @@ class TilesController:
 
     @property
     def selected_tile(self)->Optional[Tile]:
-        if self.__tile_selector.using_tile_sprite:
-            return self.__tile_selector.using_tile_sprite.external_object
+        if self.__tile_selector.sel_using_sprite:
+            return self.__tile_selector.sel_using_sprite.external_object
         return None
 
     @property

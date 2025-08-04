@@ -28,6 +28,9 @@ class Tower:
     def push(self):
         pass
 
+    def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
+        return self.__radius_strategy.is_in_radius(enemy_sprite)
+
     def upgrade(self)->None:
         self.__damage_state.upgrade(self.__visitor_improve)
         self.__radius_strategy.upgrade(self.__visitor_improve)

@@ -35,6 +35,10 @@ class UsingElementController:
             self._using_sprite.is_using = True
             self.__using_action()
 
+    def unused_sprite(self)->None:
+        self._using_sprite.is_using = False
+        self._using_sprite = None
+
     @property
-    def using_tile_sprite(self):
+    def sel_using_sprite(self):
         return self._using_sprite
