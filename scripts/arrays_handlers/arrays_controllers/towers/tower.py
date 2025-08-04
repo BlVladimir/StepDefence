@@ -31,15 +31,15 @@ class Tower:
         rect.height = radius_state.radius
 
         card.setFrame(rect.scale)
-        self._texture_node = self._tower_sprite.main_node.attachNewNode(card.generate())
+        self._radius_node = self._tower_sprite.main_node.attachNewNode(card.generate())
 
-        self._texture_node.setBin('radius', 0)
-        self._texture_node.setDepthTest(False)
-        self._texture_node.setDepthWrite(False)
+        self._radius_node.setBin('radius', 0)
+        self._radius_node.setDepthTest(False)
+        self._radius_node.setDepthWrite(False)
 
-        self._texture_node.setTexture(radius_state.gradient_texture())
-        self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
-        self._texture_node.show()
+        self._radius_node.setTexture(radius_state.gradient_texture())
+        self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
+        self._radius_node.show()
 
     def push(self):
         pass
@@ -51,8 +51,14 @@ class Tower:
         self.__damage_state.upgrade(self.__visitor_improve)
         self.__radius_strategy.upgrade(self.__visitor_improve)
 
-    def rotate(self, mouse_point:Point3):
+    def rotate(self, mouse_point:Point3)->None:
         self.__gun_strategy.rotate_gun(mouse_point)
+
+    def show_radius(self)->None:
+        self._radius_node.show()
+
+    def hide_radius(self)->None:
+        self._radius_node.hide()
 
     def __del__(self):
         debug(f'Node {self._tower_sprite.main_node} deleted')

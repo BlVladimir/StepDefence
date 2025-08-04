@@ -1,5 +1,5 @@
 from _weakrefset import WeakSet
-from logging import debug, info
+from logging import debug, info, warning
 
 from direct.interval.LerpInterval import LerpPosInterval
 from direct.interval.MetaInterval import Sequence
@@ -16,8 +16,13 @@ class Enemy:
     instances = WeakSet()
 
     @classmethod
+    def warning(cls):
+        if len(cls.instances) != 0:
+            warning(f"Leftover instances: {len(cls.instances)}!!!")
+
+    @classmethod
     def subscribe(cls):
-        EventBus.subscribe('change_scene', lambda event_type, data: debug(f"Leftover instances: {len(cls.instances)}"))
+        EventBus.subscribe('change_scene', lambda event_type, data: cls.warning())
 
     def __init__(self, sprite:Sprite3D, health:int, effect_state:EffectState, movement_calculator:MovementCalculator):
         self._sprite = sprite
