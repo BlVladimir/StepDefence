@@ -1,3 +1,5 @@
+from logging import debug
+
 from scripts.sprite.sprite3D import Sprite3D
 
 
@@ -16,5 +18,8 @@ class Tile:
     @property
     def sprite(self)->Sprite3D:
         return self._sprite
+
+    def __del__(self):
+        debug(f'Node {self._sprite.main_node} deleted')
 
 

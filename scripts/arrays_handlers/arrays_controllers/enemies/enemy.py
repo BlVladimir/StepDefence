@@ -37,3 +37,6 @@ class Enemy:
             )
         sequence = Sequence(*intervals)
         sequence.start()
+
+    def __del__(self):
+        debug(f'Node {self._sprite.main_node} deleted')

@@ -1,3 +1,4 @@
+from logging import debug
 from typing import Optional
 
 from panda3d.core import Point3
@@ -33,3 +34,6 @@ class Tower:
 
     def rotate(self, mouse_point:Point3):
         self.__gun_strategy.rotate_gun(mouse_point)
+
+    def __del__(self):
+        debug(f'Node {self._tower_sprite.main_node} deleted')
