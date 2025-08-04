@@ -1,7 +1,7 @@
 from logging import debug
 from typing import Optional
 
-from panda3d.core import Point3
+from panda3d.core import Point3, CardMaker, NodePath, TransparencyAttrib
 
 from scripts.arrays_handlers.arrays_controllers.towers.states.damage_state import DamageState
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
@@ -24,6 +24,22 @@ class Tower:
 
         self.__is_used = False  # башня выстрелила или нет
         self.__level = 1  # уровень башни
+
+        card = CardMaker('radius')
+        rect = self._tower_sprite.rect
+        rect.width = radius_state.radius
+        rect.height = radius_state.radius
+
+        card.setFrame(rect.scale)
+        self._texture_node = self._tower_sprite.main_node.attachNewNode(card.generate())
+
+        self._texture_node.setBin('radius', 0)
+        self._texture_node.setDepthTest(False)
+        self._texture_node.setDepthWrite(False)
+
+        self._texture_node.setTexture(radius_state.gradient_texture())
+        self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
+        self._texture_node.show()
 
     def push(self):
         pass

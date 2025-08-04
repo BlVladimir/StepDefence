@@ -58,7 +58,8 @@ class Sprite3D:
             raise ValueError('Incorrect type of parent')
 
         self._main_node.setPythonTag('sprite', self)
-        self.__frame = None
+        self.__frame = self.__wireframe()
+        self.__frame.hide()
         self.__is_using = False
         self._debug_mode = debug_mode
 
@@ -68,24 +69,20 @@ class Sprite3D:
         self._rect.rotate(angle)
         self._main_node.setPos(Vec3(self._rect.center.x, self._rect.center.y, 0)-self.__convert_vec)
 
-    def __add_wireframe(self):
+    def __wireframe(self)->NodePath:
         """Добавляет проволочную обводку вокруг объекта"""
-        if not self.__frame:
-            wireframe = self._texture_node.copyTo(self._main_node)
+        wireframe = self._texture_node.copyTo(self._main_node)
 
-            wireframe.clearTexture()
-            wireframe.setRenderModeWireframe()
-            wireframe.setColor(1, 0, 0, 1)  # Красный цвет
-            wireframe.setLightOff()
+        wireframe.clearTexture()
+        wireframe.setRenderModeWireframe()
+        wireframe.setColor(1, 0, 0, 1)  # Красный цвет
+        wireframe.setLightOff()
 
-            wireframe.setBin("fixed", 50)
-            wireframe.setDepthTest(False)
-            wireframe.setDepthWrite(False)
+        wireframe.setBin("fixed", 50)
+        wireframe.setDepthTest(False)
+        wireframe.setDepthWrite(False)
 
-            self.__frame = wireframe
-
-    def __delete_wireframe(self):
-        self.__frame.removeNode()
+        return wireframe
 
     def update(self, *args, **kwargs):
         pass
@@ -102,9 +99,9 @@ class Sprite3D:
     def is_using(self, value:bool):
         self.__is_using = value
         if value:
-            self.__add_wireframe()
+            self.__frame.show()
         else:
-            self.__delete_wireframe()
+            self.__frame.hide()
 
     @property
     def rect(self):

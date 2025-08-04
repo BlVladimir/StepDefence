@@ -22,6 +22,7 @@ class AbstractTowerBuilder(ABC):
 
         CullBinManager.get_global_ptr().add_bin('tower', CullBinManager.BT_fixed, 2)
         CullBinManager.get_global_ptr().add_bin('gun', CullBinManager.BT_fixed, 3)
+        CullBinManager.get_global_ptr().add_bin('radius', CullBinManager.BT_fixed, 10)
 
     @abstractmethod
     def create_tower(self, type_tower:str, tile:Tile)->None:

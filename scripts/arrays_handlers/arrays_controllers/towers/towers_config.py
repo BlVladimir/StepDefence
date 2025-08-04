@@ -19,7 +19,7 @@ class TowersConfig:
     """Содержит объекты башен для копирования и их числовые значения"""
     def __init__(self):
         self.__products = {
-            'basic': dict(basic_damage=2, cost=3, radius=Radius(2), improve_cost_array=(4, 6), additional_money=2),
+            'basic': dict(basic_damage=2, cost=3, radius=Radius(3), improve_cost_array=(4, 6), additional_money=2),
             'sniper': dict(basic_damage=4, cost=5, radius=Radius(4), improve_cost_array=(6, 8)),
             'piercing_armor': dict(basic_damage=3, cost=4, radius=Radius(3), improve_cost_array=(5, 7), armor_piercing=True),
             'venom': dict(basic_damage=2, cost=5, radius=Radius(2), improve_cost_array=(4, 6), poison=2)}

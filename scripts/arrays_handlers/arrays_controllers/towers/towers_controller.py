@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from panda3d.core import Loader, Point3
+from panda3d.core import Point3
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.towers_builder import TowerBuilder

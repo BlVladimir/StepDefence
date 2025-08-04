@@ -75,9 +75,33 @@ class Rect3D:
     def width(self)->float:
         return self._width
 
+    @width.setter
+    def width(self, value:float):
+        center = self.center
+        self._top_left = center + Vec2(-value / 2, self._height/2)
+        self._top_right = center + Vec2(value/2, self._height/2)
+        self._bottom_right = center + Vec2(value/2, -self._height/2)
+        self._bottom_left = center + Vec2(-value/2, -self._height/2)
+        self._width = value
+        self.__started_rect = {'top_left':self._top_left, 'top_right':self._top_right,
+                               'bottom_right':self._bottom_right, 'bottom_left':self._bottom_left,
+                               'center':self.center}
+
     @property
     def height(self)->float:
         return self._height
+
+    @height.setter
+    def height(self, value:float):
+        center = self.center
+        self._top_left = center + Vec2(-self._width/2, value/2)
+        self._top_right = center + Vec2(self._width/2, value/2)
+        self._bottom_right = center + Vec2(self._width/2, -value/2)
+        self._bottom_left = center + Vec2(-self._width/2, -value/2)
+        self._height = value
+        self.__started_rect = {'top_left': self._top_left, 'top_right': self._top_right,
+                               'bottom_right': self._bottom_right, 'bottom_left': self._bottom_left,
+                               'center': self.center}
 
     def __str__(self):
         return f'Текущий прямоугольник: ширина-{round(self._width, 2)}, высота-{round(self._height, 2)},  X-{round(self._top_left.x, 2)}, Y-{round(self._top_left.y, 2)}, центр-({round(self.center[0], 2)}, {round(self.center[1], 2)})'

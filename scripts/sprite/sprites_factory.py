@@ -1,4 +1,4 @@
-from panda3d.core import NodePath
+from panda3d.core import NodePath, CardMaker, Texture
 
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
