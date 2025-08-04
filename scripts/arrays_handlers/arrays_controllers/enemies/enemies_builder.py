@@ -1,6 +1,6 @@
 from panda3d.core import NodePath, CullBinManager, Vec2
 
-from scripts.arrays_handlers.arrays_controllers.enemies.damage_calculater import DamageCalculater
+from scripts.arrays_handlers.arrays_controllers.enemies.damage.damage_calculater import DamageCalculater
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.bezier_curve_maker import BezierCurveMaker
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config import EnemiesConfig
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy

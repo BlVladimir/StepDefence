@@ -1,9 +1,9 @@
 from _weakrefset import WeakSet
-from logging import debug, info, warning
+from logging import debug, warning
 from typing import Dict
 
-from scripts.arrays_handlers.arrays_controllers.enemies.damage_calculater import DamageCalculater
-from scripts.arrays_handlers.arrays_controllers.enemies.movement.effects_lists import EffectsLists
+from scripts.arrays_handlers.arrays_controllers.enemies.damage.damage_calculater import DamageCalculater
+from scripts.arrays_handlers.arrays_controllers.enemies.damage.effects_lists import EffectsSets
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.movement_calculator import MovementCalculator
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
@@ -33,15 +33,15 @@ class Enemy:
         self.__movement_calculator = movement_calculator
 
         self.__damage_calculator = damage_calculator
-        self.__effects_lists = EffectsLists
+        self.__effects_lists = EffectsSets
 
         Enemy.subscribe()
-
 
     def move(self):
         """Двигает всех врагов"""
         movement_array = self.__movement_calculator.get_movement_array()
         self._sprite.move(movement_array)
+
 
     def __del__(self):
         debug(f'Node {self._sprite.main_node} deleted')

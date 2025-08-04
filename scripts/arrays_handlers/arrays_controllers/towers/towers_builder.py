@@ -42,6 +42,19 @@ class TowerBuilder(AbstractTowerBuilder):
             case _:
                 raise Exception('Incorrect radius type')
 
+        characteristic = self.__config.get_started_characteristic_dict(type_tower)
+        match tile.effect:
+            case 'increase_damage':
+                characteristic['damage'] = round(characteristic['damage']*1.5)
+            case 'piercing_armor':
+                characteristic.setdefault('piercing_armor', True)
+            case 'poison':
+                characteristic.setdefault('poison', 0)
+                characteristic['poison'] += 1
+            case 'additional_money':
+                characteristic.setdefault('additional_money', 0)
+                characteristic['additional_money'] += 1
+
 
         if self.__config.get_gun(type_tower):
             gun_state = GunState(sprite=self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_gun(type_tower),
@@ -52,7 +65,7 @@ class TowerBuilder(AbstractTowerBuilder):
             type_tower=type_tower,
             sprite=self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
                                                        tile.sprite, 'tower', self._counter),
-            damage_dict=self.__config.get_started_characteristic_dict(type_tower),
+            damage_dict=characteristic,
             radius_state=radius_state,
             gun_state=gun_state,
             visitor_improve=self.__config.get_visitor_improve(type_tower)
