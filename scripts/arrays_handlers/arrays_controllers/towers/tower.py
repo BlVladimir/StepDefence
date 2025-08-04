@@ -1,19 +1,18 @@
 from logging import debug
-from typing import Optional
+from typing import Optional, Dict
 
-from panda3d.core import Point3, CardMaker, NodePath, TransparencyAttrib
+from panda3d.core import Point3, CardMaker, TransparencyAttrib
 
-from scripts.arrays_handlers.arrays_controllers.towers.states.damage_state import DamageState
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.sprite.sprite3D import Sprite3D
 
 
 class Tower:
     """Класс башни"""
-    def __init__(self, type_tower: str, sprite:Sprite3D, damage_state:'DamageState', gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove'):
+    def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove'):
         self.__type_tower = type_tower
 
-        self.__damage_state = damage_state
+        self._damage_dict = damage_dict
         self.__gun_strategy = gun_state
         self.__radius_strategy = radius_state
 
@@ -41,14 +40,13 @@ class Tower:
         self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
         self._radius_node.show()
 
-    def push(self):
-        pass
+    def push(self)->Dict:
+        return self._damage_dict
 
     def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
         return self.__radius_strategy.is_in_radius(enemy_sprite)
 
     def upgrade(self)->None:
-        self.__damage_state.upgrade(self.__visitor_improve)
         self.__radius_strategy.upgrade(self.__visitor_improve)
 
     def rotate(self, mouse_point:Point3)->None:

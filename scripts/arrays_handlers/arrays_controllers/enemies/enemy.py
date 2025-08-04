@@ -1,11 +1,9 @@
 from _weakrefset import WeakSet
 from logging import debug, info, warning
+from typing import Dict
 
-from direct.interval.LerpInterval import LerpPosInterval
-from direct.interval.MetaInterval import Sequence
-from panda3d.core import Vec3, LineSegs
-
-from scripts.arrays_handlers.arrays_controllers.enemies.movement.effect_state import EffectState
+from scripts.arrays_handlers.arrays_controllers.enemies.damage_calculater import DamageCalculater
+from scripts.arrays_handlers.arrays_controllers.enemies.movement.effects_lists import EffectsLists
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.movement_calculator import MovementCalculator
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
@@ -24,15 +22,18 @@ class Enemy:
     def subscribe(cls):
         EventBus.subscribe('change_scene', lambda event_type, data: cls.warning())
 
-    def __init__(self, sprite:Sprite3D, health:int, effect_state:EffectState, movement_calculator:MovementCalculator):
+    def __init__(self, sprite:Sprite3D, health:int, effect_dict:Dict, movement_calculator:MovementCalculator, damage_calculator:DamageCalculater):
         self._sprite = sprite
         self._sprite.external_object = self
 
         self._health = health
 
-        self._effect_state = effect_state
+        self._effect_state = effect_dict
 
         self.__movement_calculator = movement_calculator
+
+        self.__damage_calculator = damage_calculator
+        self.__effects_lists = EffectsLists
 
         Enemy.subscribe()
 
