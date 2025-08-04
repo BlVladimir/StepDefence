@@ -27,8 +27,8 @@ class Tower:
 
         card = CardMaker('radius')
         rect = self._tower_sprite.rect
-        rect.width = radius_state.radius
-        rect.height = radius_state.radius
+        rect.width = radius_state.radius*2
+        rect.height = radius_state.radius*2
 
         card.setFrame(rect.scale)
         self._radius_node = self._tower_sprite.main_node.attachNewNode(card.generate())

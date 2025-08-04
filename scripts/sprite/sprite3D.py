@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import copy
+from typing import List
+
+from direct.interval.LerpInterval import LerpPosInterval
+from direct.interval.MetaInterval import Sequence
 
 from scripts.sprite.rect import Rect3D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, \
@@ -84,8 +88,21 @@ class Sprite3D:
 
         return wireframe
 
-    def update(self, *args, **kwargs):
-        pass
+    def move(self, movement_array:List[Vec3]):
+        intervals = []
+        for i in range(1, len(movement_array)):
+            intervals.append(
+                LerpPosInterval(
+                    self._main_node,
+                    duration=0.05,
+                    pos=movement_array[i],
+                    startPos=movement_array[i - 1]
+                )
+            )
+        sequence = Sequence(*intervals)
+        sequence.start()
+        vec_move = movement_array[-1] - movement_array[0]
+        self._rect.move(Vec2(vec_move.x, vec_move.y))
 
     @property
     def main_node(self)->NodePath:

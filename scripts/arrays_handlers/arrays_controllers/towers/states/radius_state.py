@@ -11,7 +11,7 @@ class AbstractRadiusState(ABC):
     """Состояние, влияющее на форму радиуса башни"""
 
     def __init__(self, radius:float):
-        self.__radius = radius*1.2
+        self.__radius = 0.5 + radius*1.2
 
     @abstractmethod
     def is_in_radius(self, coordinate_center) -> bool:
@@ -27,8 +27,9 @@ class AbstractRadiusState(ABC):
     def radius(self)->float:
         return self.__radius
 
+    @staticmethod
     @abstractmethod
-    def gradient_texture(self, size:int, radius_relationship:float, brightness:int)->Texture:
+    def gradient_texture(size:int, radius_relationship:float, brightness:int)->Texture:
         pass
 
 class RoundRadius(AbstractRadiusState):
@@ -52,7 +53,8 @@ class RoundRadius(AbstractRadiusState):
         new = self.__class__(self.__radius*c, tile.rect.center)
         return new
 
-    def gradient_texture(self, size=512, radius_relationship=0.1, brightness=255):
+    @staticmethod
+    def gradient_texture(size:int=512, radius_relationship:float=0.1, brightness:int=255):
         """
         Создает градиентную текстуру с плавным переходом альфа-канала.
 

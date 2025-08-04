@@ -1,7 +1,8 @@
 from logging import warning
 from unittest import TestCase
 
-from panda3d.core import Vec2, Mat3
+from panda3d.core import Vec2, Mat3, Vec3
+
 
 class Rect3D:
     """Класс для хранения и преобразования координат"""
@@ -23,6 +24,9 @@ class Rect3D:
         self._top_right += vector
         self._bottom_right += vector
         self._bottom_left += vector
+        self.__started_rect = {'top_left': self._top_left, 'top_right': self._top_right,
+                               'bottom_right': self._bottom_right, 'bottom_left': self._bottom_left,
+                               'center': self.center}
 
     def rotate(self, angle: int | float = 90, name_point:str = 'rotation_center')->None:
         """Поворачивает прямоугольник на угол вокруг заданной точки"""

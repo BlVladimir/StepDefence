@@ -39,19 +39,8 @@ class Enemy:
 
     def move(self):
         """Двигает всех врагов"""
-        intervals = []
         movement_array = self.__movement_calculator.get_movement_array()
-        for i in range(1, len(movement_array)):
-            intervals.append(
-                LerpPosInterval(
-                    self._sprite.main_node,  # Ваша нода
-                    duration=0.05,
-                    pos=movement_array[i],
-                    startPos=movement_array[i - 1]
-                )
-            )
-        sequence = Sequence(*intervals)
-        sequence.start()
+        self._sprite.move(movement_array)
 
     def __del__(self):
         debug(f'Node {self._sprite.main_node} deleted')
