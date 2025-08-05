@@ -34,10 +34,8 @@ class EnemiesController:
         self.__group_enemies_builder.create_enemies(wave, level, tile)
 
     def __move_enemies(self)->None:
-        enemies = self._enemies_node.getChildren()
-
-        for i in range(len(enemies)):
-            enemies[i].getPythonTag('sprite').external_object.move()
+        for enemy in self._enemies_node.getChildren():
+            enemy.getPythonTag('sprite').external_object.end_turn()
 
     def handle_enemy_action(self, action: str, enemy:Sprite3D = None) -> None:
         """Обрабатывает действия с врагами"""
@@ -52,6 +50,6 @@ class EnemiesController:
     def __using_enemy(self)->None:
         tower = self.__mediator_controller.selected_tile.tower if self.__mediator_controller.selected_tile else None
         if tower and tower.is_enemy_in_radius(self.__enemies_selector.sel_using_sprite):
+            self.__enemies_selector.sel_using_sprite.external_object.hit(tower.characteristic)
             self.__enemies_selector.unused_sprite()
-            pass  # логика выстрела
 

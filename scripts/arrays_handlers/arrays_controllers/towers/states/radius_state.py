@@ -39,11 +39,8 @@ class RoundRadius(AbstractRadiusState):
 
     def is_in_radius(self, sprite_enemy:Sprite3D):
         center_sprite = sprite_enemy.rect.center
-        debug(f'length:{(self.__coordinate_center_tower-center_sprite).length()} radius: {self.radius}')
-        if (self.__coordinate_center_tower-center_sprite).length() <= self.radius:
-            return True
-        else:
-            return False
+        debug(f'length:{(self.__coordinate_center_tower-center_sprite).length()} radius: {self.radius} -> {(self.__coordinate_center_tower-center_sprite).length() <= self.radius}')
+        return (self.__coordinate_center_tower-center_sprite).length() <= self.radius
 
     def clone(self, tile):
         if tile.improved_characteristic == 'radius':

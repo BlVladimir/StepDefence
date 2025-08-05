@@ -40,5 +40,5 @@ class UsingElementController:
         self._using_sprite = None
 
     @property
-    def sel_using_sprite(self):
+    def sel_using_sprite(self)->Sprite3D:
         return self._using_sprite

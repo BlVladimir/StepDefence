@@ -13,3 +13,8 @@ class Effect:
     def decrease_duration(self)->None:
         self._duration -= 1
 
+    def __str__(self):
+        return f'[Damage: {self._damage}, Duration: {self._duration}]'
+
+    def __add__(self, other:int):
+        return Effect(self._damage + other, self._duration)

@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from panda3d.core import CullBinManager
 
+from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state import RoundRadius
@@ -49,7 +50,7 @@ class TowerBuilder(AbstractTowerBuilder):
             case 'piercing_armor':
                 characteristic.setdefault('piercing_armor', True)
             case 'poison':
-                characteristic.setdefault('poison', 0)
+                characteristic.setdefault('poison', Effect(0, 2))
                 characteristic['poison'] += 1
             case 'additional_money':
                 characteristic.setdefault('additional_money', 0)

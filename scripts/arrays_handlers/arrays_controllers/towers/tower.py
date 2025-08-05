@@ -40,9 +40,6 @@ class Tower:
         self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
         self._radius_node.show()
 
-    def push(self)->Dict:
-        return self._damage_dict
-
     def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
         return self.__radius_strategy.is_in_radius(enemy_sprite)
 
@@ -60,3 +57,7 @@ class Tower:
 
     def __del__(self):
         debug(f'Node {self._tower_sprite.main_node} deleted')
+
+    @property
+    def characteristic(self)->Dict:
+        return self._damage_dict

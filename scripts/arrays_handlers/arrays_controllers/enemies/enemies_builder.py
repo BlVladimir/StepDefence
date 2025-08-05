@@ -39,7 +39,7 @@ class EnemiesBuilder:
               parameters['health'] + self.__config.get_wave_health_modifier(wave),
               effects,
               MovementCalculator(self.__bezier_curve_maker, pos_on_tile, started_division_vec, self.__track, self._track_node, sprite.debug_mode),
-              self.__damage_calculator)
+              self.__damage_calculator, wave//4+2),
         self._counter += 1
 
     def clear_enemies(self):
