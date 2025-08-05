@@ -23,21 +23,51 @@ class GameplayButtonsController(ButtonsController):
         self.__gameplay_group.hide()
 
 
-        button_texture = self.__create_texture('images2d/tower/common_foundation.png', 'images2d/tower/common_gun.png')
         self.__shop_node = self._buttons_node.attachNewNode('shop_node')
         self.__shop_frame = DirectFrame(parent=self.__shop_node,
                                         frameSize=(0, self._relationship * 0.5, -2, 0),
                                         frameColor=(0.5, 0.5, 0.5, 1),
                                         pos=Vec3(-self._relationship, 1))
-        button_tower = DirectButton(image=button_texture,
-                                    parent=self.__shop_frame,
-                                    scale=0.2,
-                                    pos=Vec3(0.2, -0.2),
-                                    command=lambda: EventBus.publish('buy_tower', 'basic'),
-                                    frameColor=((0.5, 0.5, 0.5, 1),
-                                                (0.7, 0.7, 0.7, 1),
-                                                (0.3, 0.3, 0.3, 1)))
-        button_tower.setTransparency(TransparencyAttrib.MAlpha)
+        buttons_towers = {DirectButton(image=self.__create_texture('images2d/tower/common_foundation.png',
+                                                                      'images2d/tower/common_gun.png'),
+                                          parent=self.__shop_frame,
+                                          scale=0.2,
+                                          pos=Vec3(0.2, -0.2),
+                                          command=lambda: EventBus.publish('buy_tower', 'basic'),
+                                          frameColor=((0.5, 0.5, 0.5, 1),
+                                                      (0.7, 0.7, 0.7, 1),
+                                                      (0.3, 0.3, 0.3, 1))),
+                          DirectButton(image=self.__create_texture('images2d/tower/sniper_foundation.png',
+                                                                   'images2d/tower/sniper_gun.png'),
+                                       parent=self.__shop_frame,
+                                       scale=0.2,
+                                       pos=Vec3(0.2, -0.5),
+                                       command=lambda: EventBus.publish('buy_tower', 'sniper'),
+                                       frameColor=((0.5, 0.5, 0.5, 1),
+                                                   (0.7, 0.7, 0.7, 1),
+                                                   (0.3, 0.3, 0.3, 1))),
+                          DirectButton(image='images2d/tower/anty_shield.png',
+                                       parent=self.__shop_frame,
+                                       scale=0.2,
+                                       pos=Vec3(0.2, -0.8),
+                                       command=lambda: EventBus.publish('buy_tower', 'anty_shield'),
+                                       frameColor=((0.5, 0.5, 0.5, 1),
+                                                   (0.7, 0.7, 0.7, 1),
+                                                   (0.3, 0.3, 0.3, 1))),
+                          DirectButton(image=self.__create_texture('images2d/tower/venom_foundation.png',
+                                                                   'images2d/tower/venom_gun.png'),
+                                       parent=self.__shop_frame,
+                                       scale=0.2,
+                                       pos=Vec3(0.2, -1.1),
+                                       command=lambda: EventBus.publish('buy_tower', 'venom'),
+                                       frameColor=((0.5, 0.5, 0.5, 1),
+                                                   (0.7, 0.7, 0.7, 1),
+                                                   (0.3, 0.3, 0.3, 1)))
+
+                          }
+
+        for button in buttons_towers:
+            button.setTransparency(TransparencyAttrib.MAlpha)
         self.__shop_node.hide()
 
     def open_shop(self)->None:

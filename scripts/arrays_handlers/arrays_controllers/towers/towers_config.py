@@ -22,12 +22,12 @@ class TowersConfig:
         self.__products = {
             'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2),
             'sniper': dict(basic_damage=4, cost=5, radius=Radius(2), improve_cost_array=(6, 8)),
-            'piercing_armor': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(5, 7), armor_piercing=True),
+            'anty_shield': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(5, 7), armor_piercing=True),
             'venom': dict(basic_damage=2, cost=5, radius=Radius(1), improve_cost_array=(4, 6), poison=Effect(2, 2))}
 
         self.__sprites_towers_foundations_dict = {
             'basic':"images2d/tower/common_foundation.png",
-            'sniper':"images2d/tower/common_foundation.png",
+            'sniper':"images2d/tower/sniper_foundation.png",
             'anty_shield':"images2d/tower/anty_shield.png",
             'venom':"images2d/tower/venom_foundation.png"}
 

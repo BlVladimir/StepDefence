@@ -47,7 +47,8 @@ class Tower:
         self.__radius_strategy.upgrade(self.__visitor_improve)
 
     def rotate(self, mouse_point:Point3)->None:
-        self.__gun_strategy.rotate_gun(mouse_point)
+        if self.__gun_strategy:
+            self.__gun_strategy.rotate_gun(mouse_point)
 
     def show_radius(self)->None:
         self._radius_node.show()
