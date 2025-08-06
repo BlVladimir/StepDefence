@@ -37,10 +37,10 @@ class TowersConfig:
             'venom':"images2d/tower/venom_gun.png"}
 
         self.__visitors_dict = {
-            'basic': UpgradeVisitor(damage=2, radius=1.2),
-            'sniper': UpgradeVisitor(damage=2, radius=1.2),
-            'anty_shield': UpgradeVisitor(damage=2, radius=1.2),
-            'venom': UpgradeVisitor(damage=2, radius=1.2)}
+            'basic': UpgradeVisitor(basic_damage=2, radius=1.2),
+            'sniper': UpgradeVisitor(basic_damage=2, radius=1.2),
+            'anty_shield': UpgradeVisitor(basic_damage=2, radius=1.2),
+            'venom': UpgradeVisitor(basic_damage=2, radius=1.2)}
 
     def get_visitor_improve(self, type_tower:str)->UpgradeVisitor:
         return self.__visitors_dict[type_tower]

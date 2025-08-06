@@ -11,11 +11,11 @@ from scripts.sprite.sprite3D import Sprite3D
 class Tower:
     """Класс башни"""
     def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove'):
-        self.__type_tower = type_tower
+        self._type_tower = type_tower
 
         self._damage_dict = damage_dict
         self.__gun_strategy = gun_state
-        self.__radius_strategy = radius_state
+        self.__radius_state = radius_state
 
         self._tower_sprite = sprite
         self._tower_sprite.external_object = self
@@ -25,21 +25,8 @@ class Tower:
         self.__is_used = False  # башня выстрелила или нет
         self.__level = 1  # уровень башни
 
-        card = CardMaker('radius')
-        rect = self._tower_sprite.rect
-        rect.width = radius_state.radius*2
-        rect.height = radius_state.radius*2
-
-        card.setFrame(rect.scale)
-        self._radius_node = self._tower_sprite.main_node.attachNewNode(card.generate())
-
-        self._radius_node.setBin('radius', 0)
-        self._radius_node.setDepthTest(False)
-        self._radius_node.setDepthWrite(False)
-
-        self._radius_node.setTexture(radius_state.gradient_texture())
-        self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
-        self._radius_node.show()
+        self._radius_node = sprite.main_node.attachNewNode('radius')
+        self.__redraw_radius()
 
         self._is_charge = True
 
@@ -53,10 +40,13 @@ class Tower:
         self._is_charge = value
 
     def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
-        return self.__radius_strategy.is_in_radius(enemy_sprite)
+        return self.__radius_state.is_in_radius(enemy_sprite)
 
     def upgrade(self)->None:
-        self.__radius_strategy.upgrade(self.__visitor_improve)
+        self.__radius_state.upgrade(self.__visitor_improve)
+        self.__visitor_improve.visit_damage_dict(self._damage_dict)
+        self.__redraw_radius()
+        debug(self._damage_dict)
 
     def rotate(self, mouse_point:Point3)->None:
         if self._is_charge and self.__gun_strategy:
@@ -73,6 +63,24 @@ class Tower:
         EventBus.unsubscribe('complete_end_turn',self.__lambda_complete)
         EventBus.unsubscribe('start_end_turn', self.__lambda_start)
 
+    def __redraw_radius(self):
+        card = CardMaker('radius')
+        rect = self._tower_sprite.rect
+        rect.width = self.__radius_state.radius * 2
+        rect.height = self.__radius_state.radius * 2
+
+        card.setFrame(rect.scale)
+        self._radius_node.removeNode()
+        self._radius_node = self._tower_sprite.main_node.attachNewNode(card.generate())
+
+        self._radius_node.setBin('radius', 0)
+        self._radius_node.setDepthTest(False)
+        self._radius_node.setDepthWrite(False)
+
+        self._radius_node.setTexture(self.__radius_state.gradient_texture())
+        self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
+        self._radius_node.show()
+
     @property
     def characteristic(self)->Dict:
         self._is_charge = False
@@ -81,3 +89,7 @@ class Tower:
     @property
     def is_charge(self)->bool:
         return self._is_charge
+
+    @property
+    def type_tower(self)->str:
+        return self._type_tower

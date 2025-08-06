@@ -20,6 +20,7 @@ class TowersController:
 
         EventBus.subscribe('buy_tower', lambda event_type, data: self.__create_tower(data))
         EventBus.subscribe('rotate_gun', lambda event_type, data: self.__rotate_gun(data))
+        EventBus.subscribe('upgrade_tower', lambda event_type, data: self.__upgrade_tower())
 
     def __create_tower(self, type_tower:str):
         if self.__mediator.money >= self.__config.get_cost(type_tower):
@@ -30,6 +31,11 @@ class TowersController:
 
     def clear_towers(self):
         self.__tower_builder.reset_counter()
+
+    def __upgrade_tower(self):
+        tower = self.__mediator.selected_tile.tower
+        if tower:
+            tower.upgrade()
 
     def __get_selected_tower(self)->Optional[Tower]:
         tile = self.__mediator.selected_tile

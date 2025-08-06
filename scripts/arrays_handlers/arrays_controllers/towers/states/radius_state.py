@@ -21,7 +21,7 @@ class AbstractRadiusState(ABC):
         self.__radius *= value
 
     def upgrade(self, visitor:'UpgradeVisitor')->None:
-        visitor.visit_radius_strategy(self)
+        visitor.visit_radius_state(self)
 
     @property
     def radius(self)->float:

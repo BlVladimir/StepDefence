@@ -15,5 +15,5 @@ class UpgradeVisitor:
             error('Parameter upgrade visitor not in damage_dict')
 
 
-    def visit_radius_strategy(self, radius_strategy:'AbstractRadiusState')->None:
+    def visit_radius_state(self, radius_strategy: 'AbstractRadiusState')->None:
         radius_strategy.multiply_radius(self._parameters['radius'])
