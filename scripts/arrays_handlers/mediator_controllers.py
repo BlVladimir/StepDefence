@@ -25,11 +25,14 @@ class MediatorControllers:
         self.__level = 0
         self._money = 4
 
+        self.__is_lose = False
+
         EventBus.subscribe('right_click', lambda event_type, data: self.__using_element())
         EventBus.subscribe('unselect_element', lambda event_type, data: self.__unselect_element(data))
         EventBus.subscribe('select_element', lambda event_type, data: self.__select_element(data))
         EventBus.subscribe('complete_end_turn', lambda event_type, data: self.__complete_end_turn())
         EventBus.subscribe('enemy_die', lambda event_type, data: self.__replenish_money(data))
+        EventBus.subscribe('lose', lambda event_type, data: self.__lose())
 
 
 
@@ -40,11 +43,14 @@ class MediatorControllers:
         self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
         self.__level = level
 
-    def __complete_end_turn(self):
-        self.__current_wave += 1
-        self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
+    def __complete_end_turn(self)->None:
+        if not self.__is_lose:
+            self.__current_wave += 1
+            self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
+        else:
+            EventBus.publish('change_scene', 'main_menu')
 
-    def remove_scene(self):
+    def remove_scene(self)->None:
         """Очистка карты"""
         self.__maps_controller.clear_map()
         self.__enemies_controller.clear_enemies()
@@ -52,7 +58,7 @@ class MediatorControllers:
         self.__current_wave = 0
         self._money = 4
 
-    def __select_element(self, sprite:Sprite3D):
+    def __select_element(self, sprite:Sprite3D)->None:
         """Выделить элемент"""
         match sprite.main_node.getName():
             case 'tile':
@@ -60,7 +66,7 @@ class MediatorControllers:
             case 'enemy':
                 self.__enemies_controller.handle_enemy_action('select', sprite)
 
-    def __unselect_element(self, sprite:Sprite3D):
+    def __unselect_element(self, sprite:Sprite3D)->None:
         """Снять выделение"""
         match sprite.main_node.getName():
             case 'tile':
@@ -68,16 +74,19 @@ class MediatorControllers:
             case 'enemy':
                 self.__enemies_controller.handle_enemy_action('unselect')
 
-    def __using_element(self):
+    def __using_element(self)->None:
         """Назначить тайл активным"""
         self.__enemies_controller.handle_enemy_action('using')
         self.__maps_controller.using_element()
 
-    def __replenish_money(self, count:int):
+    def __replenish_money(self, count:int)->None:
         self._money += count
         debug(f'Money: {self._money}')
 
-    def remove_money(self, count:int):
+    def __lose(self)->None:
+        self.__is_lose = True
+
+    def remove_money(self, count:int)->None:
         self._money -= count
         debug(f'Money: {self._money}')
 

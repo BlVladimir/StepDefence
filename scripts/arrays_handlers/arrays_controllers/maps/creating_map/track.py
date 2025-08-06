@@ -4,6 +4,7 @@ from typing import List
 from logging import error
 from panda3d.core import Vec2, Mat3
 
+from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.rect import Rect3D
 
 
@@ -13,9 +14,10 @@ class Track:
         self._track = []
         self._first_tile_rect = None
 
-    @property
-    def track(self)->List[Vec2]:
-        return deepcopy(self._track)
+    def get_track(self, tile:int)->List[Vec2]:
+        if tile == len(self._track)-1:
+            EventBus.publish('lose')
+        return deepcopy(self._track[tile])
 
     def set_track(self, value:List[int]):
         pos = Vec2(self._first_tile_rect.x, self._first_tile_rect.y)
