@@ -51,6 +51,7 @@ class Enemy:
 
     def __chack_health(self, add_money:int=0)->None:
         if self._health <= 0:
+            self._sprite.main_node.detachNode()
             EventBus.publish('enemy_die', self.__cost+add_money)
 
     def hit(self, tower_dict:Dict)->None:

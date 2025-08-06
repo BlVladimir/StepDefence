@@ -79,6 +79,7 @@ class Tower:
 
     @property
     def characteristic(self)->Dict:
+        self._is_charge = False
         return self._damage_dict
 
     @property

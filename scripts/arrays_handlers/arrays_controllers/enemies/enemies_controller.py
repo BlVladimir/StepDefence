@@ -25,8 +25,6 @@ class EnemiesController:
 
         EventBus.subscribe('start_end_turn', lambda event_type, data: EventBus.publish('add_async_task', self.__move_enemies()))
 
-
-
     def clear_enemies(self)->None:
         """Удаоляет врагов"""
         self.__group_enemies_builder.clear_enemies()
@@ -53,7 +51,7 @@ class EnemiesController:
 
     def __using_enemy(self)->None:
         tower = self.__mediator_controller.selected_tile.tower if self.__mediator_controller.selected_tile else None
-        if tower and tower.is_enemy_in_radius(self.__enemies_selector.sel_using_sprite):
+        if tower and tower.is_charge and tower.is_enemy_in_radius(self.__enemies_selector.sel_using_sprite):
             self.__enemies_selector.sel_using_sprite.external_object.hit(tower.characteristic)
             self.__enemies_selector.unused_sprite()
 

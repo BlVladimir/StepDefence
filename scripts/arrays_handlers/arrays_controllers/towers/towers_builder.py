@@ -46,7 +46,7 @@ class TowerBuilder(AbstractTowerBuilder):
         characteristic = self.__config.get_started_characteristic_dict(type_tower)
         match tile.effect:
             case 'increase_damage':
-                characteristic['damage'] = round(characteristic['damage']*1.5)
+                characteristic['basic_damage'] = round(characteristic['basic_damage']*1.5)
             case 'piercing_armor':
                 characteristic.setdefault('piercing_armor', True)
             case 'poison':

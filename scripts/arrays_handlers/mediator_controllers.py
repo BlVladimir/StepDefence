@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from logging import debug
 from typing import Optional
 
 from panda3d.core import NodePath, Loader
@@ -22,11 +23,13 @@ class MediatorControllers:
 
         self.__current_wave = 0
         self.__level = 0
+        self.__money = 4
 
         EventBus.subscribe('right_click', lambda event_type, data: self.__using_element())
         EventBus.subscribe('unselect_element', lambda event_type, data: self.__unselect_element(data))
         EventBus.subscribe('select_element', lambda event_type, data: self.__select_element(data))
         EventBus.subscribe('complete_end_turn', lambda event_type, data: self.__complete_end_turn())
+        EventBus.subscribe('enemy_die', lambda event_type, data: self.__replenish_money(data))
 
 
 
@@ -47,6 +50,7 @@ class MediatorControllers:
         self.__enemies_controller.clear_enemies()
         self.__towers_controller.clear_towers()
         self.__current_wave = 0
+        self.__money = 4
 
     def __select_element(self, sprite:Sprite3D):
         """Выделить элемент"""
@@ -69,6 +73,9 @@ class MediatorControllers:
         self.__enemies_controller.handle_enemy_action('using')
         self.__maps_controller.using_element()
 
+    def __replenish_money(self, count:int):
+        self.__money += count
+        debug(f'Money: {self.__money}')
 
     @property
     def selected_tile(self)->Optional[Tile]:

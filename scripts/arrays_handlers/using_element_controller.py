@@ -36,6 +36,8 @@ class UsingElementController:
             self.__using_action()
 
     def unused_sprite(self)->None:
+        if self._selected_sprite == self._using_sprite:
+            self._selected_sprite = None
         self._using_sprite.is_using = False
         self._using_sprite = None
 
