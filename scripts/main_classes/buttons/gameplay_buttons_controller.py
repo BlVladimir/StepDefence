@@ -24,6 +24,7 @@ class GameplayButtonsController(ButtonsController):
 
 
         self.__shop_node = self._buttons_node.attachNewNode('shop_node')
+        self.__shop_node.hide()
         self.__shop_frame = DirectFrame(parent=self.__shop_node,
                                         frameSize=(0, self._relationship * 0.5, -2, 0),
                                         frameColor=(0.5, 0.5, 0.5, 1),
@@ -68,13 +69,26 @@ class GameplayButtonsController(ButtonsController):
 
         for button in buttons_towers:
             button.setTransparency(TransparencyAttrib.MAlpha)
-        self.__shop_node.hide()
+        EventBus.subscribe('open_shop', lambda event_type, data:  self.__shop_node.show())
+        EventBus.subscribe('close_shop', lambda event_type, data: self.__shop_node.hide())
 
-    def open_shop(self)->None:
-        self.__shop_node.show()
 
-    def close_shop(self)->None:
-        self.__shop_node.hide()
+        self.__upgrade_table_node = self._buttons_node.attachNewNode('upgrade_table_node')
+        self.__upgrade_table_node.hide()
+        self.__upgrade_table_frame = DirectFrame(parent=self.__upgrade_table_node,
+                                        frameSize=(0, self._relationship * 0.5, -2, 0),
+                                        frameColor=(0.5, 0.5, 0.5, 1),
+                                        pos=Vec3(-self._relationship, 1))
+        DirectButton(image='images2d/upgrade/1lvl.png',
+                     parent=self.__upgrade_table_frame,
+                     scale=0.2,
+                     pos=Vec3(0.3, -1.7),
+                     command=lambda: EventBus.publish('upgrade_tower'),
+                     frameColor=((0.5, 0.5, 0.5, 1),
+                                 (0.7, 0.7, 0.7, 1),
+                                 (0.3, 0.3, 0.3, 1)))
+        EventBus.subscribe('open_upgrade_table', lambda event_type, data:  self.__upgrade_table_node.show())
+        EventBus.subscribe('close_upgrade_table', lambda event_type, data: self.__upgrade_table_node.hide())
 
     @staticmethod
     def __create_texture(first_path:str, second_path:str, xto:int=0, yto:int=0)->Texture:

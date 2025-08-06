@@ -32,6 +32,7 @@ class TilesController:
             EventBus.publish('close_shop')
         elif tower_node:
             tower_node.getPythonTag('sprite').external_object.hide_radius()
+            EventBus.publish('close_upgrade_table')
 
     def __using_action(self):
         tower_node = self.__tile_selector.sel_using_sprite.main_node.find('tower')
@@ -39,6 +40,7 @@ class TilesController:
             EventBus.publish('open_shop')
         elif tower_node:
             tower_node.getPythonTag('sprite').external_object.show_radius()
+            EventBus.publish('open_upgrade_table')
 
     def handle_tile_action(self, action: str, tile_sprite: Sprite3D = None) -> None:
         """Обрабатывает действия с тайлами.

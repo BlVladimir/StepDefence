@@ -12,9 +12,6 @@ class GameplayScene(Scene):
         self.__mediator_controllers = MediatorControllers(self._scene_node, sprites_factory)
         self._level = 0
 
-        EventBus.subscribe('open_shop', lambda event_type, data: self.__buttons_controller.open_shop())
-        EventBus.subscribe('close_shop', lambda event_type, data: self.__buttons_controller.close_shop())
-
     def hide(self)->None:
         """Скрывает сцену"""
         super().hide()

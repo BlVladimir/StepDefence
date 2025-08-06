@@ -26,6 +26,7 @@ class TowersController:
             self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile)
             EventBus.publish('close_shop')
             self.__mediator.remove_money(self.__config.get_cost(type_tower))
+            EventBus.publish('open_upgrade_table')
 
     def clear_towers(self):
         self.__tower_builder.reset_counter()
