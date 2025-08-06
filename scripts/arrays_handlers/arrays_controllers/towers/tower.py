@@ -4,6 +4,7 @@ from typing import Optional, Dict
 from panda3d.core import Point3, CardMaker, TransparencyAttrib
 
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
+from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
 
@@ -44,9 +45,7 @@ class Tower:
 
     def upgrade(self)->None:
         self.__level += 1
-        self.__radius_state.upgrade(self.__visitor_improve)
-        self.__visitor_improve.visit_damage_dict(self._damage_dict)
-        self.__redraw_radius()
+        self.visit(self.__visitor_improve)
         debug(self._damage_dict)
 
     def rotate(self, mouse_point:Point3)->None:
@@ -81,6 +80,11 @@ class Tower:
         self._radius_node.setTexture(self.__radius_state.gradient_texture())
         self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
         self._radius_node.show()
+
+    def visit(self, visitor:TowerVisitor):
+        self.__radius_state.upgrade(visitor)
+        visitor.visit_damage_dict(self._damage_dict)
+        self.__redraw_radius()
 
     @property
     def characteristic(self)->Dict:

@@ -6,9 +6,12 @@ from typing import Optional
 from panda3d.core import NodePath, Loader
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_controller import EnemiesController
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
 from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import MapsController
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
+from scripts.arrays_handlers.random_bug import RandomBug
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
 from scripts.sprite.sprites_factory import SpritesFactory
@@ -24,14 +27,16 @@ class MediatorControllers:
         self.__current_wave = 0
         self.__level = 0
         self._money = 4
+        self._discount = 0
 
         self.__is_lose = False
+        self.__random_bug = RandomBug(self)
 
         EventBus.subscribe('right_click', lambda event_type, data: self.__using_element())
         EventBus.subscribe('unselect_element', lambda event_type, data: self.__unselect_element(data))
         EventBus.subscribe('select_element', lambda event_type, data: self.__select_element(data))
         EventBus.subscribe('complete_end_turn', lambda event_type, data: self.__complete_end_turn())
-        EventBus.subscribe('enemy_die', lambda event_type, data: self.__replenish_money(data))
+        EventBus.subscribe('enemy_die', lambda event_type, data: self.__enemy_die(data))
         EventBus.subscribe('lose', lambda event_type, data: self.__lose())
 
 
@@ -79,16 +84,25 @@ class MediatorControllers:
         self.__enemies_controller.handle_enemy_action('using')
         self.__maps_controller.using_element()
 
-    def __replenish_money(self, count:int)->None:
-        self._money += count
-        debug(f'Money: {self._money}')
-
     def __lose(self)->None:
         self.__is_lose = True
+
+    def __enemy_die(self, count:int)->None:
+        self.__random_bug.get_bug()
+        self._money += count
+        debug(f'Money: {self._money}')
 
     def remove_money(self, count:int)->None:
         self._money -= count
         debug(f'Money: {self._money}')
+
+    def visit_all_towers(self, visitor:TowerVisitor):
+        for tower in self.__maps_controller.get_towers_list():
+            tower.visit(visitor)
+
+    def visit_all_enemies(self, visitor:EnemyVisitor):
+        for enemy in self.__enemies_controller.get_enemies_list():
+            enemy.visit(visitor)
 
     @property
     def selected_tile(self)->Optional[Tile]:
@@ -97,3 +111,11 @@ class MediatorControllers:
     @property
     def money(self)->int:
         return self._money
+
+    @property
+    def discount(self)->float:
+        return self._discount
+
+    @discount.setter
+    def discount(self, value:float):
+        self._discount = value

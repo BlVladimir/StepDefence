@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import asyncio
 from logging import debug
+from typing import List
 
 from panda3d.core import NodePath
 
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.using_element_controller import UsingElementController
@@ -48,6 +50,12 @@ class EnemiesController:
                 self.__enemies_selector.unselect_sprite()
             case 'using':
                 self.__enemies_selector.using_sprite()
+
+    def get_enemies_list(self)->List[Enemy]:
+        enemies_list = []
+        for enemy_node in self._enemies_node.findAllMatches('**/enemy'):
+            enemies_list.append(enemy_node.getPythonTag('sprite').external_object)
+        return enemies_list
 
     def __using_enemy(self)->None:
         tower = self.__mediator_controller.selected_tile.tower if self.__mediator_controller.selected_tile else None

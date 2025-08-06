@@ -1,7 +1,7 @@
 from typing import Tuple, Dict, Optional
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
-from scripts.arrays_handlers.arrays_controllers.towers.upgrade_visitor import UpgradeVisitor
+from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 
 class Radius:
     def __init__(self, value:float, type_radius:str='round'):
@@ -37,12 +37,12 @@ class TowersConfig:
             'venom':"images2d/tower/venom_gun.png"}
 
         self.__visitors_dict = {
-            'basic': UpgradeVisitor(basic_damage=2, radius=1.2),
-            'sniper': UpgradeVisitor(basic_damage=2, radius=1.2),
-            'anty_shield': UpgradeVisitor(basic_damage=2, radius=1.2),
-            'venom': UpgradeVisitor(basic_damage=2, radius=1.2)}
+            'basic': TowerVisitor(basic_damage=2, radius=1.2),
+            'sniper': TowerVisitor(basic_damage=2, radius=1.2),
+            'anty_shield': TowerVisitor(basic_damage=2, radius=1.2),
+            'venom': TowerVisitor(basic_damage=2, radius=1.2)}
 
-    def get_visitor_improve(self, type_tower:str)->UpgradeVisitor:
+    def get_visitor_improve(self, type_tower:str)->TowerVisitor:
         return self.__visitors_dict[type_tower]
 
     def get_improve_cost_array(self, type_tower:str)->Tuple:

@@ -4,6 +4,7 @@ from typing import Dict
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.damage_calculater import DamageCalculater
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effects_sets import EffectsSets
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.movement_calculator import MovementCalculator
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
@@ -59,6 +60,9 @@ class Enemy:
         self.__damage_calculator.calculate_effect(tower_dict, self.__effects_sets)
         self.__chack_health(tower_dict.setdefault('additional_money', 0))
         self.__log.debug(f'health: {self._health}, {self.__effects_sets}')
+
+    def visit(self, visitor:EnemyVisitor):
+        visitor.visit_damage_dict(self._effect_dict, self._health)
 
     def __del__(self):
         debug(f'Node {self._sprite.main_node} deleted')

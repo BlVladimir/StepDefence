@@ -1,11 +1,12 @@
 from logging import debug
-from typing import Optional
+from typing import Optional, List
 
 from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane, NodePath, Loader
 
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
+from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
@@ -55,6 +56,12 @@ class MapsController:
 
     def get_selected_tile(self)->Optional[Tile]:
         return self.__tiles_controller.selected_tile
+
+    def get_towers_list(self)->List[Tower]:
+        tower_list = []
+        for tower_node in self.__map_node.findAllMatches('**/tower'):
+            tower_list.append(tower_node.getPythonTag('sprite').external_object)
+        return tower_list
 
     @property
     def first_tile_rect(self)->Rect3D:
