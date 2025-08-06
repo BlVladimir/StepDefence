@@ -9,7 +9,7 @@ class UpgradeVisitor:
 
     def visit_damage_dict(self, damage_dict:Dict)->None:
         try:
-            for parameter in self._parameters.keys():
+            for parameter in (key for key in self._parameters.keys() if key != 'radius') :
                 damage_dict[parameter] += self._parameters[parameter]
         except KeyError:
             error('Parameter upgrade visitor not in damage_dict')

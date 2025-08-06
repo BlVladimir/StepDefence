@@ -23,7 +23,7 @@ class Tower:
         self.__visitor_improve = visitor_improve
 
         self.__is_used = False  # башня выстрелила или нет
-        self.__level = 1  # уровень башни
+        self.__level = 0  # уровень башни
 
         self._radius_node = sprite.main_node.attachNewNode('radius')
         self.__redraw_radius()
@@ -43,6 +43,7 @@ class Tower:
         return self.__radius_state.is_in_radius(enemy_sprite)
 
     def upgrade(self)->None:
+        self.__level += 1
         self.__radius_state.upgrade(self.__visitor_improve)
         self.__visitor_improve.visit_damage_dict(self._damage_dict)
         self.__redraw_radius()
@@ -93,3 +94,7 @@ class Tower:
     @property
     def type_tower(self)->str:
         return self._type_tower
+
+    @property
+    def level(self)->int:
+        return self.__level

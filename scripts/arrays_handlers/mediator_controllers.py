@@ -79,6 +79,7 @@ class MediatorControllers:
 
     def remove_money(self, count:int):
         self._money -= count
+        debug(f'Money: {self._money}')
 
     @property
     def selected_tile(self)->Optional[Tile]:

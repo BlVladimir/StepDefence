@@ -34,8 +34,9 @@ class TowersController:
 
     def __upgrade_tower(self):
         tower = self.__mediator.selected_tile.tower
-        if tower:
+        if tower and tower.level < 2 and self.__mediator.money >= self.__config.get_improve_cost_array(tower.type_tower)[tower.level]:
             tower.upgrade()
+            self.__mediator.remove_money(self.__config.get_improve_cost_array(tower.type_tower)[tower.level])
 
     def __get_selected_tower(self)->Optional[Tower]:
         tile = self.__mediator.selected_tile
