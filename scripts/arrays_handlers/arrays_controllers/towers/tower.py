@@ -50,7 +50,6 @@ class Tower:
         EventBus.subscribe('start_end_turn', self.__lambda_start)
 
     def __set_is_charge(self, value:bool)->None:
-        debug(self._is_charge)
         self._is_charge = value
 
     def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
@@ -73,9 +72,6 @@ class Tower:
         """До удаления"""
         EventBus.unsubscribe('complete_end_turn',self.__lambda_complete)
         EventBus.unsubscribe('start_end_turn', self.__lambda_start)
-
-    def __del__(self):
-        debug(f'Node {self._tower_sprite.main_node} deleted')
 
     @property
     def characteristic(self)->Dict:

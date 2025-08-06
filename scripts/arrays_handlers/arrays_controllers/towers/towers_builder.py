@@ -31,15 +31,15 @@ class AbstractTowerBuilder(ABC):
 
 class TowerBuilder(AbstractTowerBuilder):
     """Создает башни"""
-    def __init__(self, sprites_factory:SpritesFactory)->None:
+    def __init__(self, sprites_factory:SpritesFactory, config:TowersConfig)->None:
         super().__init__(sprites_factory)
-        self.__config = TowersConfig()
+        self.__config = config
 
     def create_tower(self, type_tower:str, tile:Tile)->None:
 
         match self.__config.get_radius(type_tower).type_radius:
             case 'round':
-                radius_state = RoundRadius(self.__config.get_radius(type_tower).value, tile.sprite.rect.center)
+                radius = self.__config.get_radius(type_tower).value
             case _:
                 raise Exception('Incorrect radius type')
 
@@ -55,6 +55,8 @@ class TowerBuilder(AbstractTowerBuilder):
             case 'additional_money':
                 characteristic.setdefault('additional_money', 0)
                 characteristic['additional_money'] += 1
+            case 'increase_radius':
+                radius *= 1.5
 
 
         if self.__config.get_gun(type_tower):
@@ -67,7 +69,7 @@ class TowerBuilder(AbstractTowerBuilder):
             sprite=self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
                                                        tile.sprite, 'tower', self._counter),
             damage_dict=characteristic,
-            radius_state=radius_state,
+            radius_state=RoundRadius(radius, tile.sprite.rect.center),
             gun_state=gun_state,
             visitor_improve=self.__config.get_visitor_improve(type_tower)
         )
