@@ -1,3 +1,4 @@
+from logging import debug
 from typing import Optional
 
 from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane, NodePath, Loader
@@ -31,6 +32,8 @@ class MapsController:
 
     def clear_map(self):
         """Очистить карту"""
+        for tower_node in self.__map_node.findAllMatches('**/tower'):
+            tower_node.getPythonTag('sprite').external_object.unsubscribe()
         self.__map_node.getChildren().detach()
         self.__tiles_controller.reset_tiles()
 

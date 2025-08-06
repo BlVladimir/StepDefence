@@ -19,7 +19,7 @@ class Sprite3D:
         self._rect = rect
 
         def create_child_nodes(node:NodePath):
-            card = CardMaker(name_group)
+            card = CardMaker(f'{name_group}_card')
             card.setFrame(self._rect.scale)
             self._texture_node = node.attachNewNode(card.generate())
 
@@ -31,7 +31,7 @@ class Sprite3D:
             self._texture_node.setTexture(texture)
             self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
 
-            collision = CollisionNode(name_group)
+            collision = CollisionNode(f'{name_group}_collision')
             collision.addSolid(CollisionPolygon(
                 Point3(-rect.width / 2, 0, -rect.height / 2),
                 Point3(-rect.width / 2, 0, rect.height / 2),

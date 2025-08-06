@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from logging import debug
 
 from panda3d.core import NodePath
 
@@ -22,7 +23,7 @@ class EnemiesController:
         self.__enemies_selector = UsingElementController(using_action=self.__using_enemy)
         self.__mediator_controller = mediator_controllers
 
-        EventBus.subscribe('start_end_turn', lambda event_type, data: asyncio.create_task(self.__move_enemies))
+        EventBus.subscribe('start_end_turn', lambda event_type, data: EventBus.publish('add_async_task', self.__move_enemies()))
 
 
 
@@ -37,18 +38,8 @@ class EnemiesController:
     async def __move_enemies(self)->None:
         for enemy in self._enemies_node.getChildren():
             enemy.getPythonTag('sprite').external_object.end_turn()
-            await asyncio.sleep(1)
-
-            EventBus.publish('complete_end_turn')
-
-    @staticmethod
-    def async_handler(coro_func):
-        """Оборачивает асинхронную функцию для исполнения внутри событий"""
-
-        def wrapper(event_type, data):
-            asyncio.create_task(coro_func(event_type, data))  # Запускаем корутину как задачу
-
-        return wrapper
+        await asyncio.sleep(1)
+        EventBus.publish('complete_end_turn')
 
     def handle_enemy_action(self, action: str, enemy:Sprite3D = None) -> None:
         """Обрабатывает действия с врагами"""

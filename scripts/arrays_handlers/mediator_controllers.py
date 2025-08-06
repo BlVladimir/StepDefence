@@ -26,7 +26,7 @@ class MediatorControllers:
         EventBus.subscribe('right_click', lambda event_type, data: self.__using_element())
         EventBus.subscribe('unselect_element', lambda event_type, data: self.__unselect_element(data))
         EventBus.subscribe('select_element', lambda event_type, data: self.__select_element(data))
-        EventBus.subscribe('start_end_turn', lambda event_type, data: self.__start_end_turn())
+        EventBus.subscribe('complete_end_turn', lambda event_type, data: self.__complete_end_turn())
 
 
 
@@ -37,7 +37,7 @@ class MediatorControllers:
         self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
         self.__level = level
 
-    def __start_end_turn(self):
+    def __complete_end_turn(self):
         self.__current_wave += 1
         self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
 

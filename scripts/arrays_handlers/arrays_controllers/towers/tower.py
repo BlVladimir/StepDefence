@@ -4,6 +4,7 @@ from typing import Optional, Dict
 from panda3d.core import Point3, CardMaker, TransparencyAttrib
 
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
+from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
 
 
@@ -40,6 +41,18 @@ class Tower:
         self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
         self._radius_node.show()
 
+        self._is_charge = True
+
+        self.__lambda_complete = lambda event_type, data:self.__set_is_charge(True)
+        self.__lambda_start = lambda event_type, data:self.__set_is_charge(False)
+
+        EventBus.subscribe('complete_end_turn', self.__lambda_complete)
+        EventBus.subscribe('start_end_turn', self.__lambda_start)
+
+    def __set_is_charge(self, value:bool)->None:
+        debug(self._is_charge)
+        self._is_charge = value
+
     def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
         return self.__radius_strategy.is_in_radius(enemy_sprite)
 
@@ -47,7 +60,7 @@ class Tower:
         self.__radius_strategy.upgrade(self.__visitor_improve)
 
     def rotate(self, mouse_point:Point3)->None:
-        if self.__gun_strategy:
+        if self._is_charge and self.__gun_strategy:
             self.__gun_strategy.rotate_gun(mouse_point)
 
     def show_radius(self)->None:
@@ -56,9 +69,18 @@ class Tower:
     def hide_radius(self)->None:
         self._radius_node.hide()
 
+    def unsubscribe(self):
+        """До удаления"""
+        EventBus.unsubscribe('complete_end_turn',self.__lambda_complete)
+        EventBus.unsubscribe('start_end_turn', self.__lambda_start)
+
     def __del__(self):
         debug(f'Node {self._tower_sprite.main_node} deleted')
 
     @property
     def characteristic(self)->Dict:
         return self._damage_dict
+
+    @property
+    def is_charge(self)->bool:
+        return self._is_charge

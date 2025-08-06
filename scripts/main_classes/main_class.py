@@ -1,3 +1,7 @@
+import asyncio
+from asyncio import get_event_loop, get_running_loop, sleep
+from logging import debug
+
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import WindowProperties, CollisionTraverser
@@ -33,11 +37,25 @@ class StepDefence(ShowBase):
         self.__taskMng = TaskManager(self.taskMgr)
         self.__scene_controller = SceneController(self.__sprites_factory)
 
+
         EventBus.publish('append_task', ['fix_camera_task', self.fixCameraTask])
 
         self.__key_handler = KeyHandler(self.accept)
 
         self.__draw_basis()
+
+        self.loop = asyncio.get_event_loop()
+        EventBus.publish('append_task', ['update_async', self.__update_async])
+        EventBus.subscribe('add_async_task', lambda event_type, data: self.__add_async_task(data))
+
+    def __add_async_task(self, task):
+        self.async_task = self.loop.create_task(task)
+
+    def __update_async(self, task):
+        # Выполняем одну итерацию asyncio loop
+        self.loop.call_soon(self.loop.stop)
+        self.loop.run_forever()
+        return task.cont
 
     @staticmethod
     def click():
