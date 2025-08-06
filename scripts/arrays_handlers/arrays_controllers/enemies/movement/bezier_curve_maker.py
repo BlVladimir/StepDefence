@@ -5,7 +5,7 @@ class BezierCurveMaker:
     """Создает множество точек по кривой Безье"""
     def __init__(self):
         self.__SAMPLES = 100
-        self.__NUM_POINTS = 30
+        self.__NUM_POINTS = 15
 
     @staticmethod
     def __bezier_curve_point(p0:Vec2, p1:Vec2, p2:Vec2, p3:Vec2, t:float)->Vec2:
@@ -30,13 +30,13 @@ class BezierCurveMaker:
     def __find_t_for_distance(self, p0:Vec2, p1:Vec2, p2:Vec2, p3:Vec2, target_distance:float, segment_length:float)->float:
         """Находит параметр t, соответствующий пройденному расстоянию"""
         t = 1
-        for i in range(99):
+        for i in range(24):
 
             current_distance = self.__calculate_curve_length(p0, p1, p2, p3, round(t * self.__SAMPLES))
             if abs(current_distance - target_distance) < segment_length:
                 return t
 
-            t -= 0.01
+            t -= 0.05
 
         return t
 

@@ -15,4 +15,4 @@ class KeyHandler:
 
     @staticmethod
     def on_enter_click():
-        EventBus.publish('next_round')
+        EventBus.publish('start_end_turn')

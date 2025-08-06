@@ -20,29 +20,33 @@ class MediatorControllers:
         self.__maps_controller = MapsController(scene_gameplay_node, sprites_factory)
         self.__enemies_controller = EnemiesController(scene_gameplay_node, sprites_factory, self.__maps_controller.track, self)
 
-        self._current_wave = 0
+        self.__current_wave = 0
+        self.__level = 0
 
         EventBus.subscribe('right_click', lambda event_type, data: self.__using_element())
         EventBus.subscribe('unselect_element', lambda event_type, data: self.__unselect_element(data))
         EventBus.subscribe('select_element', lambda event_type, data: self.__select_element(data))
+        EventBus.subscribe('start_end_turn', lambda event_type, data: self.__start_end_turn())
 
 
 
     def create_scene(self, level):
         """Создание карты"""
         self.__maps_controller.create_map(level)
-        self._current_wave = 0
-        self.create_enemy(level, 0)
+        self.__current_wave = 0
+        self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
+        self.__level = level
 
-    def create_enemy(self, level:int, wave:int):
-        self.__enemies_controller.create_enemies(wave, level, self.__maps_controller.first_tile_rect)
+    def __start_end_turn(self):
+        self.__current_wave += 1
+        self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
 
     def remove_scene(self):
         """Очистка карты"""
         self.__maps_controller.clear_map()
         self.__enemies_controller.clear_enemies()
         self.__towers_controller.clear_towers()
-        self._current_wave = 0
+        self.__current_wave = 0
 
     def __select_element(self, sprite:Sprite3D):
         """Выделить элемент"""

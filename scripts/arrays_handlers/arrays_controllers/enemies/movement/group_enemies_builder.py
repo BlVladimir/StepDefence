@@ -11,16 +11,14 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class GroupEnemiesBuilder:
     """Создает группу врагов"""
-    def __init__(self, enemies_node:NodePath, track_node:NodePath, sprites_factory:SpritesFactory, track:Track):
+    def __init__(self, enemies_node:NodePath, sprites_factory:SpritesFactory, track:Track):
         self._enemies_node = enemies_node
-        self._track_node = track_node
-        self.__enemies_builder = EnemiesBuilder(self._enemies_node, sprites_factory, track, self._track_node)
+        self.__enemies_builder = EnemiesBuilder(self._enemies_node, sprites_factory, track)
         self.__type_tuple = ('basic', 'big', 'armored', 'regen')
 
     def clear_enemies(self)->None:
         """Удаоляет врагов"""
         self._enemies_node.getChildren().detach()
-        self._track_node.getChildren().detach()
 
     def create_enemies(self, wave:int, level:int, tile:Rect3D)->None:
         """Создает врагов"""

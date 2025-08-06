@@ -13,7 +13,7 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class EnemiesBuilder:
     """Создает врагов"""
-    def __init__(self, node:NodePath, sprites_factory:SpritesFactory, track:Track, track_node:NodePath):
+    def __init__(self, node:NodePath, sprites_factory:SpritesFactory, track:Track):
         self.__config = EnemiesConfig()
         self.__enemies_node = node
         self.__sprites_factory = sprites_factory
@@ -21,10 +21,7 @@ class EnemiesBuilder:
         self._counter = 0
         self.__track = track
 
-        self._track_node = track_node
-
         CullBinManager.get_global_ptr().add_bin('enemy', CullBinManager.BT_fixed, 4)
-        CullBinManager.get_global_ptr().add_bin('lines', CullBinManager.BT_fixed, 50)
 
         self.__damage_calculator = DamageCalculater()
 
@@ -38,7 +35,7 @@ class EnemiesBuilder:
         Enemy(sprite,
               parameters['health'] + self.__config.get_wave_health_modifier(wave),
               effects,
-              MovementCalculator(self.__bezier_curve_maker, pos_on_tile, started_division_vec, self.__track, self._track_node, sprite.debug_mode),
+              MovementCalculator(self.__bezier_curve_maker, pos_on_tile, started_division_vec, self.__track),
               self.__damage_calculator, wave//4+2),
         self._counter += 1
 

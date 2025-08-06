@@ -55,4 +55,4 @@ def setup_logging():
     dist_debug.setFormatter(ANSIColorFormatter(logging.BASIC_FORMAT))
 
     # logger.addHandler(console)
-    logger.addHandler(dist_debug)
+    logger.addHandler(console)

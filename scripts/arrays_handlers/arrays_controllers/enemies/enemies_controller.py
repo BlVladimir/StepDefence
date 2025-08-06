@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+
 from panda3d.core import NodePath
 
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.group_enemies_builder import GroupEnemiesBuilder
@@ -15,13 +17,12 @@ class EnemiesController:
     """Обработчик врагов"""
     def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory, track:Track, mediator_controllers: 'MediatorControllers'):
         self._enemies_node = scene_gameplay_node.attachNewNode('enemy')
-        self._track_node = scene_gameplay_node.attachNewNode('track')
-        self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, self._track_node, sprites_factory, track)
+        self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, sprites_factory, track)
 
         self.__enemies_selector = UsingElementController(using_action=self.__using_enemy)
         self.__mediator_controller = mediator_controllers
 
-        EventBus.subscribe('next_round', lambda event_type, data: self.__move_enemies())
+        EventBus.subscribe('start_end_turn', lambda event_type, data: asyncio.create_task(self.__move_enemies))
 
 
 
@@ -33,9 +34,21 @@ class EnemiesController:
         """Создает врагов"""
         self.__group_enemies_builder.create_enemies(wave, level, tile)
 
-    def __move_enemies(self)->None:
+    async def __move_enemies(self)->None:
         for enemy in self._enemies_node.getChildren():
             enemy.getPythonTag('sprite').external_object.end_turn()
+            await asyncio.sleep(1)
+
+            EventBus.publish('complete_end_turn')
+
+    @staticmethod
+    def async_handler(coro_func):
+        """Оборачивает асинхронную функцию для исполнения внутри событий"""
+
+        def wrapper(event_type, data):
+            asyncio.create_task(coro_func(event_type, data))  # Запускаем корутину как задачу
+
+        return wrapper
 
     def handle_enemy_action(self, action: str, enemy:Sprite3D = None) -> None:
         """Обрабатывает действия с врагами"""
