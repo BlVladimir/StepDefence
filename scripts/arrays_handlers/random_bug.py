@@ -1,5 +1,5 @@
 from logging import debug
-from random import choice, randbytes
+from random import choice, getrandbits
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
@@ -14,8 +14,8 @@ class RandomBug:
 
     def get_bug(self):
         type_bug = choice(list(self.__bugs))
-        luck = randbytes(1)
-        debug(f'{type_bug}, {luck}')
+        luck = getrandbits(1)
+        debug(f'{type_bug}, {bool(luck)}')
         match type_bug:
             case 'damage':
                 if luck:
@@ -37,4 +37,3 @@ class RandomBug:
                     self.__mediator.discount = 0.5
                 else:
                     self.__mediator.discount = 2
-
