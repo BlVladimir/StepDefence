@@ -1,6 +1,6 @@
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
-from panda3d.core import Vec3, TransparencyAttrib, Texture, PNMImage, NodePath
+from panda3d.core import Vec3, TransparencyAttrib, Texture, PNMImage, NodePath, TextNode
 
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
@@ -89,6 +89,30 @@ class GameplayButtonsController(ButtonsController):
                                  (0.3, 0.3, 0.3, 1)))
         EventBus.subscribe('open_upgrade_table', lambda event_type, data:  self.__upgrade_table_node.show())
         EventBus.subscribe('close_upgrade_table', lambda event_type, data: self.__upgrade_table_node.hide())
+
+
+        self.__money_node = self._buttons_node.attachNewNode('money_node')
+        frame = DirectFrame(parent=self.__money_node,
+                            pos=Vec3(-self._relationship * 0.5, 0, 0.9),
+                            frameSize=(-0.2 * self._relationship, 0.2 * self._relationship, -0.1, 0.1),
+                            frameColor=(0, 0, 0, 0),
+                            text='x4',
+                            text_fg=(1, 1, 1, 1),
+                            text_pos=(0.05 * self._relationship, -0.035),
+                            text_scale=0.15,
+                            text_align=TextNode.ACenter,
+                            image='images2d/UI/money.png',
+                            image_pos=(-0.125 * self._relationship, 0, 0),
+                            image_scale=(0.1, 0, 0.1))
+        frame.setTransparency(TransparencyAttrib.MAlpha)
+        EventBus.subscribe('update_money', lambda event_type, data: frame.setText(f'x{data}'))
+
+    @staticmethod
+    def __get_texture(path:str)->Texture:
+        texture = Texture()
+        texture.load(PNMImage(path))
+        texture.setTransparency(TransparencyAttrib.MAlpha)
+        return texture
 
     @staticmethod
     def __create_texture(first_path:str, second_path:str, xto:int=0, yto:int=0)->Texture:

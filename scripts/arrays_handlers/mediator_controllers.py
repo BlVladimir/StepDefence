@@ -62,6 +62,7 @@ class MediatorControllers:
         self.__towers_controller.clear_towers()
         self.__current_wave = 0
         self._money = 4
+        EventBus.publish('update_money', 4)
 
     def __select_element(self, sprite:Sprite3D)->None:
         """Выделить элемент"""
@@ -90,11 +91,11 @@ class MediatorControllers:
     def __enemy_die(self, count:int)->None:
         self.__random_bug.get_bug()
         self._money += count
-        debug(f'Money: {self._money}')
+        EventBus.publish('update_money', self._money)
 
     def remove_money(self, count:int)->None:
         self._money -= count
-        debug(f'Money: {self._money}')
+        EventBus.publish('update_money', self._money)
 
     def visit_all_towers(self, visitor:TowerVisitor):
         for tower in self.__maps_controller.get_towers_list():
