@@ -28,13 +28,11 @@ class EnemiesBuilder:
 
     def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2)->None:
         parameters = self.__config.get_started_characteristic(type_enemy)
-        effects = parameters.copy()
-        effects.pop('health')
+        parameters['health'] += self.__config.get_wave_health_modifier(wave)
         sprite = self.__sprites_factory.create_sprite(rect, self.__config.get_image_enemy(type_enemy), self.__enemies_node,
                                                       'enemy', self._counter)
         Enemy(sprite,
-              parameters['health'] + self.__config.get_wave_health_modifier(wave),
-              effects,
+              parameters,
               MovementCalculator(self.__bezier_curve_maker, pos_on_tile, started_division_vec, self.__track),
               self.__damage_calculator, wave//4+2),
         self._counter += 1
