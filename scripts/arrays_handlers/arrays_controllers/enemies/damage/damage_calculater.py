@@ -23,8 +23,8 @@ class DamageCalculater:
     def calculate_end_round(enemy_char_dict:Dict, effects_sets:EffectsSets)->int:
         result = 0
         if 'regen' in enemy_char_dict.keys():
-            result += enemy_char_dict['regen']
-        result -= effects_sets.end_round()
+            result -= enemy_char_dict['regen']
+        result += effects_sets.end_round()
         return result
 
 class DamageCalculatorTest(TestCase):
@@ -52,8 +52,8 @@ class DamageCalculatorTest(TestCase):
         self.assertEqual(self.damage_calculater.calculate_physic_damage(self.char_dict, self.damage_dict2), 3)
 
     def test_calculate_effect(self):
-            self.damage_calculater.calculate_effect(self.damage_dict1, self.effects_sets)
-            self.assertEqual(self.damage_calculater.calculate_end_round(self.char_dict, self.effects_sets), -1)
-            self.damage_calculater.calculate_effect(self.damage_dict2, self.effects_sets)
-            self.assertEqual(self.damage_calculater.calculate_end_round(self.char_dict, self.effects_sets), -1)
-            self.assertEqual(self.damage_calculater.calculate_end_round(self.char_dict, self.effects_sets), 0)
+        self.damage_calculater.calculate_effect(self.damage_dict1, self.effects_sets)
+        self.assertEqual(self.damage_calculater.calculate_end_round(self.char_dict, self.effects_sets), 1)
+        self.damage_calculater.calculate_effect(self.damage_dict2, self.effects_sets)
+        self.assertEqual(self.damage_calculater.calculate_end_round(self.char_dict, self.effects_sets), 1)
+        self.assertEqual(self.damage_calculater.calculate_end_round(self.char_dict, self.effects_sets), 0)

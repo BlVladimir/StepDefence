@@ -10,31 +10,29 @@ class BugsList:
     def __init__(self, relationship:float, buttons_node:NodePath):
         self.__bugs_list = buttons_node.attachNewNode('bugs_list')
         self.__bugs_list_frame = DirectFrame(parent=self.__bugs_list,
-                                                 frameSize=(relationship * 0.25, -relationship * 0.25, 1, -1),
+                                                 frameSize=(0.25, -0.25, 1, -1),
                                                  frameColor=(0.5, 0.5, 0.5, 1),
-                                                 pos=Vec3(relationship*0.75, 0))
+                                                 pos=Vec3(relationship - 0.25, 0))
 
         self.__bugs_list_node = self.__bugs_list_frame.attachNewNode('bugs_list_node')
         self.__frame_bug = DirectFrame(parent=self.__bugs_list_node,
-                                       frameSize=(-0.25 * relationship,
-                                                   0.25 * relationship, -0.1, 0.1),
+                                       frameSize=(-0.25, 0.25, -0.1, 0.1),
                                        frameColor=(0, 0, 0, 0),
                                        text='',
                                        text_fg=(1, 1, 1, 1),
                                        text_pos=(0, -0.035),
-                                       text_scale=0.075,
+                                       text_scale=0.06,
                                        text_align=TextNode.ACenter)
         self.__bugs_array = []
 
         self.__enemies_char_node = self.__bugs_list_frame.attachNewNode('enemies_char_node')
         self.__frame_char = DirectFrame(parent=self.__enemies_char_node,
-                                        frameSize=(-0.25 * relationship,
-                                                   0.25 * relationship, -0.1, 0.1),
+                                        frameSize=(-0.25, 0.25, -0.1, 0.1),
                                         frameColor=(0, 0, 0, 0),
                                         text='',
                                         text_fg=(1, 1, 1, 1),
                                         text_pos=(0, -0.035),
-                                        text_scale=0.075,
+                                        text_scale=0.06,
                                         text_align=TextNode.ACenter)
         self.__sequence_characteristic = ['health', 'armor', 'regen', 'poison']
 

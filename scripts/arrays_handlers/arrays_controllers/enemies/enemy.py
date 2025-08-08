@@ -44,7 +44,7 @@ class Enemy:
 
     def end_turn(self)->None:
         """Двигает всех врагов"""
-        self.__damage_calculator.calculate_end_round(self._characteristic_dict, self.__effects_sets)
+        self._characteristic_dict['health'] -= self.__damage_calculator.calculate_end_round(self._characteristic_dict, self.__effects_sets)
         self.__health_display.update_health(self._characteristic_dict['health'])
         self.__chack_health()
         if self._characteristic_dict['health'] > 0:

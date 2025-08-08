@@ -13,14 +13,14 @@ class UpgradeTable:
         self.__upgrade_table_node = buttons_node.attachNewNode('upgrade_table_node')
         self.__upgrade_table_node.hide()
         self.__upgrade_table_frame = DirectFrame(parent=self.__upgrade_table_node,
-                                                 frameSize=(relationship * 0.25, -relationship * 0.25, 1, -1),
+                                                 frameSize=(0.25, 0.25, 1, -1),
                                                  frameColor=(0.5, 0.5, 0.5, 1),
-                                                 pos=Vec3(-relationship*0.75, 0))
+                                                 pos=Vec3(-relationship + 0.25, 0))
 
         self.__button_upgrade = DirectButton(image='images2d/upgrade/1lvl.png',
                                              parent=self.__upgrade_table_frame,
-                                             scale=0.15 * relationship,
-                                             pos=Vec3(0, -0.65),
+                                             scale=0.15,
+                                             pos=Vec3(0, -0.75),
                                              command=lambda: EventBus.publish('upgrade_tower'),
                                              frameColor=((0.5, 0.5, 0.5, 1),
                                                          (0.7, 0.7, 0.7, 1),
@@ -31,13 +31,12 @@ class UpgradeTable:
         self.__sequence_characteristic = ['basic_damage', 'radius', 'armor_piercing', 'poison', 'additional_money']
         self.__characteristic_node = self.__upgrade_table_frame.attachNewNode('characteristic_node')
         self.__frame_char = DirectFrame(parent=self.__characteristic_node,
-                                        frameSize=(-0.25 * relationship,
-                                                   0.25 * relationship, -0.1, 0.1),
+                                        frameSize=(-0.25, 0.25, -0.1, 0.1),
                                         frameColor=(0, 0, 0, 0),
                                         text='',
                                         text_fg=(1, 1, 1, 1),
                                         text_pos=(0, -0.035),
-                                        text_scale=0.075,
+                                        text_scale=0.06,
                                         text_align=TextNode.ACenter)
         EventBus.subscribe('open_upgrade_table', lambda event_type, data: self.__show(data[0], data[1]))
         EventBus.subscribe('close_upgrade_table', lambda event_type, data: self.__upgrade_table_node.hide())

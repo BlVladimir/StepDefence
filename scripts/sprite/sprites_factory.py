@@ -7,9 +7,10 @@ from scripts.sprite.sprite3D import Sprite3D
 
 
 class SpritesFactory:
-    def __init__(self, settings:Settings, render_manager:RenderManager):
+    def __init__(self, settings:Settings, render_manager:RenderManager, relationship:float):
         self.__settings = settings
         self.__render_manager = render_manager
+        self._relationship = relationship
 
     def create_sprite(self, rect:Rect3D, path_image:str, parent:NodePath|Sprite3D, name_group:str, number:int)->Sprite3D:
         return Sprite3D(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
@@ -22,5 +23,4 @@ class SpritesFactory:
 
     @property
     def relationship(self)->float:
-        win = self.__render_manager.win
-        return win.getXSize() / win.getYSize()
+        return self._relationship

@@ -26,11 +26,16 @@ class StepDefence(ShowBase):
         ShowBase.__init__(self)
         self.cTrav = CollisionTraverser()
 
-        self._set_window_size(800, 600)
+        self.__WIDTH = 1000
+        self.__HEIGHT = 600
+
+        #self._set_fullscreen(True)
+        self._set_window_size(self.__WIDTH, self.__HEIGHT)
+
         render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.aspect2d, set_window_size=self._set_window_size, win=self.win)
 
         self.__settings = Settings()
-        self.__sprites_factory = SpritesFactory(self.__settings, render_manager)
+        self.__sprites_factory = SpritesFactory(self.__settings, render_manager, self.__WIDTH / self.__HEIGHT)
 
         self.__click_handler = SelectedHandler(self.cam, self.mouseWatcherNode, self.render)
 
@@ -60,6 +65,13 @@ class StepDefence(ShowBase):
     @staticmethod
     def click():
         print('click')
+
+    def _set_fullscreen(self, enabled: bool = True):
+        """Включает/выключает полноэкранный режим"""
+        props = WindowProperties()
+        props.set_title('Step defence')
+        props.set_fullscreen(enabled)
+        self.win.request_properties(props)
 
     def _set_window_size(self, width, height):
         """Меняет размеры окна"""

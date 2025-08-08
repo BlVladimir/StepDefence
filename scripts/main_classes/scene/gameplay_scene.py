@@ -1,3 +1,5 @@
+from logging import debug
+
 from scripts.arrays_handlers.mediator_controllers import MediatorControllers
 from scripts.main_classes.buttons.gamplay_gui_parts.gameplay_buttons_controller import GameplayButtonsController
 from scripts.main_classes.scene.scene import Scene
