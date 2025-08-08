@@ -22,4 +22,4 @@ class EffectsSets:
         return 0
 
     def __str__(self):
-        return f'poison: {','.join(str(eff) for eff in self._poison_set)}'
+        return str(',\n'.join(str(eff) for eff in self._poison_set))

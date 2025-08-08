@@ -62,4 +62,10 @@ class EnemiesController:
         if tower and tower.is_charge and tower.is_enemy_in_radius(self.__enemies_selector.sel_using_sprite):
             self.__enemies_selector.sel_using_sprite.external_object.hit(tower.damage_dict)
             self.__enemies_selector.unused_sprite()
+            EventBus.publish('close_enemy_characteristic')
+        else:
+            EventBus.publish('draw_enemy_characteristic', self.__enemies_selector.sel_using_sprite.external_object.characteristic)
+
+    def __unused_action(self):
+        EventBus.publish('close_enemy_characteristic')
 

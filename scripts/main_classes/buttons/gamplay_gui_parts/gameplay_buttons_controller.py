@@ -10,20 +10,20 @@ from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class GameplayButtonsController(ButtonsController):
-    def __init__(self, relationship:float, buttons_node:NodePath):
-        super().__init__(relationship , buttons_node)
+    def __init__(self, relationship: float, buttons_node: NodePath):
+        super().__init__(relationship, buttons_node)
 
         self.__gameplay_group = ButtonsGroup(self._buttons_node,
                                              DirectButton(image='images2d/UI/exit_in_main_menu.png',
                                                           parent=self._buttons_node,
                                                           scale=0.1,
-                                                          pos=Vec3(-self._relationship + self._relationship * 0.075, 0.9),
+                                                          pos=Vec3(-self._relationship + self._relationship * 0.075,
+                                                                   0.9),
                                                           command=lambda: EventBus.publish('change_scene', 'main_menu'),
                                                           frameColor=((0.5, 0.5, 0.5, 1),
                                                                       (0.7, 0.7, 0.7, 1),
                                                                       (0.3, 0.3, 0.3, 1))))
         self.__gameplay_group.hide()
-
 
         self.__shop_node = self._buttons_node.attachNewNode('shop_node')
         self.__shop_node.hide()
@@ -32,14 +32,14 @@ class GameplayButtonsController(ButtonsController):
                                         frameColor=(0.5, 0.5, 0.5, 1),
                                         pos=Vec3(-self._relationship, 1))
         buttons_towers = {DirectButton(image=self.__create_texture('images2d/tower/common_foundation.png',
-                                                                      'images2d/tower/common_gun.png'),
-                                          parent=self.__shop_frame,
-                                          scale=0.2,
-                                          pos=Vec3(0.2, -0.2),
-                                          command=lambda: EventBus.publish('buy_tower', 'basic'),
-                                          frameColor=((0.5, 0.5, 0.5, 1),
-                                                      (0.7, 0.7, 0.7, 1),
-                                                      (0.3, 0.3, 0.3, 1))),
+                                                                   'images2d/tower/common_gun.png'),
+                                       parent=self.__shop_frame,
+                                       scale=0.2,
+                                       pos=Vec3(0.2, -0.2),
+                                       command=lambda: EventBus.publish('buy_tower', 'basic'),
+                                       frameColor=((0.5, 0.5, 0.5, 1),
+                                                   (0.7, 0.7, 0.7, 1),
+                                                   (0.3, 0.3, 0.3, 1))),
                           DirectButton(image=self.__create_texture('images2d/tower/sniper_foundation.png',
                                                                    'images2d/tower/sniper_gun.png'),
                                        parent=self.__shop_frame,

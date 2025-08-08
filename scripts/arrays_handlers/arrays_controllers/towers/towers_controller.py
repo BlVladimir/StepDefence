@@ -24,10 +24,11 @@ class TowersController:
 
     def __create_tower(self, type_tower:str):
         if self.__mediator.money >= round(self.__mediator.discount*self.__config.get_cost(type_tower)):
-            self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile)
+            tower = self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile)
             EventBus.publish('close_shop')
             self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_cost(type_tower)))
             self.__mediator.discount = 1
+            EventBus.publish('open_upgrade_table', [tower.level, tower.characteristic])
 
     def clear_towers(self):
         self.__tower_builder.reset_counter()

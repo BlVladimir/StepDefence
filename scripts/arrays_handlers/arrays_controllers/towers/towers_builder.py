@@ -35,7 +35,7 @@ class TowerBuilder(AbstractTowerBuilder):
         super().__init__(sprites_factory)
         self.__config = config
 
-    def create_tower(self, type_tower:str, tile:Tile)->None:
+    def create_tower(self, type_tower:str, tile:Tile)->Tower:
 
         match self.__config.get_radius(type_tower).type_radius:
             case 'round':
@@ -64,7 +64,7 @@ class TowerBuilder(AbstractTowerBuilder):
                                                 tile.sprite, 'gun', self._counter))
         else:
             gun_state = None
-        Tower(
+        tower = Tower(
             type_tower=type_tower,
             sprite=self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
                                                        tile.sprite, 'tower', self._counter),
@@ -75,3 +75,5 @@ class TowerBuilder(AbstractTowerBuilder):
         )
 
         self._counter += 1
+
+        return tower

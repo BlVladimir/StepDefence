@@ -67,5 +67,11 @@ class Enemy:
         visitor.visit_damage_dict(self._characteristic_dict)
         self.__health_display.update_health(self._characteristic_dict['health'])
 
+    @property
+    def characteristic(self)->Dict:
+        char = self._characteristic_dict.copy()
+        char['poison'] = str(self.__effects_sets)
+        return char
+
     def __del__(self):
         debug(f'Node {self._sprite.main_node} deleted')
