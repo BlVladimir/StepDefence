@@ -1,3 +1,4 @@
+from logging import debug
 from typing import Dict
 
 from direct.gui.DirectButton import DirectButton
@@ -36,7 +37,7 @@ class UpgradeTable:
                                         text='',
                                         text_fg=(1, 1, 1, 1),
                                         text_pos=(0, -0.035),
-                                        text_scale=0.15,
+                                        text_scale=0.075,
                                         text_align=TextNode.ACenter)
         EventBus.subscribe('open_upgrade_table', lambda event_type, data: self.__show(data[0], data[1]))
         EventBus.subscribe('close_upgrade_table', lambda event_type, data: self.__upgrade_table_node.hide())
@@ -49,13 +50,14 @@ class UpgradeTable:
     def __redraw_characteristic(self, characteristic:Dict):
         sorted_characteristic = dict(sorted(characteristic.items(), key=lambda x: self.__sequence_characteristic.index(x[0])))
         self.__characteristic_node.getChildren().detach()
+        debug(sorted_characteristic)
         for i, (char, value_char) in enumerate(sorted_characteristic.items()):
-            self.__get_frame(f'{char}: {value_char}', Vec3(0, -0.15*i))
+            self.__get_frame(f'{' '.join(char.split('_'))}: {value_char}', Vec3(0, -0.15*i))
 
     def __get_frame(self, text:str='how you see it?', pos:Vec3=Vec3(0, 0)):
         base_frame = self.__frame_char
         return DirectFrame(
-            parent=self.__upgrade_table_frame,
+            parent=self.__characteristic_node,
             pos=pos,
             frameSize=base_frame['frameSize'],
             frameColor=base_frame['frameColor'],

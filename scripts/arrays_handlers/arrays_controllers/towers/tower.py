@@ -87,7 +87,7 @@ class Tower:
         self.__redraw_radius()
 
     @property
-    def characteristic(self)->Dict:
+    def damage_dict(self)->Dict:
         self._is_charge = False
         return self._damage_dict
 
@@ -102,3 +102,9 @@ class Tower:
     @property
     def level(self)->int:
         return self.__level
+
+    @property
+    def characteristic(self)->Dict:
+        characteristic = self._damage_dict.copy()
+        characteristic['radius'] = str(self.__radius_state)
+        return characteristic

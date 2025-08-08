@@ -27,6 +27,10 @@ class AbstractRadiusState(ABC):
     def radius(self)->float:
         return self.__radius
 
+    @abstractmethod
+    def __str__(self)->str:
+        pass
+
     @staticmethod
     @abstractmethod
     def gradient_texture(size:int, radius_relationship:float, brightness:int)->Texture:
@@ -91,6 +95,9 @@ class RoundRadius(AbstractRadiusState):
         final_texture.load(img)
         return final_texture
 
+    def __str__(self)->str:
+        return str(round((self.radius-0.5)/1.2, 2))
+
 
 
 
@@ -100,3 +107,6 @@ class InfinityRadius(AbstractRadiusState):
 
     def is_in_radius(self, coordinate_center=(0, 0)):
         return True
+
+    def __str__(self)->str:
+        return 'infinity'

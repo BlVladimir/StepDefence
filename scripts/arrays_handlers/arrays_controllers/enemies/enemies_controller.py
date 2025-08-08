@@ -60,6 +60,6 @@ class EnemiesController:
     def __using_enemy(self)->None:
         tower = self.__mediator_controller.selected_tile.tower if self.__mediator_controller.selected_tile else None
         if tower and tower.is_charge and tower.is_enemy_in_radius(self.__enemies_selector.sel_using_sprite):
-            self.__enemies_selector.sel_using_sprite.external_object.hit(tower.characteristic)
+            self.__enemies_selector.sel_using_sprite.external_object.hit(tower.damage_dict)
             self.__enemies_selector.unused_sprite()
 
