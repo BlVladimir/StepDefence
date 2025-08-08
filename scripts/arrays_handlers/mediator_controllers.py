@@ -52,6 +52,7 @@ class MediatorControllers:
         EventBus.publish('update_money', 4)
 
     def __complete_end_turn(self)->None:
+        """Заканчивает смену хода"""
         if not self.__is_lose:
             self.__current_wave += 1
             self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
@@ -86,22 +87,27 @@ class MediatorControllers:
         self.__maps_controller.using_element()
 
     def __lose(self)->None:
+        """Активирует проигрыш"""
         self.__is_lose = True
 
     def __enemy_die(self, count:int)->None:
+        """При смерти врага зачисляет монеты и активирует баг"""
         self.__random_bug.get_bug()
         self._money += count
         EventBus.publish('update_money', self._money)
 
     def remove_money(self, count:int)->None:
+        """Вычитает монеты"""
         self._money -= count
         EventBus.publish('update_money', self._money)
 
     def visit_all_towers(self, visitor:TowerVisitor):
+        """Применяет visitor ко всем башням"""
         for tower in self.__maps_controller.get_towers_list():
             tower.visit(visitor)
 
     def visit_all_enemies(self, visitor:EnemyVisitor):
+        """Применяет visitor ко всем врагам"""
         for enemy in self.__enemies_controller.get_enemies_list():
             enemy.visit(visitor)
 

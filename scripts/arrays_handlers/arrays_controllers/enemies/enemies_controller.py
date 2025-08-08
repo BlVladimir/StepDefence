@@ -66,6 +66,7 @@ class EnemiesController:
         else:
             EventBus.publish('draw_enemy_characteristic', self.__enemies_selector.sel_using_sprite.external_object.characteristic)
 
-    def __unused_action(self):
+    @staticmethod
+    def __unused_action():
         EventBus.publish('close_enemy_characteristic')
 

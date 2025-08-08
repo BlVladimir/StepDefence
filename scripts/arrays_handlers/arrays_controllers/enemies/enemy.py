@@ -52,11 +52,13 @@ class Enemy:
             self._sprite.move(movement_array)
 
     def __chack_health(self, add_money:int=0)->None:
+        """Проверка на смерть"""
         if self._characteristic_dict['health'] <= 0:
             self._sprite.main_node.detachNode()
             EventBus.publish('enemy_die', self.__cost+add_money)
 
     def hit(self, tower_dict:Dict)->None:
+        """Атака по врагу"""
         self._characteristic_dict['health'] -= self.__damage_calculator.calculate_physic_damage(self._characteristic_dict, tower_dict)
         self.__damage_calculator.calculate_effect(tower_dict, self.__effects_sets)
         self.__health_display.update_health(self._characteristic_dict['health'])
@@ -64,6 +66,7 @@ class Enemy:
         self.__log.debug(f'health: {self._characteristic_dict['health']}, {self.__effects_sets}')
 
     def visit(self, visitor:EnemyVisitor):
+        """Применяет visitor к врагу"""
         visitor.visit_damage_dict(self._characteristic_dict)
         self.__health_display.update_health(self._characteristic_dict['health'])
 

@@ -3,6 +3,7 @@ from typing import Dict
 
 
 class EnemyVisitor:
+    """Меняет характеристики врага"""
     def __init__(self, **parameters):
         self._parameters = parameters
 
