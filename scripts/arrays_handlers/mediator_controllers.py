@@ -47,7 +47,7 @@ class MediatorControllers:
         self.__current_wave = 0
         self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
         self.__level = level
-        self._discount = 0
+        self._discount = 1
         self._money = 4
         EventBus.publish('update_money', 4)
 
@@ -119,4 +119,7 @@ class MediatorControllers:
 
     @discount.setter
     def discount(self, value:float):
-        self._discount = value
+        if value > 0:
+            self._discount = value
+        else:
+            raise ValueError('discount must be greater than 0')

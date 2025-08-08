@@ -27,14 +27,15 @@ class BugsList:
                                        text_align=TextNode.ACenter)
         self.__bugs_array = []
         EventBus.subscribe('update_bugs_list', lambda event_type, data: self.__redraw_bugs_list(data[0], data[1]))
+        EventBus.subscribe('change_scene', lambda event_type, data: self.__clear_bugs_list())
 
     def __redraw_bugs_list(self, bug: str, luck: bool):
         # Удаляем 'price' из основного массива, если он уже присутствует
         if bug == 'price':
-            self.__bugs_array = [(b, f) for b, f in self.__bugs_array if b != 'price']
             if self.__bugs_array and self.__bugs_array[0][0] == 'price':
                 self.__bugs_array[0][1].detachNode()
                 self.__bugs_array.pop(0)
+            #self.__bugs_array = [(b, f) for b, f in self.__bugs_array if b != 'price']
             self.__bugs_array.insert(0, (bug, self.__get_frame(luck, self.__get_text(bug, luck))))
         else:
             index = 1 if self.__bugs_array and self.__bugs_array[0][0] == 'price' else 0
@@ -48,6 +49,10 @@ class BugsList:
         # Пересчитываем позиции (не трогаем 'price', он всегда на первом месте)
         for i, frame in enumerate(self.__bugs_array[1:], start=1):  # Пропускаем 'price'
             frame[1].setPos(0, 0, -0.15 * i)
+
+    def __clear_bugs_list(self):
+        self.__bugs_list_node.getChildren().detach()
+        self.__bugs_array.clear()
 
     @staticmethod
     def __get_text(bug:str, luck:bool)->str:

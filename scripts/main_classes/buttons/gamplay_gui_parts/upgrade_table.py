@@ -41,7 +41,10 @@ class UpgradeTable:
                                         text_align=TextNode.ACenter)
         EventBus.subscribe('open_upgrade_table', lambda event_type, data: self.__show(data[0], data[1]))
         EventBus.subscribe('close_upgrade_table', lambda event_type, data: self.__upgrade_table_node.hide())
+        EventBus.subscribe('change_scene', lambda event_type, data: self.__clear_characteristic())
 
+    def __clear_characteristic(self):
+        self.__characteristic_node.getChildren().detach()
     def __show(self, level:int, characteristic:Dict):
         self.__button_upgrade['image'] = self.__images_list[level]
         self.__redraw_characteristic(characteristic)
