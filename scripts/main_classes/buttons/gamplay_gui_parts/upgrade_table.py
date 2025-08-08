@@ -67,7 +67,3 @@ class UpgradeTable:
             text_scale=base_frame['text_scale'],
             text_align=TextNode.ACenter
         )
-
-
-
-

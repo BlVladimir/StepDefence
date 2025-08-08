@@ -26,7 +26,7 @@ class EnemiesConfig:
 
     def get_started_characteristic(self, type_enemy: str) -> Dict:
         try:
-            return self.__started_characteristic[type_enemy]
+            return self.__started_characteristic[type_enemy].copy()
         except Exception as Er:
             error('Error in get_started_characteristic')
             raise ValueError(Er)

@@ -4,6 +4,7 @@ from panda3d.core import Vec3, TransparencyAttrib, Texture, PNMImage, NodePath, 
 
 from scripts.main_classes.buttons.buttons_controller import ButtonsController
 from scripts.main_classes.buttons.buttons_group import ButtonsGroup
+from scripts.main_classes.buttons.gamplay_gui_parts.bugs_list import BugsList
 from scripts.main_classes.buttons.gamplay_gui_parts.upgrade_table import UpgradeTable
 from scripts.main_classes.interaction.event_bus import EventBus
 
@@ -74,6 +75,7 @@ class GameplayButtonsController(ButtonsController):
         EventBus.subscribe('close_shop', lambda event_type, data: self.__shop_node.hide())
 
         self.__upgrade_tablet = UpgradeTable(self._relationship, self._buttons_node)
+        self.__bugs_list = BugsList(self._relationship, self._buttons_node)
 
         self.__money_node = self._buttons_node.attachNewNode('money_node')
         frame = DirectFrame(parent=self.__money_node,

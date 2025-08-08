@@ -3,6 +3,7 @@ from random import choice, getrandbits
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
+from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class RandomBug:
@@ -16,6 +17,7 @@ class RandomBug:
         type_bug = choice(list(self.__bugs))
         luck = getrandbits(1)
         debug(f'{type_bug}, {bool(luck)}')
+        EventBus.publish('update_bugs_list', [type_bug, bool(luck)])
         match type_bug:
             case 'damage':
                 if luck:
