@@ -39,8 +39,9 @@ class TilesController:
         if self.__tile_selector.sel_using_sprite.external_object.effect != 'road' and not tower_node:
             EventBus.publish('open_shop')
         elif tower_node:
-            tower_node.getPythonTag('sprite').external_object.show_radius()
-            EventBus.publish('open_upgrade_table', tower_node.getPythonTag('sprite').external_object.level)
+            tower = tower_node.getPythonTag('sprite').external_object
+            tower.show_radius()
+            EventBus.publish('open_upgrade_table', [tower.level, tower.characteristic])
 
     def handle_tile_action(self, action: str, tile_sprite: Sprite3D = None) -> None:
         """Обрабатывает действия с тайлами.

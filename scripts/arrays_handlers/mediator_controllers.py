@@ -47,6 +47,9 @@ class MediatorControllers:
         self.__current_wave = 0
         self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
         self.__level = level
+        self._discount = 0
+        self._money = 4
+        EventBus.publish('update_money', 4)
 
     def __complete_end_turn(self)->None:
         if not self.__is_lose:
@@ -60,9 +63,6 @@ class MediatorControllers:
         self.__maps_controller.clear_map()
         self.__enemies_controller.clear_enemies()
         self.__towers_controller.clear_towers()
-        self.__current_wave = 0
-        self._money = 4
-        EventBus.publish('update_money', 4)
 
     def __select_element(self, sprite:Sprite3D)->None:
         """Выделить элемент"""

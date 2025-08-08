@@ -28,7 +28,7 @@ class TowersController:
             EventBus.publish('close_shop')
             self.__mediator.remove_money(self.__config.get_cost(type_tower))
             self.__mediator.discount = 0
-            EventBus.publish('open_upgrade_table', 0)
+            #EventBus.publish('open_upgrade_table', [0])
 
     def clear_towers(self):
         self.__tower_builder.reset_counter()
@@ -39,7 +39,7 @@ class TowersController:
             tower.upgrade()
             self.__mediator.remove_money(self.__config.get_improve_cost_array(tower.type_tower)[tower.level-1])
             self.__mediator.discount = 0
-            EventBus.publish('update_upgrade_table', tower.level)
+            EventBus.publish('open_upgrade_table', [tower.level, tower.characteristic])
 
     def __get_selected_tower(self)->Optional[Tower]:
         tile = self.__mediator.selected_tile
