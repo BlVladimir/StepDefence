@@ -9,6 +9,7 @@ from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class UpgradeTable:
+    """Рамка с улучшениями и характеристиками башни"""
     def __init__(self, relationship:float, buttons_node:NodePath):
         self.__upgrade_table_node = buttons_node.attachNewNode('upgrade_table_node')
         self.__upgrade_table_node.hide()
@@ -38,19 +39,22 @@ class UpgradeTable:
                                         text_pos=(0, -0.035),
                                         text_scale=0.06,
                                         text_align=TextNode.ACenter)
-        EventBus.subscribe('open_upgrade_table', lambda event_type, data: self.__show(data[0], data[1]))
-        EventBus.subscribe('close_upgrade_table', lambda event_type, data: self.__upgrade_table_node.hide())
+        EventBus.subscribe('using_tower', lambda event_type, data: self.__show(data[1], data[2]))
+        EventBus.subscribe('not_using_tower', lambda event_type, data: self.__upgrade_table_node.hide())
         EventBus.subscribe('change_scene', lambda event_type, data: self.__clear_characteristic())
 
     def __clear_characteristic(self):
+        """Очищает характеристики"""
         self.__characteristic_node.getChildren().detach()
 
     def __show(self, level:int, characteristic:Dict):
+        """Открывает рамку"""
         self.__button_upgrade['image'] = self.__images_list[level]
         self.__redraw_characteristic(characteristic)
         self.__upgrade_table_node.show()
 
     def __redraw_characteristic(self, characteristic:Dict):
+        """Создает объекты, отображающие характеристику башни"""
         sorted_characteristic = dict(sorted(characteristic.items(), key=lambda x: self.__sequence_characteristic.index(x[0])))
         self.__characteristic_node.getChildren().detach()
         debug(sorted_characteristic)
@@ -58,6 +62,7 @@ class UpgradeTable:
             self.__get_frame(f'{' '.join(char.split('_'))}: {value_char}', Vec3(0, -0.15*i))
 
     def __get_frame(self, text:str='how you see it?', pos:Vec3=Vec3(0, 0)):
+        """Создает текст"""
         base_frame = self.__frame_char
         return DirectFrame(
             parent=self.__characteristic_node,

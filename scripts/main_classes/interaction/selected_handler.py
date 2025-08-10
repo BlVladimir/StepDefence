@@ -1,3 +1,5 @@
+from logging import debug
+
 from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
 from direct.task import Task
 
@@ -39,10 +41,10 @@ class SelectedHandler:
 
             if self.__picker_queue.getNumEntries() > 0:
                 self.__picker_queue.sortEntries()
-                not_selected = self.__last_sprite.difference(self.__picker_queue.getEntries())
-                for sprite in not_selected:
+                not_selected_sprite = self.__last_sprite.difference([entry.getIntoNodePath().getPythonTag('collision') for entry in self.__picker_queue.getEntries()])
+                for sprite in not_selected_sprite:
                     EventBus.publish('unselect_element', sprite)
-                self.__last_sprite.difference_update(not_selected)
+                self.__last_sprite.difference_update(not_selected_sprite)
                 for entry in self.__picker_queue.getEntries():
                     collided_node = entry.getIntoNodePath()
 
@@ -59,3 +61,10 @@ class SelectedHandler:
                 EventBus.publish('unselect_element', sprite)
             self.__last_sprite.clear()
         return Task.cont
+
+if __name__ == '__main__':
+    last = {1, 2, 3}
+    current = {1, 2}
+    rem = last.difference(current)
+    last.difference_update(rem)
+    print(last, rem)

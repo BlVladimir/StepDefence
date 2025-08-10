@@ -3,7 +3,6 @@ from typing import Optional, Dict
 
 from panda3d.core import Point3, CardMaker, TransparencyAttrib
 
-from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
@@ -38,24 +37,30 @@ class Tower:
         EventBus.subscribe('start_end_turn', self.__lambda_start)
 
     def __set_is_charge(self, value:bool)->None:
+        """Меняет значе"""
         self._is_charge = value
 
     def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
+        """Проверяет, в радиусе ли враг"""
         return self.__radius_state.is_in_radius(enemy_sprite)
 
     def upgrade(self)->None:
+        """Улучшает башню"""
         self.__level += 1
         self.visit(self.__visitor_improve)
         debug(self._damage_dict)
 
     def rotate(self, mouse_point:Point3)->None:
+        """Поворачивает башню"""
         if self._is_charge and self.__gun_strategy:
             self.__gun_strategy.rotate_gun(mouse_point)
 
     def show_radius(self)->None:
+        """Визуализирует радиус"""
         self._radius_node.show()
 
     def hide_radius(self)->None:
+        """Скрывает радиус"""
         self._radius_node.hide()
 
     def unsubscribe(self):
@@ -64,6 +69,7 @@ class Tower:
         EventBus.unsubscribe('start_end_turn', self.__lambda_start)
 
     def __redraw_radius(self):
+        """Пересоздает модель радиуса"""
         card = CardMaker('radius')
         rect = self._tower_sprite.rect
         rect.width = self.__radius_state.radius * 2
@@ -82,6 +88,7 @@ class Tower:
         self._radius_node.show()
 
     def visit(self, visitor:TowerVisitor):
+        """Применяет visitor к характеристикам башни"""
         self.__radius_state.upgrade(visitor)
         visitor.visit_damage_dict(self._damage_dict)
         self.__redraw_radius()

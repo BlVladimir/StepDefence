@@ -58,13 +58,14 @@ class Sprite3D:
             self._main_node = parent._main_node.attachNewNode(name_group)
             create_child_nodes(self._main_node)
             self.__convert_vec = Vec3(parent._rect.center.x, parent._rect.center.y, 0)
-        else:
-            raise ValueError('Incorrect type of parent')
 
         self._main_node.setPythonTag('sprite', self)
-        self.__frame = self.__wireframe()
-        self.__frame.hide()
+        self.__select_frame = self.__wireframe(Vec4(0.5, 0, 0, 0.8))
+        self.__select_frame.hide()
+        self.__use_frame = self.__wireframe()
+        self.__use_frame.hide()
         self.__is_using = False
+        self.__is_selected = False
         self._debug_mode = debug_mode
 
     def rotate(self, angle: int | float = 90):
@@ -73,13 +74,13 @@ class Sprite3D:
         self._rect.rotate(angle)
         self._main_node.setPos(Vec3(self._rect.center.x, self._rect.center.y, 0)-self.__convert_vec)
 
-    def __wireframe(self)->NodePath:
+    def __wireframe(self, color:Vec4 = Vec4(1, 0, 0, 1))->NodePath:
         """Добавляет проволочную обводку вокруг объекта"""
         wireframe = self._texture_node.copyTo(self._main_node)
 
         wireframe.clearTexture()
         wireframe.setRenderModeWireframe()
-        wireframe.setColor(1, 0, 0, 1)  # Красный цвет
+        wireframe.setColor(color)
         wireframe.setLightOff()
 
         wireframe.setBin("fixed", 50)
@@ -109,16 +110,29 @@ class Sprite3D:
         return self._main_node
 
     @property
+    def is_selected(self):
+        return self.__is_selected
+
+    @is_selected.setter
+    def is_selected(self, value:bool):
+        self.__is_selected = value and not self.__is_using
+        if value:
+            self.__select_frame.show()
+        else:
+            self.__select_frame.hide()
+
+    @property
     def is_using(self):
         return self.__is_using
 
     @is_using.setter
     def is_using(self, value:bool):
         self.__is_using = value
+        self.is_selected = False
         if value:
-            self.__frame.show()
+            self.__use_frame.show()
         else:
-            self.__frame.hide()
+            self.__use_frame.hide()
 
     @property
     def rect(self):

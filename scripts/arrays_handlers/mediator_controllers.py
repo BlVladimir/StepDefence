@@ -108,7 +108,7 @@ class MediatorControllers:
 
     def visit_all_enemies(self, visitor:EnemyVisitor):
         """Применяет visitor ко всем врагам"""
-        for enemy in self.__enemies_controller.get_enemies_list():
+        for enemy in self.__enemies_controller.get_enemies_set():
             enemy.visit(visitor)
 
     @property
