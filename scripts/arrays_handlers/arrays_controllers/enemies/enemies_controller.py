@@ -24,7 +24,9 @@ class EnemiesController:
 
         self.__enemies_selector = EnemySelector(lambda :self.get_enemies_set())
         self.__mediator_controller = mediator_controllers
+        self.__is_round_ended = False
 
+        EventBus.subscribe('enter_click', lambda event_type, data: self.__round_ended())
         EventBus.subscribe('start_end_turn', lambda event_type, data: EventBus.publish('add_async_task', self.__move_enemies()))
 
     def clear_enemies(self)->None:
@@ -40,6 +42,7 @@ class EnemiesController:
             enemy.getPythonTag('sprite').external_object.end_turn()
         await asyncio.sleep(1)
         EventBus.publish('complete_end_turn')
+        self.__is_round_ended = False
 
     def handle_enemy_action(self, action: str, enemy_sprite:Sprite3D = None) -> None:
         """Обрабатывает действия с врагами"""
@@ -56,5 +59,10 @@ class EnemiesController:
         for enemy_node in self._enemies_node.findAllMatches('**/enemy'):
             enemies_set.add(enemy_node.getPythonTag('sprite').external_object)
         return enemies_set
+
+    def __round_ended(self)->None:
+        if not self.__is_round_ended:
+            self.__is_round_ended = True
+            EventBus.publish('start_end_turn')
 
 
