@@ -33,9 +33,7 @@ class AttackState(AbstractStateSelector):
                 self.__set_possible_for_attack.add(enemy.sprite)
 
     def not_used_state(self):
-        for sprite in self.__set_possible_for_attack:
-            sprite.is_selected = False
-        self.__set_possible_for_attack.clear()
+        self.__clear_set()
         self.unselect_sprite()
         self.__tower = None
 
@@ -45,3 +43,12 @@ class AttackState(AbstractStateSelector):
     def unselect_sprite(self)->None:
         if self._main_selected_sprite and self._main_selected_sprite not in self.__set_possible_for_attack:
             self._main_selected_sprite.is_selected = False
+
+    def __clear_set(self):
+        for sprite in self.__set_possible_for_attack:
+            sprite.is_selected = False
+        self.__set_possible_for_attack.clear()
+
+    def update_set(self, enemies_set:Set[Enemy]):
+        self.__clear_set()
+        self.determine_set(enemies_set)

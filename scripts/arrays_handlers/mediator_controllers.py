@@ -56,6 +56,7 @@ class MediatorControllers:
         if not self.__is_lose:
             self.__current_wave += 1
             self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
+            EventBus.publish('update_select')
         else:
             EventBus.publish('change_scene', 'main_menu')
 

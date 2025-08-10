@@ -13,6 +13,7 @@ class EnemySelector(AbstractSelector):
 
         EventBus.subscribe('using_tower', lambda event_type, data: self.change_state('attack', tower=data[0]))
         EventBus.subscribe('not_using_tower', lambda event_type, data: self.change_state('watch'))
+        EventBus.subscribe('update_select', lambda event_type, data: self.update_set())
 
     def change_state(self, state_name:str, **kwargs)->None:
         try:
@@ -24,3 +25,6 @@ class EnemySelector(AbstractSelector):
         except KeyError:
             error('State not found')
 
+    def update_set(self):
+        if self._current_state_name == 'attack':
+            self._state_dict[self._current_state_name].update_set(self.__define_enemy_set_func())

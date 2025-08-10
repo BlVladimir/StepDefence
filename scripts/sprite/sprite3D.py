@@ -95,7 +95,7 @@ class Sprite3D:
             intervals.append(
                 LerpPosInterval(
                     self._main_node,
-                    duration=0.1,
+                    duration=0.06,
                     pos=movement_array[i],
                     startPos=movement_array[i - 1]
                 )
