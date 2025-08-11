@@ -39,6 +39,7 @@ class MediatorControllers:
         EventBus.subscribe('complete_end_turn', lambda event_type, data: self.__complete_end_turn())
         EventBus.subscribe('enemy_die', lambda event_type, data: self.__enemy_die(data))
         EventBus.subscribe('lose', lambda event_type, data: self.__lose())
+        EventBus.subscribe('change_scene', lambda event_type, data: self.__set_lose())
 
 
 
@@ -112,6 +113,9 @@ class MediatorControllers:
         """Применяет visitor ко всем врагам"""
         for enemy in self.__enemies_controller.get_enemies_set():
             enemy.visit(visitor)
+
+    def __set_lose(self):
+        self.__is_lose = False
 
     @property
     def selected_tile(self)->Optional[Tile]:

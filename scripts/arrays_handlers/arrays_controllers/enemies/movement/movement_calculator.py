@@ -35,6 +35,3 @@ class MovementCalculator:
         self.__current_tile += 1
 
         return movement_array
-
-
-
