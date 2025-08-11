@@ -15,6 +15,9 @@ class SpritesFactory:
     def create_sprite(self, rect:Rect3D, path_image:str, parent:NodePath|Sprite3D, name_group:str, number:int)->Sprite3D:
         return Sprite3D(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
 
+    def get_texture(self, path_image:str)->Texture:
+        return self.__render_manager.loader.loadTexture(path_image)
+
     def create2Dnode(self, name:str)->NodePath:
         return self.__render_manager.main_node2d.attachNewNode(name)
 

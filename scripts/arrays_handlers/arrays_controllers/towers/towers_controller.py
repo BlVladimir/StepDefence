@@ -14,7 +14,7 @@ from scripts.sprite.sprites_factory import SpritesFactory
 class TowersController:
     """Обработчик башен"""
     def __init__(self, sprites_factory:SpritesFactory, mediator: 'MediatorControllers'):
-        self.__config = TowersConfig()
+        self.__config = TowersConfig(sprites_factory)
         self.__tower_builder = TowerBuilder(sprites_factory, self.__config)
         self.__mediator = mediator
 

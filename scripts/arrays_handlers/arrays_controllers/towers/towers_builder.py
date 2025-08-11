@@ -5,6 +5,7 @@ from panda3d.core import CullBinManager
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.arrays_handlers.arrays_controllers.towers.rower_ui.charge_display import ChargeDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state import RoundRadius
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
@@ -20,6 +21,7 @@ class AbstractTowerBuilder(ABC):
 
         CullBinManager.get_global_ptr().add_bin('tower', CullBinManager.BT_fixed, 2)
         CullBinManager.get_global_ptr().add_bin('gun', CullBinManager.BT_fixed, 3)
+        CullBinManager.get_global_ptr().add_bin('ui_tower', CullBinManager.BT_fixed, 4)
         CullBinManager.get_global_ptr().add_bin('radius', CullBinManager.BT_fixed, 10)
 
     @abstractmethod
@@ -67,14 +69,16 @@ class TowerBuilder(AbstractTowerBuilder):
                                                 tile.sprite, 'gun', self._counter))
         else:
             gun_state = None
+        sprite = self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
+                                                       tile.sprite, 'tower', self._counter)
         tower = Tower(
             type_tower=type_tower,
-            sprite=self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
-                                                       tile.sprite, 'tower', self._counter),
+            sprite=sprite,
             damage_dict=characteristic,
             radius_state=RoundRadius(radius, tile.sprite.rect.center),
             gun_state=gun_state,
-            visitor_improve=self.__config.get_visitor_improve(type_tower)
+            visitor_improve=self.__config.get_visitor_improve(type_tower),
+            charge_display=ChargeDisplay(sprite.main_node, self.__config.get_charge_textures(), self._counter)
         )
 
         self._counter += 1

@@ -1,7 +1,11 @@
 from typing import Tuple, Dict, Optional
 
+from panda3d.core import Texture
+
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
+from scripts.sprite.sprites_factory import SpritesFactory
+
 
 class Radius:
     def __init__(self, value:float, type_radius:str='round'):
@@ -18,7 +22,7 @@ class Radius:
 
 class TowersConfig:
     """Содержит объекты башен для копирования и их числовые значения"""
-    def __init__(self):
+    def __init__(self, sprite_factory:SpritesFactory):
         self.__products = {
             'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2),
             'sniper': dict(basic_damage=4, cost=5, radius=Radius(2), improve_cost_array=(6, 8)),
@@ -48,6 +52,12 @@ class TowersConfig:
             'venom': TowerVisitor(basic_damage=2, radius=1.2),
             'anty_invisible':TowerVisitor(basic_damage=2, radius=1.2)
         }
+
+        self.__charge_textures = (sprite_factory.get_texture('images2d/UI/enemy_characteristic/charged.png'),
+                                  sprite_factory.get_texture('images2d/UI/enemy_characteristic/not_charged.png'))
+
+    def get_charge_textures(self)->Tuple[Texture, Texture]:
+        return self.__charge_textures
 
     def get_visitor_improve(self, type_tower:str)->TowerVisitor:
         return self.__visitors_dict[type_tower]

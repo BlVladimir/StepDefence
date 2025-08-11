@@ -10,7 +10,7 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class Tower:
     """Класс башни"""
-    def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove'):
+    def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove', charge_display:'ChargeDisplay'):
         self._type_tower = type_tower
 
         self._damage_dict = damage_dict
@@ -29,6 +29,7 @@ class Tower:
         self.__redraw_radius()
 
         self._is_charge = True
+        self.__charge_display = charge_display
 
         self.__lambda_complete = lambda event_type, data:self.__set_is_charge(True)
         self.__lambda_start = lambda event_type, data:self.__set_is_charge(False)
@@ -39,6 +40,7 @@ class Tower:
     def __set_is_charge(self, value:bool)->None:
         """Меняет значе"""
         self._is_charge = value
+        self.__charge_display.set_texture(value)
 
     def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
         """Проверяет, в радиусе ли враг"""
@@ -96,6 +98,7 @@ class Tower:
     @property
     def damage_dict(self)->Dict:
         self._is_charge = False
+        self.__set_is_charge(False)
         return self._damage_dict
 
     @property
