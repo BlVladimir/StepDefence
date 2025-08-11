@@ -60,12 +60,20 @@ class Sprite3D:
             self.__convert_vec = Vec3(parent._rect.center.x, parent._rect.center.y, 0)
 
         self._main_node.setPythonTag('sprite', self)
+
         self.__select_frame = self.__wireframe(Vec4(0.5, 0, 0, 0.8))
         self.__select_frame.hide()
+        self.__is_selected = False
+
+        self.__special_select_frame = self.__wireframe(Vec4(0.8, 0.8, 1, 1))
+        self.__special_select_frame.hide()
+        self.__is_special_selected = False
+
         self.__use_frame = self.__wireframe()
         self.__use_frame.hide()
         self.__is_using = False
-        self.__is_selected = False
+
+
         self._debug_mode = debug_mode
 
     def rotate(self, angle: int | float = 90):
@@ -116,6 +124,7 @@ class Sprite3D:
     @is_selected.setter
     def is_selected(self, value:bool):
         self.__is_selected = value and not self.__is_using
+        self.is_special_selected = False
         if value:
             self.__select_frame.show()
         else:
@@ -129,10 +138,23 @@ class Sprite3D:
     def is_using(self, value:bool):
         self.__is_using = value
         self.is_selected = False
+        self.is_special_selected = False
         if value:
             self.__use_frame.show()
         else:
             self.__use_frame.hide()
+
+    @property
+    def is_special_selected(self):
+        return self.__is_special_selected
+
+    @is_special_selected.setter
+    def is_special_selected(self, value:bool):
+        self.__is_special_selected = value and not self.__is_using
+        if value:
+            self.__special_select_frame.show()
+        else:
+            self.__special_select_frame.hide()
 
     @property
     def rect(self):
