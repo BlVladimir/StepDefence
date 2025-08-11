@@ -25,9 +25,15 @@ class GroupEnemiesBuilder:
         rects, poses_on_tile, started_divisiones = self.__create_rects(tile, randrange(1, 4))
         try:
             for i in range(len(rects)):
-                self.__enemies_builder.create_enemy(wave, rects[i], choice(self.__type_tuple[0:level+2] if level < 3 else self.__type_tuple), poses_on_tile[i], started_divisiones[i])
+                self.__enemies_builder.create_enemy(wave, rects[i], self.__get_type(wave, level), poses_on_tile[i], started_divisiones[i])
         except KeyError:
             raise KeyError('len(rects) != len(poses_on_tile)')
+
+    def __get_type(self, wave:int, level:int)->str:
+        if wave == 0:
+            return 'basic'
+        return choice(self.__type_tuple[0:level+2] if level < 2 else self.__type_tuple)
+
 
     @staticmethod
     def __create_rects(rect:Rect3D, count:int):
