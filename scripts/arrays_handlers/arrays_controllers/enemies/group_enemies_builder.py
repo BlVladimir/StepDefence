@@ -4,7 +4,6 @@ from panda3d.core import NodePath, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
-from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprites_factory import SpritesFactory
 
@@ -14,7 +13,7 @@ class GroupEnemiesBuilder:
     def __init__(self, enemies_node:NodePath, sprites_factory:SpritesFactory, track:Track):
         self._enemies_node = enemies_node
         self.__enemies_builder = EnemiesBuilder(self._enemies_node, sprites_factory, track)
-        self.__type_tuple = ('basic', 'big', 'armored', 'regen')
+        self.__type_tuple = ('basic', 'big', 'armored', 'regen', 'invisible', 'giant')
 
     def clear_enemies(self)->None:
         """Удаоляет врагов"""
@@ -32,7 +31,7 @@ class GroupEnemiesBuilder:
     def __get_type(self, wave:int, level:int)->str:
         if wave == 0:
             return 'basic'
-        return choice(self.__type_tuple[0:level+2] if level < 2 else self.__type_tuple)
+        return choice(self.__type_tuple[0:level+2] if level < 4 else self.__type_tuple)
 
 
     @staticmethod

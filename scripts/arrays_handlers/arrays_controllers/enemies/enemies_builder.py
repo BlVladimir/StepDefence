@@ -28,7 +28,7 @@ class EnemiesBuilder:
 
     def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2)->None:
         parameters = self.__config.get_started_characteristic(type_enemy)
-        parameters['health'] += self.__config.get_wave_health_modifier(wave)
+        parameters['health'] = round(parameters['health']*self.__config.get_wave_health_modifier(wave))
         sprite = self.__sprites_factory.create_sprite(rect, self.__config.get_image_enemy(type_enemy), self.__enemies_node,
                                                       'enemy', self._counter)
         Enemy(sprite,

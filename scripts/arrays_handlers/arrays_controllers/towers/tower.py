@@ -59,6 +59,7 @@ class Tower:
 
     def show_radius(self)->None:
         """Визуализирует радиус"""
+        debug('show radius')
         self._radius_node.show()
 
     def hide_radius(self)->None:

@@ -47,7 +47,6 @@ class TowerBuilder(AbstractTowerBuilder):
                 raise Exception('Incorrect radius type')
 
         characteristic = self.__config.get_started_characteristic_dict(type_tower)
-        debug(characteristic)
         match tile.effect:
             case 'increase_damage':
                 characteristic['basic_damage'] = round(characteristic['basic_damage']*1.5)

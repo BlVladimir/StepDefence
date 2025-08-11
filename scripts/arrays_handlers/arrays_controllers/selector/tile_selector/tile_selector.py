@@ -1,4 +1,4 @@
-from logging import error
+from logging import error, info
 from typing import Optional
 
 from scripts.arrays_handlers.arrays_controllers.selector.abstract_selector import AbstractSelector

@@ -26,7 +26,8 @@ class MediatorControllers:
 
         self.__current_wave = 0
         self.__level = 0
-        self._money = 4
+        self.__STARTED_MONEY = 400
+        self._money = self.__STARTED_MONEY
         self._discount = 0
 
         self.__is_lose = False
@@ -48,8 +49,8 @@ class MediatorControllers:
         self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
         self.__level = level
         self._discount = 1
-        self._money = 4
-        EventBus.publish('update_money', 4)
+        self._money = self.__STARTED_MONEY
+        EventBus.publish('update_money', self.__STARTED_MONEY)
 
     def __complete_end_turn(self)->None:
         """Заканчивает смену хода"""
