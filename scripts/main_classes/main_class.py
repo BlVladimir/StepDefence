@@ -28,10 +28,10 @@ class StepDefence(ShowBase):
 
         self.__WIDTH = 1000
         self.__HEIGHT = 600
-        self.__DEBUG_MODE = False
+        self.__DEBUG_MODE = True
 
-        self._set_fullscreen(True)
-        # self._set_window_size(self.__WIDTH, self.__HEIGHT)
+        # self._set_fullscreen(True)
+        self._set_window_size(self.__WIDTH, self.__HEIGHT)
 
         render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.aspect2d, set_window_size=self._set_window_size, win=self.win)
 
