@@ -28,13 +28,14 @@ class StepDefence(ShowBase):
 
         self.__WIDTH = 1000
         self.__HEIGHT = 600
+        self.__DEBUG_MODE = False
 
-        #self._set_fullscreen(True)
-        self._set_window_size(self.__WIDTH, self.__HEIGHT)
+        self._set_fullscreen(True)
+        # self._set_window_size(self.__WIDTH, self.__HEIGHT)
 
         render_manager = RenderManager(main_node3d=self.render, loader=self.loader, main_node2d=self.aspect2d, set_window_size=self._set_window_size, win=self.win)
 
-        self.__settings = Settings()
+        self.__settings = Settings(self.__DEBUG_MODE)
         self.__sprites_factory = SpritesFactory(self.__settings, render_manager, self.__WIDTH / self.__HEIGHT)
 
         self.__click_handler = SelectedHandler(self.cam, self.mouseWatcherNode, self.render)
@@ -47,7 +48,8 @@ class StepDefence(ShowBase):
 
         self.__key_handler = KeyHandler(self.accept)
 
-        self.__draw_basis()
+        if self.__DEBUG_MODE:
+            self.__draw_basis()
 
         self.loop = asyncio.get_event_loop()
         EventBus.publish('append_task', ['update_async', self.__update_async])

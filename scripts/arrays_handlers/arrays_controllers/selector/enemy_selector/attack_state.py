@@ -43,6 +43,7 @@ class AttackState(AbstractStateSelector):
     def unselect_sprite(self)->None:
         if self._main_selected_sprite and self._main_selected_sprite not in self.__set_possible_for_attack:
             self._main_selected_sprite.is_selected = False
+        self._main_selected_sprite = None
 
     def __clear_set(self):
         for sprite in self.__set_possible_for_attack:

@@ -64,5 +64,3 @@ class EnemiesController:
         if not self.__is_round_ended:
             self.__is_round_ended = True
             EventBus.publish('start_end_turn')
-
-

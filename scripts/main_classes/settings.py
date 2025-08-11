@@ -1,8 +1,8 @@
 
 class Settings:
     """Содержит поля для глобальных настроек игры"""
-    def __init__(self):
-        self._debug_mode = True
+    def __init__(self, debug_mode:bool = True):
+        self._debug_mode = debug_mode
 
     @property
     def debug_mode(self)->bool:

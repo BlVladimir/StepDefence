@@ -59,7 +59,7 @@ class UpgradeTable:
         self.__characteristic_node.getChildren().detach()
         debug(sorted_characteristic)
         for i, (char, value_char) in enumerate(sorted_characteristic.items()):
-            self.__get_frame(f'{' '.join(char.split('_'))}: {value_char}', Vec3(0, -0.15*i))
+            self.__get_frame(f'{'\n'.join(char.split('_'))}: {value_char}', Vec3(0, -0.15*i))
 
     def __get_frame(self, text:str='how you see it?', pos:Vec3=Vec3(0, 0)):
         """Создает текст"""
