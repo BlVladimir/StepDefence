@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from logging import debug
 
 from panda3d.core import CullBinManager
 
@@ -44,11 +45,12 @@ class TowerBuilder(AbstractTowerBuilder):
                 raise Exception('Incorrect radius type')
 
         characteristic = self.__config.get_started_characteristic_dict(type_tower)
+        debug(characteristic)
         match tile.effect:
             case 'increase_damage':
                 characteristic['basic_damage'] = round(characteristic['basic_damage']*1.5)
-            case 'piercing_armor':
-                characteristic.setdefault('piercing_armor', True)
+            case 'armor_piercing':
+                characteristic.setdefault('armor_piercing', True)
             case 'poison':
                 characteristic.setdefault('poison', Effect(0, 2))
                 characteristic['poison'] += 1
@@ -57,6 +59,7 @@ class TowerBuilder(AbstractTowerBuilder):
                 characteristic['additional_money'] += 1
             case 'increase_radius':
                 radius *= 1.5
+        debug(characteristic)
 
 
         if self.__config.get_gun(type_tower):

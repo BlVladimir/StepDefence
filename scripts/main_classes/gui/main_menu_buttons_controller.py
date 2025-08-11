@@ -1,8 +1,8 @@
 from direct.gui.DirectButton import DirectButton
 from panda3d.core import Vec3, NodePath
 
-from scripts.main_classes.buttons.buttons_controller import ButtonsController
-from scripts.main_classes.buttons.buttons_group import ButtonsGroup
+from scripts.main_classes.gui.buttons_controller import ButtonsController
+from scripts.main_classes.gui.buttons_group import ButtonsGroup
 from scripts.main_classes.interaction.event_bus import EventBus
 
 

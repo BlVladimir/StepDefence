@@ -1,4 +1,4 @@
-from scripts.main_classes.buttons.buttons_controller import ButtonsController
+from scripts.main_classes.gui.buttons_controller import ButtonsController
 from scripts.sprite.sprites_factory import SpritesFactory
 
 

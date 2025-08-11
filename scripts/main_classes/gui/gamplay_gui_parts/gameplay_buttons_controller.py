@@ -2,10 +2,10 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import Vec3, TransparencyAttrib, Texture, PNMImage, NodePath, TextNode
 
-from scripts.main_classes.buttons.buttons_controller import ButtonsController
-from scripts.main_classes.buttons.buttons_group import ButtonsGroup
-from scripts.main_classes.buttons.gamplay_gui_parts.bugs_list import BugsList
-from scripts.main_classes.buttons.gamplay_gui_parts.upgrade_table import UpgradeTable
+from scripts.main_classes.gui.buttons_controller import ButtonsController
+from scripts.main_classes.gui.buttons_group import ButtonsGroup
+from scripts.main_classes.gui.gamplay_gui_parts.bugs_list import BugsList
+from scripts.main_classes.gui.gamplay_gui_parts.upgrade_table import UpgradeTable
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -63,6 +63,14 @@ class GameplayButtonsController(ButtonsController):
                                        scale=0.15,
                                        pos=Vec3(0, -0.4),
                                        command=lambda: EventBus.publish('buy_tower', 'venom'),
+                                       frameColor=((0.5, 0.5, 0.5, 1),
+                                                   (0.7, 0.7, 0.7, 1),
+                                                   (0.3, 0.3, 0.3, 1))),
+                          DirectButton(image='images2d/tower/anty_invisibility_tower.png',
+                                       parent=self.__shop_frame,
+                                       scale=0.15,
+                                       pos=Vec3(0, -0.8),
+                                       command=lambda: EventBus.publish('buy_tower', 'anty_invisible'),
                                        frameColor=((0.5, 0.5, 0.5, 1),
                                                    (0.7, 0.7, 0.7, 1),
                                                    (0.3, 0.3, 0.3, 1)))

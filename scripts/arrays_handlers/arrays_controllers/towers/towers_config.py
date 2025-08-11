@@ -23,24 +23,31 @@ class TowersConfig:
             'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2),
             'sniper': dict(basic_damage=4, cost=5, radius=Radius(2), improve_cost_array=(6, 8)),
             'anty_shield': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(5, 7), armor_piercing=True),
-            'venom': dict(basic_damage=2, cost=5, radius=Radius(1), improve_cost_array=(4, 6), poison=Effect(2, 2))}
+            'venom': dict(basic_damage=2, cost=5, radius=Radius(1), improve_cost_array=(4, 6), poison=Effect(2, 2)),
+            'anty_invisible': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(6, 8), vision=True)
+        }
 
         self.__sprites_towers_foundations_dict = {
             'basic':"images2d/tower/common_foundation.png",
             'sniper':"images2d/tower/sniper_foundation.png",
             'anty_shield':"images2d/tower/anty_shield.png",
-            'venom':"images2d/tower/venom_foundation.png"}
+            'venom':"images2d/tower/venom_foundation.png",
+            'anty_invisible':"images2d/tower/anty_invisibility_tower.png"
+        }
 
         self.__sprites_towers_guns_dict = {
             'basic':"images2d/tower/common_gun.png",
             'sniper':"images2d/tower/sniper_gun.png",
-            'venom':"images2d/tower/venom_gun.png"}
+            'venom':"images2d/tower/venom_gun.png"
+        }
 
         self.__visitors_dict = {
             'basic': TowerVisitor(basic_damage=2, radius=1.2),
             'sniper': TowerVisitor(basic_damage=2, radius=1.2),
             'anty_shield': TowerVisitor(basic_damage=2, radius=1.2),
-            'venom': TowerVisitor(basic_damage=2, radius=1.2)}
+            'venom': TowerVisitor(basic_damage=2, radius=1.2),
+            'anty_invisible':TowerVisitor(basic_damage=2, radius=1.2)
+        }
 
     def get_visitor_improve(self, type_tower:str)->TowerVisitor:
         return self.__visitors_dict[type_tower]
@@ -50,7 +57,7 @@ class TowersConfig:
 
     def get_started_characteristic_dict(self, type_tower:str)->Dict:
         r = {}
-        for i in ['basic_damage', 'armor_piercing', 'poison', 'additional_money']:
+        for i in ['basic_damage', 'armor_piercing', 'poison', 'additional_money', 'vision']:
             if i in self.__products[type_tower].keys():
                 r[i] = self.__products[type_tower][i]
         return r

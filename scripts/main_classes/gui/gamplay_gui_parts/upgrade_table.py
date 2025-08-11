@@ -29,7 +29,7 @@ class UpgradeTable:
         self.__button_upgrade.setTransparency(TransparencyAttrib.MAlpha)
 
         self.__images_list = ['images2d/upgrade/1lvl.png', 'images2d/upgrade/2lvl.png', 'images2d/upgrade/3lvl.png']
-        self.__sequence_characteristic = ['basic_damage', 'radius', 'armor_piercing', 'poison', 'additional_money']
+        self.__sequence_characteristic = ['basic_damage', 'radius', 'armor_piercing', 'poison', 'additional_money', 'vision']
         self.__characteristic_node = self.__upgrade_table_frame.attachNewNode('characteristic_node')
         self.__frame_char = DirectFrame(parent=self.__characteristic_node,
                                         frameSize=(-0.25, 0.25, -0.1, 0.1),
@@ -55,9 +55,9 @@ class UpgradeTable:
 
     def __redraw_characteristic(self, characteristic:Dict):
         """Создает объекты, отображающие характеристику башни"""
+        debug(characteristic)
         sorted_characteristic = dict(sorted(characteristic.items(), key=lambda x: self.__sequence_characteristic.index(x[0])))
         self.__characteristic_node.getChildren().detach()
-        debug(sorted_characteristic)
         for i, (char, value_char) in enumerate(sorted_characteristic.items()):
             self.__get_frame(f'{'\n'.join(char.split('_'))}: {value_char}', Vec3(0, -0.15*i))
 

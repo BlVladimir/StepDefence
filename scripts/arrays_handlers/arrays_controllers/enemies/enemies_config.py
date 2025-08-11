@@ -9,7 +9,9 @@ class EnemiesConfig:
         self.__enemies_image = {'basic':'images2d/enemy/common.png',
                                 'big':'images2d/enemy/armored_enemy.png',
                                 'regen':'images2d/enemy/regen.png',
-                                'armored':'images2d/enemy/shield_enemy.png'}
+                                'armored':'images2d/enemy/shield_enemy.png'
+                                # 'invisible':
+                                }
 
         self.__started_characteristic = {'basic': {'health':3},
                                          'big': {'health':6},

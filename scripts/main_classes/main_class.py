@@ -92,7 +92,7 @@ class StepDefence(ShowBase):
         return Task.cont
 
     def fixCameraTask(self, task):
-        self.camera.setPos(0, 0, 13)
+        self.camera.setPos(0, 0, 16)
         self.camera.setHpr(0, -90, 0)
         return Task.cont
 

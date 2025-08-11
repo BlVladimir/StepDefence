@@ -51,7 +51,7 @@ class TilesBuilder(AbstractTilesBuilder):
                         'basic':'images2d/tile/common_building.png',
                         'increase_damage':'images2d/tile/damage_up.png',
                         'increase_radius':'images2d/tile/radius_up.png',
-                        'piercing_armor':'images2d/tile/piercing_armor.png',
+                        'armor_piercing':'images2d/tile/piercing_armor.png',
                         'poison':'images2d/tile/poison_up.png',
                         'additional_money':'images2d/tile/money_up.png'}
 

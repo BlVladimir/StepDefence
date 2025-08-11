@@ -15,7 +15,7 @@ class ButtonsGroup:
         elif init_list:
             self.__buttons_array = init_list
         else:
-            warning('no buttons in group')
+            warning('no gui in group')
 
     def hide(self) -> None:
         self._node.hide()

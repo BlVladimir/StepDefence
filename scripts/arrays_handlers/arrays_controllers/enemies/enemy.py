@@ -62,7 +62,7 @@ class Enemy:
         self._characteristic_dict['health'] -= self.__damage_calculator.calculate_physic_damage(self._characteristic_dict, tower_dict)
         self.__damage_calculator.calculate_effect(tower_dict, self.__effects_sets)
         self.__health_display.update_health(self._characteristic_dict['health'])
-        self.__chack_health(tower_dict.setdefault('additional_money', 0))
+        self.__chack_health(tower_dict['additional_money'] if 'additional_money' in tower_dict.keys() else 0)
         self.__log.debug(f'health: {self._characteristic_dict['health']}, {self.__effects_sets}')
 
     def visit(self, visitor:EnemyVisitor):
