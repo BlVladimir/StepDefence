@@ -86,7 +86,7 @@ class Tower:
         self._radius_node.setDepthTest(False)
         self._radius_node.setDepthWrite(False)
 
-        self._radius_node.setTexture(self.__radius_state.gradient_texture())
+        self._radius_node.setTexture(self.__radius_state.texture)
         self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
         self._radius_node.show()
 

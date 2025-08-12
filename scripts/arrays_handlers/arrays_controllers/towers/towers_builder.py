@@ -43,6 +43,7 @@ class TowerBuilder(AbstractTowerBuilder):
         match self.__config.get_radius(type_tower).type_radius:
             case 'round':
                 radius = self.__config.get_radius(type_tower).value
+                texture = self.__config.round_texture
             case _:
                 raise Exception('Incorrect radius type')
 
@@ -74,7 +75,7 @@ class TowerBuilder(AbstractTowerBuilder):
             type_tower=type_tower,
             sprite=sprite,
             damage_dict=characteristic,
-            radius_state=RoundRadius(radius, tile.sprite.rect.center),
+            radius_state=RoundRadius(radius, texture, tile.sprite.rect.center),
             gun_state=gun_state,
             visitor_improve=self.__config.get_visitor_improve(type_tower),
             charge_display=ChargeDisplay(sprite.main_node, self.__config.get_charge_textures(), self._counter)

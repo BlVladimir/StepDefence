@@ -1,8 +1,8 @@
 from logging import error
 
-from scripts.arrays_handlers.arrays_controllers.selector.abstract_selector import AbstractSelector
-from scripts.arrays_handlers.arrays_controllers.selector.enemy_selector.attack_state import AttackState
-from scripts.arrays_handlers.arrays_controllers.selector.enemy_selector.watch_state import WatchState
+from scripts.arrays_handlers.selector.abstract_selector import AbstractSelector
+from scripts.arrays_handlers.selector.enemy_selector.attack_state import AttackState
+from scripts.arrays_handlers.selector.enemy_selector.watch_state import WatchState
 from scripts.main_classes.interaction.event_bus import EventBus
 
 

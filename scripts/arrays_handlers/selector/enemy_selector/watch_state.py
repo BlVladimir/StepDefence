@@ -1,6 +1,6 @@
 from typing import Optional
 
-from scripts.arrays_handlers.arrays_controllers.selector.abstract_state_selector import AbstractStateSelector
+from scripts.arrays_handlers.selector.abstract_state_selector import AbstractStateSelector
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
 

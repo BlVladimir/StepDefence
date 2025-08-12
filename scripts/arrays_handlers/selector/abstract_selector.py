@@ -2,7 +2,7 @@ from abc import ABC
 from logging import error
 from typing import Optional
 
-from scripts.arrays_handlers.arrays_controllers.selector.abstract_state_selector import AbstractStateSelector
+from scripts.arrays_handlers.selector.abstract_state_selector import AbstractStateSelector
 from scripts.sprite.sprite3D import Sprite3D
 
 
@@ -40,4 +40,3 @@ class AbstractSelector(ABC):
     @property
     def used_sprite(self)->Optional[Sprite3D]:
         return self._used_sprite
-

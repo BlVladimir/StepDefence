@@ -1,8 +1,8 @@
-from logging import error, info
+from logging import error
 from typing import Optional
 
-from scripts.arrays_handlers.arrays_controllers.selector.abstract_selector import AbstractSelector
-from scripts.arrays_handlers.arrays_controllers.selector.tile_selector.one_selected_tile_state import \
+from scripts.arrays_handlers.selector.abstract_selector import AbstractSelector
+from scripts.arrays_handlers.selector.tile_selector.one_selected_tile_state import \
     OneSelectedTileState
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.main_classes.interaction.event_bus import EventBus

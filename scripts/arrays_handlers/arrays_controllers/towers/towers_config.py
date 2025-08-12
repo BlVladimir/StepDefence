@@ -1,6 +1,7 @@
+from math import hypot
 from typing import Tuple, Dict, Optional
 
-from panda3d.core import Texture
+from panda3d.core import Texture, PNMImage
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
@@ -23,6 +24,7 @@ class Radius:
 class TowersConfig:
     """Содержит объекты башен для копирования и их числовые значения"""
     def __init__(self, sprite_factory:SpritesFactory):
+        self._round_texture = self.__texture_round_radius()
         self.__products = {
             'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2),
             'sniper': dict(basic_damage=4, cost=5, radius=Radius(2), improve_cost_array=(6, 8)),
@@ -85,3 +87,48 @@ class TowersConfig:
 
     def get_radius(self, type_tower: str)->Radius:
         return self.__products[type_tower]['radius']
+
+    @property
+    def round_texture(self)->Texture:
+        return self._round_texture
+
+    @staticmethod
+    def __texture_round_radius(size:int=512, radius_relationship:float=0.1, brightness:int=255):
+        """
+        Создает градиентную текстуру с плавным переходом альфа-канала.
+
+        :param size: Размер текстуры (ширина = высота)
+        :param radius_relationship: Коэффициент, определяющий ширину границы градиента
+        :param brightness: Яркость цвета внутри градиента (0-255)
+        :return: Объект TextTexture (Panda3D)
+        """
+        # Создаем PNMImage для работы с пикселями
+        img = PNMImage(size, size, 4)
+        radius = size / 2
+
+        for y in range(size):
+            for x in range(size):
+                dx = x - radius
+                dy = y - radius
+                distance = hypot(dx, dy)
+
+                # Вычисляем альфа от 0 до 1
+                alpha = max((distance - (1 - radius_relationship) * radius) / (radius * radius_relationship), 0)
+
+                if distance < radius:
+                    # Применяем яркость к RGB и альфа
+                    img.set_xel_a(
+                        x, y,
+                        brightness / 255.0,  # Красный
+                        brightness / 255.0,  # Зеленый
+                        brightness / 255.0,  # Синий
+                        alpha  # Альфа
+                    )
+                else:
+                    # Вне радиуса - прозрачный
+                    img.set_xel_a(x, y, 0, 0, 0, 0)
+
+        # Создаем объект текстуры из изображения
+        final_texture = Texture()
+        final_texture.load(img)
+        return final_texture

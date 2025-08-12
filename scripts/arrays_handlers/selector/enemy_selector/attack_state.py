@@ -1,7 +1,7 @@
 from typing import Set, Optional
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
-from scripts.arrays_handlers.arrays_controllers.selector.abstract_state_selector import AbstractStateSelector
+from scripts.arrays_handlers.selector.abstract_state_selector import AbstractStateSelector
 from scripts.sprite.sprite3D import Sprite3D
 
 

@@ -5,7 +5,7 @@ from panda3d.core import PandaNode
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_builder import MapTilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
-from scripts.arrays_handlers.arrays_controllers.selector.tile_selector.tile_selector import TileSelector
+from scripts.arrays_handlers.selector.tile_selector.tile_selector import TileSelector
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 from scripts.sprite.sprites_factory import SpritesFactory

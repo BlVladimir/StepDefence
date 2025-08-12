@@ -8,7 +8,7 @@ from panda3d.core import NodePath
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
-from scripts.arrays_handlers.arrays_controllers.selector.enemy_selector.enemy_selector import EnemySelector
+from scripts.arrays_handlers.selector.enemy_selector.enemy_selector import EnemySelector
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
