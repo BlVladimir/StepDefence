@@ -10,12 +10,13 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class Tower:
     """Класс башни"""
-    def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove', charge_display:'ChargeDisplay'):
+    def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove', charge_display:'ChargeDisplay', targets_state:'AbstractTargetsState'):
         self._type_tower = type_tower
 
         self._damage_dict = damage_dict
         self.__gun_strategy = gun_state
         self.__radius_state = radius_state
+        self._targets_state = targets_state
 
         self._tower_sprite = sprite
         self._tower_sprite.external_object = self
@@ -119,3 +120,7 @@ class Tower:
         characteristic = self._damage_dict.copy()
         characteristic['radius'] = str(self.__radius_state)
         return characteristic
+
+    @property
+    def targets_state(self)->'AbstractTargetsState':
+        return self._targets_state

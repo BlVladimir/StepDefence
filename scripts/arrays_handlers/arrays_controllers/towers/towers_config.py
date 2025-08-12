@@ -4,6 +4,8 @@ from typing import Tuple, Dict, Optional
 from panda3d.core import Texture, PNMImage
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
+from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.one_target_state import \
+    OneTargetState
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.sprite.sprites_factory import SpritesFactory
 
@@ -25,12 +27,13 @@ class TowersConfig:
     """Содержит объекты башен для копирования и их числовые значения"""
     def __init__(self, sprite_factory:SpritesFactory):
         self._round_texture = self.__texture_round_radius()
+        self.__targets_state_dict = {'one_target':OneTargetState()}
         self.__products = {
-            'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2),
-            'sniper': dict(basic_damage=4, cost=5, radius=Radius(2), improve_cost_array=(6, 8)),
-            'anty_shield': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(5, 7), armor_piercing=True),
-            'venom': dict(basic_damage=2, cost=5, radius=Radius(1), improve_cost_array=(4, 6), poison=Effect(2, 2)),
-            'anty_invisible': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(6, 8), vision=True)
+            'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2, targets_state='one_target'),
+            'sniper': dict(basic_damage=4, cost=5, radius=Radius(2), improve_cost_array=(6, 8), targets_state='one_target'),
+            'anty_shield': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(5, 7), armor_piercing=True, targets_state='one_target'),
+            'venom': dict(basic_damage=2, cost=5, radius=Radius(1), improve_cost_array=(4, 6), poison=Effect(2, 2), targets_state='one_target'),
+            'anty_invisible': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(6, 8), vision=True, targets_state='one_target')
         }
 
         self.__sprites_towers_foundations_dict = {
@@ -73,6 +76,9 @@ class TowersConfig:
             if i in self.__products[type_tower].keys():
                 r[i] = self.__products[type_tower][i]
         return r
+
+    def get_targets_state(self, type_tower:str)->'OneTargetState':
+        return self.__targets_state_dict[self.__products[type_tower]['targets_state']]
 
     def get_cost(self, type_tower:str)->int:
         return self.__products[type_tower]['cost']

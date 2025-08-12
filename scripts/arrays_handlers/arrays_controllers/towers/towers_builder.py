@@ -78,7 +78,8 @@ class TowerBuilder(AbstractTowerBuilder):
             radius_state=RoundRadius(radius, texture, tile.sprite.rect.center),
             gun_state=gun_state,
             visitor_improve=self.__config.get_visitor_improve(type_tower),
-            charge_display=ChargeDisplay(sprite.main_node, self.__config.get_charge_textures(), self._counter)
+            charge_display=ChargeDisplay(sprite.main_node, self.__config.get_charge_textures(), self._counter),
+            targets_state=self.__config.get_targets_state(type_tower)
         )
 
         self._counter += 1

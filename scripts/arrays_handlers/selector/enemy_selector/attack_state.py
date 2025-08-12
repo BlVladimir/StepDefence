@@ -9,13 +9,13 @@ class AttackState(AbstractStateSelector):
     def __init__(self):
         super().__init__()
         self.__tower = None
-        self.__set_possible_for_attack = set()
+        self.__set_targets_for_attack = set()
 
     def get_used_sprite(self)->Optional[Sprite3D]:
         """Когда нужно получить объект для использования"""
         if self._main_selected_sprite:
-            if self._main_selected_sprite in self.__set_possible_for_attack and self.__tower.is_charge:
-                self._main_selected_sprite.external_object.hit(self.__tower.damage_dict)
+            if self.__tower.targets_state.hit_condition(self.__tower, main_sprite=self._main_selected_sprite, targets_set=self.__set_targets_for_attack):
+                self.__tower.targets_state.hit(self.__tower, main_sprite=self._main_selected_sprite, targets_set=self.__set_targets_for_attack)
                 return None
             return self._main_selected_sprite
         return None
@@ -27,10 +27,7 @@ class AttackState(AbstractStateSelector):
         self._main_selected_sprite.is_selected = True
 
     def determine_set(self, enemies_set:Set[Enemy])->None:
-        for enemy in enemies_set:
-            if self.__tower.is_enemy_in_radius(enemy.sprite):
-                enemy.sprite.is_special_selected = True
-                self.__set_possible_for_attack.add(enemy.sprite)
+        self.__set_targets_for_attack = self.__tower.targets_state.determine_set(enemies_set, self.__tower)
 
     def not_used_state(self):
         self.__clear_set()
@@ -43,14 +40,14 @@ class AttackState(AbstractStateSelector):
     def unselect_sprite(self)->None:
         if self._main_selected_sprite:
             self._main_selected_sprite.is_selected = False
-            if self._main_selected_sprite in self.__set_possible_for_attack:
+            if self._main_selected_sprite in self.__set_targets_for_attack:
                 self._main_selected_sprite.is_special_selected = True
         self._main_selected_sprite = None
 
     def __clear_set(self):
-        for sprite in self.__set_possible_for_attack:
+        for sprite in self.__set_targets_for_attack:
             sprite.is_special_selected = False
-        self.__set_possible_for_attack.clear()
+        self.__set_targets_for_attack.clear()
 
     def update_set(self, enemies_set:Set[Enemy]):
         self.__clear_set()
