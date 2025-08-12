@@ -1,5 +1,5 @@
 from logging import debug
-from typing import Optional, List
+from typing import Optional, List, Set
 
 from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane, NodePath, Loader
 
@@ -57,11 +57,11 @@ class MapsController:
     def get_selected_tile(self)->Optional[Tile]:
         return self.__tiles_controller.selected_tile
 
-    def get_towers_list(self)->List[Tower]:
-        tower_list = []
+    def get_towers_set(self)->Set[Tower]:
+        tower_set = set()
         for tower_node in self.__map_node.findAllMatches('**/tower'):
-            tower_list.append(tower_node.getPythonTag('sprite').external_object)
-        return tower_list
+            tower_set.add(tower_node.getPythonTag('sprite').external_object)
+        return tower_set
 
     @property
     def first_tile_rect(self)->Rect3D:

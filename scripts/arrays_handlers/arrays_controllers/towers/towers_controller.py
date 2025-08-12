@@ -4,6 +4,8 @@ from typing import Optional
 
 from panda3d.core import Point3
 
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.towers_builder import TowerBuilder
 from scripts.arrays_handlers.arrays_controllers.towers.towers_config import TowersConfig
@@ -25,6 +27,7 @@ class TowersController:
     def __create_tower(self, type_tower:str):
         if self.__mediator.money >= round(self.__mediator.discount*self.__config.get_cost(type_tower)):
             tower = self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile)
+            EventBus.publish('update_enemy')
             EventBus.publish('close_shop')
             self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_cost(type_tower)))
             self.__mediator.discount = 1
@@ -33,9 +36,18 @@ class TowersController:
     def clear_towers(self):
         self.__tower_builder.reset_counter()
 
+    def has_vision(self, enemy:Enemy)->None:
+        if 'invisible' in enemy.characteristic:
+            for tower in self.__mediator.iter_towers():
+                if 'vision' in tower.characteristic and tower.is_target_in_radius(enemy.sprite):
+                    enemy.visit(visitor=EnemyVisitor(invisible=False))
+                    return
+            enemy.visit(visitor=EnemyVisitor(invisible=True))
+
     def __upgrade_tower(self):
         tower = self.__mediator.selected_tile.tower
         if tower and tower.level < 2 and self.__mediator.money >= round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level]):
+            EventBus.publish('update_enemy')
             tower.upgrade()
             self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level-1]))
             self.__mediator.discount = 1

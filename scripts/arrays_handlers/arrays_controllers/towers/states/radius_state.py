@@ -13,9 +13,10 @@ class AbstractRadiusState(ABC):
     def __init__(self, radius:float, texture:Texture):
         self.__radius = 0.5 + radius*1.2
         self._texture = texture
+        self._INVISIBLE_COEFICENT = 0.3
 
     @abstractmethod
-    def is_in_radius(self, coordinate_center) -> bool:
+    def is_in_radius(self, coordinate_center, is_not_invisible=True) -> bool:
         pass
 
     def multiply_radius(self, value:float)->None:
@@ -41,9 +42,11 @@ class RoundRadius(AbstractRadiusState):
         super().__init__(radius, texture)
         self.__coordinate_center_tower = coordinate_center_tower
 
-    def is_in_radius(self, sprite_enemy:Sprite3D):
+    def is_in_radius(self, sprite_enemy:Sprite3D, is_not_invisible=True):
         center_sprite = sprite_enemy.rect.center
-        return (self.__coordinate_center_tower-center_sprite).length() <= self.radius
+        if is_not_invisible:
+            return (self.__coordinate_center_tower-center_sprite).length() <= self.radius
+        return (self.__coordinate_center_tower-center_sprite).length() <= self.radius*self._INVISIBLE_COEFICENT
 
     def clone(self, tile):
         if tile.improved_characteristic == 'radius':

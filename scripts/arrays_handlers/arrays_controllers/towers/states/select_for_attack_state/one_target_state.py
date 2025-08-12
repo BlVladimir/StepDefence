@@ -14,7 +14,7 @@ class OneTargetState(AbstractTargetsState):
         """Как определить множество врагов для выстрела"""
         targets_set = set()
         for enemy in enemies_set:
-            if tower.is_enemy_in_radius(enemy.sprite):
+            if tower.can_attack_target(enemy.sprite):
                 enemy.sprite.is_special_selected = True
                 targets_set.add(enemy.sprite)
         return targets_set

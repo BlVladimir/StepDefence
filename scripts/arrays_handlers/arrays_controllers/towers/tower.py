@@ -43,8 +43,14 @@ class Tower:
         self._is_charge = value
         self.__charge_display.set_texture(value)
 
-    def is_enemy_in_radius(self, enemy_sprite:Sprite3D)->bool:
+    def can_attack_target(self, enemy_sprite:Sprite3D)->bool:
         """Проверяет, в радиусе ли враг"""
+        if 'invisible' not in enemy_sprite.external_object.characteristic:
+            return self.__radius_state.is_in_radius(enemy_sprite)
+        else:
+            return self.__radius_state.is_in_radius(enemy_sprite, is_not_invisible=False) or (self.__radius_state.is_in_radius(enemy_sprite) and not enemy_sprite.external_object.characteristic['invisible'])
+
+    def is_target_in_radius(self, enemy_sprite:Sprite3D):
         return self.__radius_state.is_in_radius(enemy_sprite)
 
     def upgrade(self)->None:

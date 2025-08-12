@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 from logging import debug
-from typing import Optional
+from typing import Optional, Set, Iterator
 
 from panda3d.core import NodePath, Loader
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_controller import EnemiesController
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
 from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import MapsController
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
 from scripts.arrays_handlers.random_bug import RandomBug
@@ -106,7 +108,7 @@ class MediatorControllers:
 
     def visit_all_towers(self, visitor:TowerVisitor):
         """Применяет visitor ко всем башням"""
-        for tower in self.__maps_controller.get_towers_list():
+        for tower in self.__maps_controller.get_towers_set():
             tower.visit(visitor)
 
     def visit_all_enemies(self, visitor:EnemyVisitor):
@@ -116,6 +118,13 @@ class MediatorControllers:
 
     def __set_lose(self):
         self.__is_lose = False
+
+    def iter_towers(self)->Iterator[Tower]:
+        for tower in self.__maps_controller.get_towers_set():
+            yield tower
+
+    def has_vision(self, enemy:Enemy):
+        self.__towers_controller.has_vision(enemy)
 
     @property
     def selected_tile(self)->Optional[Tile]:

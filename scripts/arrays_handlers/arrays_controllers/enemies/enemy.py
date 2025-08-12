@@ -42,6 +42,9 @@ class Enemy:
 
         Enemy.subscribe()
 
+    def update(self, mediator)->None:
+        mediator.has_vision(self)
+
     def end_turn(self)->None:
         """Двигает всех врагов"""
         self._characteristic_dict['health'] -= self.__damage_calculator.calculate_end_round(self._characteristic_dict, self.__effects_sets)
@@ -67,7 +70,8 @@ class Enemy:
 
     def visit(self, visitor:EnemyVisitor):
         """Применяет visitor к врагу"""
-        visitor.visit_damage_dict(self._characteristic_dict)
+        visitor.visit_characteristic_dict(self._characteristic_dict)
+        visitor.visit_invisible_value(self._characteristic_dict)
         self.__health_display.update_health(self._characteristic_dict['health'])
 
     @property
