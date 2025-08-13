@@ -64,4 +64,4 @@ class TowersController:
     def __rotate_gun(self, mouse_point:Point3)->None:
         tower = self.__get_selected_tower()
         if tower:
-            tower.rotate(mouse_point)
+            tower.find_mouse(mouse_point)

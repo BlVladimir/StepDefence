@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from logging import debug
-from math import hypot
+from typing import Optional
 
-from panda3d.core import Vec2, PNMImage, Texture
+from panda3d.core import Vec2, Texture, Point3D, Point3
 
 from scripts.sprite.sprite3D import Sprite3D
 
@@ -10,13 +10,17 @@ from scripts.sprite.sprite3D import Sprite3D
 class AbstractRadiusState(ABC):
     """Состояние, влияющее на форму радиуса башни"""
 
-    def __init__(self, radius:float, texture:Texture):
-        self.__radius = 0.5 + radius*1.2
+    def __init__(self, radius:float=0, texture:Texture=None):
+        self.__radius = 0.5 + radius * 1.2
         self._texture = texture
         self._INVISIBLE_COEFICENT = 0.3
 
     @abstractmethod
-    def is_in_radius(self, coordinate_center, is_not_invisible=True) -> bool:
+    def is_in_radius(self, sprite_enemy:Sprite3D, is_not_invisible:bool=True, mouse_pos:Vec2=Vec2(0, 0)) -> bool:
+        pass
+
+    @abstractmethod
+    def can_attack_target(self, enemy_sprite:Sprite3D, mouse_pos:Vec2=Vec2(0, 0))->bool:
         pass
 
     def multiply_radius(self, value:float)->None:
@@ -30,7 +34,7 @@ class AbstractRadiusState(ABC):
         return self.__radius
 
     @property
-    def texture(self)->Texture:
+    def texture(self)->Optional[Texture]:
         return self._texture
 
     @abstractmethod
@@ -42,36 +46,45 @@ class RoundRadius(AbstractRadiusState):
         super().__init__(radius, texture)
         self.__coordinate_center_tower = coordinate_center_tower
 
-    def is_in_radius(self, sprite_enemy:Sprite3D, is_not_invisible=True):
+    def is_in_radius(self, sprite_enemy:Sprite3D, is_not_invisible:bool=True, mouse_pos:Vec2=Vec2(0, 0)):
         center_sprite = sprite_enemy.rect.center
         if is_not_invisible:
             return (self.__coordinate_center_tower-center_sprite).length() <= self.radius
         return (self.__coordinate_center_tower-center_sprite).length() <= self.radius*self._INVISIBLE_COEFICENT
 
-    def clone(self, tile):
-        if tile.improved_characteristic == 'radius':
-            c = tile.velue
+    def can_attack_target(self, enemy_sprite:Sprite3D, mouse_pos:Vec2=Vec2(0, 0))->bool:
+        """Проверяет, в радиусе ли враг"""
+        if 'invisible' not in enemy_sprite.external_object.characteristic:
+            return self.is_in_radius(enemy_sprite)
         else:
-            c = 1
-        new = self.__class__(self.__radius*c, tile.rect.center)
-        return new
-
-    @property
-    def texture(self)->Texture:
-        return self._texture
+            return self.is_in_radius(enemy_sprite, is_not_invisible=False) or (self.is_in_radius(enemy_sprite) and not enemy_sprite.external_object.characteristic['invisible'])
 
     def __str__(self)->str:
         return str(round((self.radius-0.5)/1.2, 2))
 
 
-
-
 class InfinityRadius(AbstractRadiusState):
     def __init__(self):
-        super().__init__(0)
+        super().__init__()
 
-    def is_in_radius(self, coordinate_center=(0, 0)):
+    def is_in_radius(self, sprite_enemy:Sprite3D, is_not_invisible:bool=True, mouse_pos:Vec2=Vec2(0, 0)):
+        return True
+
+    def can_attack_target(self, enemy_sprite:Sprite3D, mouse_pos:Vec2=Vec2(0, 0))->bool:
         return True
 
     def __str__(self)->str:
         return 'infinity'
+
+class InfinitySplashRadius(AbstractRadiusState):
+    def __init__(self, radius:float, texture:Texture):
+        super().__init__(radius-0.5, texture)
+
+    def is_in_radius(self, sprite_enemy:Sprite3D, is_not_invisible:bool=True, mouse_pos:Vec2=Vec2(0, 0)):
+        return (mouse_pos-sprite_enemy.rect.center).length() <= self.radius
+
+    def can_attack_target(self, enemy_sprite:Sprite3D, mouse_pos:Vec2=Vec2(0, 0))->bool:
+        return self.is_in_radius(enemy_sprite, mouse_pos=mouse_pos)
+
+    def __str__(self)->str:
+        return f'cannon {round(self.radius/1.2, 2)}'

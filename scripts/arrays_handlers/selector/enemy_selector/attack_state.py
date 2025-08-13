@@ -13,12 +13,7 @@ class AttackState(AbstractStateSelector):
 
     def get_used_sprite(self)->Optional[Sprite3D]:
         """Когда нужно получить объект для использования"""
-        if self._main_selected_sprite:
-            if self.__tower.targets_state.hit_condition(self.__tower, main_sprite=self._main_selected_sprite, targets_set=self.__set_targets_for_attack):
-                self.__tower.targets_state.hit(self.__tower, main_sprite=self._main_selected_sprite, targets_set=self.__set_targets_for_attack)
-                return None
-            return self._main_selected_sprite
-        return None
+        return self.__tower.targets_state.hit(self.__tower, main_sprite=self._main_selected_sprite, targets_set=self.__set_targets_for_attack)
 
     def select_sprite(self, sprite:Sprite3D)->None:
         """Логика выделения спрайта"""

@@ -1,5 +1,5 @@
 from logging import debug
-from typing import Set, Optional
+from typing import Set
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.abstract_targets_state import \
@@ -8,7 +8,7 @@ from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.sprite.sprite3D import Sprite3D
 
 
-class OneTargetState(AbstractTargetsState):
+class CannonState(AbstractTargetsState):
     """Башня стреляет в одну цель"""
     @staticmethod
     def determine_set(enemies_set:Set[Enemy], tower:Tower, **kwargs)->Set[Sprite3D]:
@@ -20,15 +20,16 @@ class OneTargetState(AbstractTargetsState):
                 targets_set.add(enemy.sprite)
         return targets_set
 
-    def hit(self, tower:Tower, **kwargs)->Optional[Sprite3D]:
+    def hit(self, tower:Tower, **kwargs)->None:
         """В каких врагов стрелять"""
-        if self.__hit_condition(tower, **kwargs) and kwargs['main_sprite']:
-            kwargs['main_sprite'].external_object.hit(tower.damage_dict)
-            return None
+        if kwargs['targets_set']:
+            if self.__hit_condition(tower, **kwargs):
+                for enemy in kwargs['targets_set']:
+                    enemy.external_object.hit(tower.damage_dict)
         elif kwargs['main_sprite']:
             return kwargs['main_sprite']
         return None
 
     @staticmethod
     def __hit_condition(tower:Tower, **kwargs)->bool:
-        return kwargs['main_sprite'] in kwargs['targets_set'] and tower.is_charge
+        return tower.is_charge

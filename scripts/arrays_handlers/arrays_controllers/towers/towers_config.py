@@ -4,6 +4,7 @@ from typing import Tuple, Dict, Optional
 from panda3d.core import Texture, PNMImage
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
+from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.cannon_state import CannonState
 from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.one_target_state import \
     OneTargetState
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
@@ -11,7 +12,7 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class Radius:
-    def __init__(self, value:float, type_radius:str='round'):
+    def __init__(self, value:float=0.0, type_radius:str='round'):
         self._value = value
         self._type_radius = type_radius
 
@@ -27,13 +28,16 @@ class TowersConfig:
     """Содержит объекты башен для копирования и их числовые значения"""
     def __init__(self, sprite_factory:SpritesFactory):
         self._round_texture = self.__texture_round_radius()
-        self.__targets_state_dict = {'one_target':OneTargetState()}
+        self.__targets_state_dict = {'one_target':OneTargetState(), 'ray':OneTargetState(), 'laser':OneTargetState(), 'cannon':CannonState()}
         self.__products = {
             'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2, targets_state='one_target'),
             'sniper': dict(basic_damage=4, cost=5, radius=Radius(2), improve_cost_array=(6, 8), targets_state='one_target'),
             'anty_shield': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(5, 7), armor_piercing=True, targets_state='one_target'),
             'venom': dict(basic_damage=2, cost=5, radius=Radius(1), improve_cost_array=(4, 6), poison=Effect(2, 2), targets_state='one_target'),
-            'anty_invisible': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(6, 8), vision=True, targets_state='one_target')
+            'anty_invisible': dict(basic_damage=3, cost=4, radius=Radius(1.5), improve_cost_array=(6, 8), vision=True, targets_state='one_target'),
+            'cutter': dict(basic_damage=2, cost=5, radius=Radius(type_radius='infinity'), improve_cost_array=(8, 10), targets_state='ray'),
+            'laser': dict(basic_damage=1, cost=6, radius=Radius(2.5), improve_cost_array=(8, 10), targets_state='laser'),
+            'cannon': dict(basic_damage=3, cost=8, radius=Radius(value=0.5, type_radius='infinity_splash'), improve_cost_array=(10, 12), targets_state='cannon')
         }
 
         self.__sprites_towers_foundations_dict = {
@@ -41,13 +45,18 @@ class TowersConfig:
             'sniper':"images2d/tower/sniper_foundation.png",
             'anty_shield':"images2d/tower/anty_shield.png",
             'venom':"images2d/tower/venom_foundation.png",
-            'anty_invisible':"images2d/tower/anty_invisibility_tower.png"
+            'anty_invisible':"images2d/tower/anty_invisibility_tower.png",
+            'cutter': 'images2d/tower/cutter_foundation.png',
+            'laser': 'images2d/tower/laser_foundation.png',
+            'cannon': 'images2d/tower/cannon.png'
         }
 
         self.__sprites_towers_guns_dict = {
             'basic':"images2d/tower/common_gun.png",
             'sniper':"images2d/tower/sniper_gun.png",
-            'venom':"images2d/tower/venom_gun.png"
+            'venom':"images2d/tower/venom_gun.png",
+            'cutter': 'images2d/tower/cutter_gun.png',
+            'laser': 'images2d/tower/laser_gun.png'
         }
 
         self.__visitors_dict = {
@@ -55,7 +64,10 @@ class TowersConfig:
             'sniper': TowerVisitor(basic_damage=2, radius=1.2),
             'anty_shield': TowerVisitor(basic_damage=2, radius=1.2),
             'venom': TowerVisitor(basic_damage=2, radius=1.2),
-            'anty_invisible':TowerVisitor(basic_damage=2, radius=1.2)
+            'anty_invisible':TowerVisitor(basic_damage=2, radius=1.2),
+            'cutter': TowerVisitor(basic_damage=1),
+            'laser': TowerVisitor(basic_damage=1),
+            'cannon': TowerVisitor(basic_damage=1)
         }
 
         self.__charge_textures = (sprite_factory.get_texture('images2d/UI/enemy_characteristic/charged.png'),

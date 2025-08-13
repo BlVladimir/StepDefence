@@ -1,7 +1,7 @@
 from logging import debug
 from typing import Optional, Dict
 
-from panda3d.core import Point3, CardMaker, TransparencyAttrib
+from panda3d.core import Point3, CardMaker, TransparencyAttrib, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.main_classes.interaction.event_bus import EventBus
@@ -14,7 +14,7 @@ class Tower:
         self._type_tower = type_tower
 
         self._damage_dict = damage_dict
-        self.__gun_strategy = gun_state
+        self.__gun_state = gun_state
         self.__radius_state = radius_state
         self._targets_state = targets_state
 
@@ -34,6 +34,7 @@ class Tower:
 
         self.__lambda_complete = lambda event_type, data:self.__set_is_charge(True)
         self.__lambda_start = lambda event_type, data:self.__set_is_charge(False)
+        self.__mouse_point = Vec2(0, 0)
 
         EventBus.subscribe('complete_end_turn', self.__lambda_complete)
         EventBus.subscribe('start_end_turn', self.__lambda_start)
@@ -45,13 +46,10 @@ class Tower:
 
     def can_attack_target(self, enemy_sprite:Sprite3D)->bool:
         """Проверяет, в радиусе ли враг"""
-        if 'invisible' not in enemy_sprite.external_object.characteristic:
-            return self.__radius_state.is_in_radius(enemy_sprite)
-        else:
-            return self.__radius_state.is_in_radius(enemy_sprite, is_not_invisible=False) or (self.__radius_state.is_in_radius(enemy_sprite) and not enemy_sprite.external_object.characteristic['invisible'])
+        return self.__radius_state.can_attack_target(enemy_sprite, self.__mouse_point)
 
-    def is_target_in_radius(self, enemy_sprite:Sprite3D):
-        return self.__radius_state.is_in_radius(enemy_sprite)
+    def is_target_in_radius(self, enemy_sprite:Sprite3D)->bool:
+        return self.__radius_state.is_in_radius(enemy_sprite, self.__mouse_point)
 
     def upgrade(self)->None:
         """Улучшает башню"""
@@ -59,10 +57,15 @@ class Tower:
         self.visit(self.__visitor_improve)
         debug(self._damage_dict)
 
-    def rotate(self, mouse_point:Point3)->None:
+    def find_mouse(self, mouse_point:Point3)->None:
         """Поворачивает башню"""
-        if self._is_charge and self.__gun_strategy:
-            self.__gun_strategy.rotate_gun(mouse_point)
+        self.__mouse_point = Vec2(mouse_point.x, mouse_point.y)
+        if self._is_charge and self.__gun_state:
+            self.__gun_state.rotate_gun(mouse_point)
+        if 'cannon' in str(self.__radius_state):
+            center = self._tower_sprite.rect.center
+            self._radius_node.setPos(mouse_point.x-center.x, 0, mouse_point.y-center.y)
+            EventBus.publish('update_select')
 
     def show_radius(self)->None:
         """Визуализирует радиус"""
@@ -80,22 +83,23 @@ class Tower:
 
     def __redraw_radius(self):
         """Пересоздает модель радиуса"""
-        card = CardMaker('radius')
-        rect = self._tower_sprite.rect
-        rect.width = self.__radius_state.radius * 2
-        rect.height = self.__radius_state.radius * 2
+        if self.__radius_state.texture:
+            card = CardMaker('radius')
+            rect = self._tower_sprite.rect
+            rect.width = self.__radius_state.radius * 2
+            rect.height = self.__radius_state.radius * 2
 
-        card.setFrame(rect.scale)
-        self._radius_node.removeNode()
-        self._radius_node = self._tower_sprite.main_node.attachNewNode(card.generate())
+            card.setFrame(rect.scale)
+            self._radius_node.removeNode()
+            self._radius_node = self._tower_sprite.main_node.attachNewNode(card.generate())
 
-        self._radius_node.setBin('radius', 0)
-        self._radius_node.setDepthTest(False)
-        self._radius_node.setDepthWrite(False)
+            self._radius_node.setBin('radius', 0)
+            self._radius_node.setDepthTest(False)
+            self._radius_node.setDepthWrite(False)
 
-        self._radius_node.setTexture(self.__radius_state.texture)
-        self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
-        self._radius_node.show()
+            self._radius_node.setTexture(self.__radius_state.texture)
+            self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
+            self._radius_node.show()
 
     def visit(self, visitor:TowerVisitor):
         """Применяет visitor к характеристикам башни"""

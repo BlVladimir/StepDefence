@@ -7,8 +7,10 @@ from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Eff
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.towers.rower_ui.charge_display import ChargeDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
-from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state import RoundRadius
+from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state import RoundRadius, InfinityRadius, \
+    InfinitySplashRadius
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
+from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.towers_config import TowersConfig
 from scripts.sprite.sprites_factory import SpritesFactory
 
@@ -42,8 +44,11 @@ class TowerBuilder(AbstractTowerBuilder):
 
         match self.__config.get_radius(type_tower).type_radius:
             case 'round':
-                radius = self.__config.get_radius(type_tower).value
-                texture = self.__config.round_texture
+                radius = RoundRadius(self.__config.get_radius(type_tower).value, self.__config.round_texture, tile.sprite.rect.center)
+            case 'infinity':
+                radius = InfinityRadius()
+            case 'infinity_splash':
+                radius = InfinitySplashRadius(self.__config.get_radius(type_tower).value, self.__config.round_texture)
             case _:
                 raise Exception('Incorrect radius type')
 
@@ -60,7 +65,7 @@ class TowerBuilder(AbstractTowerBuilder):
                 characteristic.setdefault('additional_money', 0)
                 characteristic['additional_money'] += 1
             case 'increase_radius':
-                radius *= 1.5
+                radius.upgrade(TowerVisitor(radius=1.5))
         debug(characteristic)
 
 
@@ -75,7 +80,7 @@ class TowerBuilder(AbstractTowerBuilder):
             type_tower=type_tower,
             sprite=sprite,
             damage_dict=characteristic,
-            radius_state=RoundRadius(radius, texture, tile.sprite.rect.center),
+            radius_state=radius,
             gun_state=gun_state,
             visitor_improve=self.__config.get_visitor_improve(type_tower),
             charge_display=ChargeDisplay(sprite.main_node, self.__config.get_charge_textures(), self._counter),

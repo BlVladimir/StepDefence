@@ -1,10 +1,11 @@
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
-from panda3d.core import Vec3, TransparencyAttrib, Texture, PNMImage, NodePath, TextNode
+from panda3d.core import Vec3, TransparencyAttrib, NodePath, TextNode
 
 from scripts.main_classes.gui.buttons_controller import ButtonsController
 from scripts.main_classes.gui.buttons_group import ButtonsGroup
 from scripts.main_classes.gui.gamplay_gui_parts.bugs_list import BugsList
+from scripts.main_classes.gui.gamplay_gui_parts.shop import Shop
 from scripts.main_classes.gui.gamplay_gui_parts.upgrade_table import UpgradeTable
 from scripts.main_classes.interaction.event_bus import EventBus
 
@@ -25,63 +26,7 @@ class GameplayButtonsController(ButtonsController):
                                                                       (0.3, 0.3, 0.3, 1))))
         self.__gameplay_group.hide()
 
-        self.__shop_node = self._buttons_node.attachNewNode('shop_node')
-        self.__shop_node.hide()
-        self.__shop_frame = DirectFrame(parent=self.__shop_node,
-                                        frameSize=(0.25, -0.25, 1, -1),
-                                        frameColor=(0.5, 0.5, 0.5, 1),
-                                        pos=Vec3(-self._relationship+0.25, 0))
-        buttons_towers = {DirectButton(image=self.__create_texture('images2d/tower/common_foundation.png',
-                                                                   'images2d/tower/common_gun.png'),
-                                       parent=self.__shop_frame,
-                                       scale=0.15,
-                                       pos=Vec3(0, 0.8),
-                                       command=lambda: EventBus.publish('buy_tower', 'basic'),
-                                       frameColor=((0.5, 0.5, 0.5, 1),
-                                                   (0.7, 0.7, 0.7, 1),
-                                                   (0.3, 0.3, 0.3, 1))),
-                          DirectButton(image=self.__create_texture('images2d/tower/sniper_foundation.png',
-                                                                   'images2d/tower/sniper_gun.png'),
-                                       parent=self.__shop_frame,
-                                       scale=0.15,
-                                       pos=Vec3(0, 0.4),
-                                       command=lambda: EventBus.publish('buy_tower', 'sniper'),
-                                       frameColor=((0.5, 0.5, 0.5, 1),
-                                                   (0.7, 0.7, 0.7, 1),
-                                                   (0.3, 0.3, 0.3, 1))),
-                          DirectButton(image='images2d/tower/anty_shield.png',
-                                       parent=self.__shop_frame,
-                                       scale=0.15,
-                                       pos=Vec3(0, 0),
-                                       command=lambda: EventBus.publish('buy_tower', 'anty_shield'),
-                                       frameColor=((0.5, 0.5, 0.5, 1),
-                                                   (0.7, 0.7, 0.7, 1),
-                                                   (0.3, 0.3, 0.3, 1))),
-                          DirectButton(image=self.__create_texture('images2d/tower/venom_foundation.png',
-                                                                   'images2d/tower/venom_gun.png'),
-                                       parent=self.__shop_frame,
-                                       scale=0.15,
-                                       pos=Vec3(0, -0.4),
-                                       command=lambda: EventBus.publish('buy_tower', 'venom'),
-                                       frameColor=((0.5, 0.5, 0.5, 1),
-                                                   (0.7, 0.7, 0.7, 1),
-                                                   (0.3, 0.3, 0.3, 1))),
-                          DirectButton(image='images2d/tower/anty_invisibility_tower.png',
-                                       parent=self.__shop_frame,
-                                       scale=0.15,
-                                       pos=Vec3(0, -0.8),
-                                       command=lambda: EventBus.publish('buy_tower', 'anty_invisible'),
-                                       frameColor=((0.5, 0.5, 0.5, 1),
-                                                   (0.7, 0.7, 0.7, 1),
-                                                   (0.3, 0.3, 0.3, 1)))
-
-                          }
-
-        for button in buttons_towers:
-            button.setTransparency(TransparencyAttrib.MAlpha)
-        EventBus.subscribe('open_shop', lambda event_type, data:  self.__shop_node.show())
-        EventBus.subscribe('close_shop', lambda event_type, data: self.__shop_node.hide())
-
+        self.__shop = Shop(self._relationship, self._buttons_node)
         self.__upgrade_tablet = UpgradeTable(self._relationship, self._buttons_node)
         self.__bugs_list = BugsList(self._relationship, self._buttons_node)
 
@@ -100,20 +45,3 @@ class GameplayButtonsController(ButtonsController):
                             image_scale=(0.1, 0, 0.1))
         frame.setTransparency(TransparencyAttrib.MAlpha)
         EventBus.subscribe('update_money', lambda event_type, data: frame.setText(f'x{data}'))
-
-    @staticmethod
-    def __create_texture(first_path:str, second_path:str, xto:int=0, yto:int=0)->Texture:
-        first_image = PNMImage(first_path)
-        second_image = PNMImage(second_path)
-        composed_image = PNMImage(first_image.getXSize(), first_image.getYSize())
-        composed_image.copyFrom(first_image)
-
-        for x in range(second_image.getXSize()):
-            for y in range(second_image.getYSize()):
-                r, g, b, a = second_image.getRed(x, y), second_image.getGreen(x, y), second_image.getBlue(x, y), second_image.getAlpha(x, y)
-                if a > 0:
-                    composed_image.setXelA(xto + x, yto + y, r, g, b, a)
-
-        final_texture = Texture()
-        final_texture.load(composed_image)
-        return final_texture
