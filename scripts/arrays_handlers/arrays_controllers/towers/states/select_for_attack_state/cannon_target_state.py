@@ -24,7 +24,7 @@ class CannonTargetState(AbstractTargetsState):
         if kwargs['targets_set']:
             if self.__hit_condition(tower, **kwargs):
                 for enemy in kwargs['targets_set']:
-                    enemy.external_object.hit(tower.damage_dict)
+                    enemy.external_object.hit(tower.damage_dict(enemy.external_object))
         elif kwargs['main_sprite']:
             return kwargs['main_sprite']
         return None

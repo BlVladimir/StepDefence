@@ -8,7 +8,6 @@ class EventBus:
     @classmethod
     def subscribe(cls, event_type:str, listener:Callable[[str, Optional[Any]], None])->None:
         cls._listeners.setdefault(event_type, []).append(listener)
-        # debug(EventBus._listeners)
 
     @classmethod
     def unsubscribe(cls, event_type:str, listener:Callable[[str, Optional[Any]], None])->None:

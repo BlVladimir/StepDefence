@@ -1,8 +1,9 @@
 from logging import debug
-from typing import Optional, Dict
+from typing import Optional, Dict, Callable
 
 from panda3d.core import Point3, CardMaker, TransparencyAttrib, Vec2
 
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
@@ -35,6 +36,7 @@ class Tower:
         self.__lambda_complete = lambda event_type, data:self.__set_is_charge(True)
         self.__lambda_start = lambda event_type, data:self.__set_is_charge(False)
         self.__mouse_point = Vec2(0, 0)
+        self.__id_target = None
 
         EventBus.subscribe('complete_end_turn', self.__lambda_complete)
         EventBus.subscribe('start_end_turn', self.__lambda_start)
@@ -107,10 +109,12 @@ class Tower:
         visitor.visit_damage_dict(self._damage_dict)
         self.__redraw_radius()
 
-    @property
-    def damage_dict(self)->Dict:
+    def damage_dict(self, enemy:Enemy)->Dict:
         self._is_charge = False
         self.__set_is_charge(False)
+        self.__id_target = id(enemy)
+        if 'laser' in self._damage_dict.keys():
+            self._damage_dict['laser'].is_not_end = self.get_laser_func(enemy)
         return self._damage_dict
 
     @property
@@ -134,3 +138,6 @@ class Tower:
     @property
     def targets_state(self)->'AbstractTargetsState':
         return self._targets_state
+
+    def get_laser_func(self, enemy:Enemy)->Callable[[],bool]:
+        return lambda: self.is_target_in_radius(enemy.sprite) and self.__id_target == id(enemy)

@@ -23,7 +23,7 @@ class OneTargetState(AbstractTargetsState):
     def hit(self, tower:Tower, **kwargs)->Optional[Sprite3D]:
         """В каких врагов стрелять"""
         if self.__hit_condition(tower, **kwargs) and kwargs['main_sprite']:
-            kwargs['main_sprite'].external_object.hit(tower.damage_dict)
+            kwargs['main_sprite'].external_object.hit(tower.damage_dict(kwargs['main_sprite'].external_object))
             return None
         elif kwargs['main_sprite']:
             return kwargs['main_sprite']
