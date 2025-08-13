@@ -29,7 +29,7 @@ class UpgradeTable:
         self.__button_upgrade.setTransparency(TransparencyAttrib.MAlpha)
 
         self.__images_list = ['images2d/upgrade/1lvl.png', 'images2d/upgrade/2lvl.png', 'images2d/upgrade/3lvl.png']
-        self.__sequence_characteristic = ['basic_damage', 'radius', 'armor_piercing', 'poison', 'additional_money', 'vision']
+        self.__sequence_characteristic = ['basic_damage', 'radius', 'armor_piercing', 'poison', 'additional_money', 'vision', 'laser']
         self.__characteristic_node = self.__upgrade_table_frame.attachNewNode('characteristic_node')
         self.__frame_char = DirectFrame(parent=self.__characteristic_node,
                                         frameSize=(-0.25, 0.25, -0.1, 0.1),

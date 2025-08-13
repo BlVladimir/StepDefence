@@ -34,7 +34,7 @@ class BugsList:
                                         text_pos=(0, -0.035),
                                         text_scale=0.06,
                                         text_align=TextNode.ACenter)
-        self.__sequence_characteristic = ['health', 'armor', 'regen', 'poison', 'invisible']
+        self.__sequence_characteristic = ['health', 'armor', 'regen', 'poison', 'invisible', 'laser']
 
         EventBus.subscribe('update_bugs_list', lambda event_type, data: self.__redraw_bugs_list(data[0], data[1]))
         EventBus.subscribe('change_scene', lambda event_type, data: self.__clear_bugs_list())

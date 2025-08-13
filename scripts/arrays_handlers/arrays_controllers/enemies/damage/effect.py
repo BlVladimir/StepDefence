@@ -13,6 +13,9 @@ class Effect:
     def decrease_duration(self)->None:
         self._duration -= 1
 
+    def __copy__(self):
+        return Effect(self._damage, self._duration)
+
     def __str__(self):
         return f'[Damage: {self._damage}, Duration: {self._duration}]'
 

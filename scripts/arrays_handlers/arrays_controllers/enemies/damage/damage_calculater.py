@@ -18,6 +18,8 @@ class DamageCalculater:
     def calculate_effect(tower_char_dict:Dict, effects_sets:EffectsSets)->None:
         if 'poison' in tower_char_dict.keys():
             effects_sets.append_effect(tower_char_dict['poison'], 'poison')
+        if 'laser' in tower_char_dict.keys():
+            effects_sets.append_effect(tower_char_dict['laser'], 'laser')
 
     @staticmethod
     def calculate_end_round(enemy_char_dict:Dict, effects_sets:EffectsSets)->int:

@@ -1,4 +1,3 @@
-from logging import debug
 from typing import Set
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
@@ -8,8 +7,8 @@ from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.sprite.sprite3D import Sprite3D
 
 
-class CannonState(AbstractTargetsState):
-    """Башня стреляет в одну цель"""
+class CannonTargetState(AbstractTargetsState):
+    """"""
     @staticmethod
     def determine_set(enemies_set:Set[Enemy], tower:Tower, **kwargs)->Set[Sprite3D]:
         """Как определить множество врагов для выстрела"""
