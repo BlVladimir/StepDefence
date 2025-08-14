@@ -149,5 +149,9 @@ class Tower:
     def mouse_point(self)->Point3:
         return Point3(self._mouse_point.x, self._mouse_point.y, 0)
 
+    @property
+    def type_target_state(self)->str:
+        return str(self._targets_state)
+
     def __get_laser_func(self, enemy:Enemy)->Callable[[],bool]:
         return lambda: self.__id_target == id(enemy) and self.is_target_in_radius(enemy.sprite)

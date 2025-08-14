@@ -8,6 +8,7 @@ from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.abstract_targets_state import \
     AbstractTargetsState
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
+from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
 
 
@@ -30,6 +31,9 @@ class RayState(AbstractTargetsState):
 
         self.__picker.addCollider(picker_np, self.__picker_queue)
 
+        EventBus.subscribe('change_scene', lambda event_type, data: picker_np.hide())
+        EventBus.subscribe('using_tower', lambda event_type, data: picker_np.show() if data[0].type_target_state == 'ray' else None)
+
 
     def determine_set(self, enemies_set:Set[Enemy], tower:Tower, **kwargs)->Set[Sprite3D]:
         """Как определить множество врагов для выстрела"""
@@ -50,7 +54,7 @@ class RayState(AbstractTargetsState):
         targets_set: Set[Sprite3D] = set()
         if self.__picker_queue.getNumEntries() > 0:
             self.__picker_queue.sortEntries()
-            debug('has queue')
+            # debug('has queue')
             for entry in self.__picker_queue.getEntries():
                 collided_node = entry.getIntoNodePath()
                 # Фильтруем только коллайдеры спрайтов
