@@ -29,6 +29,7 @@ class Tower:
 
         self._radius_node = sprite.main_node.attachNewNode('radius')
         self.__redraw_radius()
+        self._radius_node.show()
 
         self._is_charge = True
         self.__charge_display = charge_display
@@ -103,7 +104,6 @@ class Tower:
 
             self._radius_node.setTexture(self.__radius_state.texture)
             self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
-            self._radius_node.show()
 
     def visit(self, visitor:TowerVisitor):
         """Применяет visitor к характеристикам башни"""

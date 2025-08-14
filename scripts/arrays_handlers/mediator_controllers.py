@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from logging import debug
-from typing import Optional, Set, Iterator
+from typing import Optional, Iterator
 
-from panda3d.core import NodePath, Loader
+from panda3d.core import NodePath
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_controller import EnemiesController
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
