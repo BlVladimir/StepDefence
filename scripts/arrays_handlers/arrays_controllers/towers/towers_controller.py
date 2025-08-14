@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from panda3d.core import Point3
+from panda3d.core import Point3, NodePath
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
@@ -15,8 +15,8 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class TowersController:
     """Обработчик башен"""
-    def __init__(self, sprites_factory:SpritesFactory, mediator: 'MediatorControllers'):
-        self.__config = TowersConfig(sprites_factory)
+    def __init__(self, sprites_factory:SpritesFactory, mediator: 'MediatorControllers', render_root:NodePath):
+        self.__config = TowersConfig(sprites_factory, render_root)
         self.__tower_builder = TowerBuilder(sprites_factory, self.__config)
         self.__mediator = mediator
 

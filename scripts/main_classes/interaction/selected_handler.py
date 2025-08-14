@@ -1,6 +1,6 @@
 from logging import debug
 
-from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath
+from panda3d.core import CollisionTraverser, CollisionHandlerQueue, CollisionRay, CollisionNode, NodePath, BitMask32
 from direct.task import Task
 
 from scripts.main_classes.interaction.event_bus import EventBus
@@ -20,6 +20,9 @@ class SelectedHandler:
 
         picker_node = CollisionNode('mouse_ray')
         picker_node.addSolid(self.__picker_ray)
+        picker_node.setFromCollideMask(BitMask32.bit(2))  # можно другой бит
+        picker_node.setIntoCollideMask(BitMask32.allOff())
+
         picker_np = camera_node.getParent().attachNewNode(picker_node)  # Прикрепляем к родителю камеры
 
         self.__picker.addCollider(picker_np, self.__picker_queue)

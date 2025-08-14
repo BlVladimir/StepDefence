@@ -22,7 +22,7 @@ class AttackState(AbstractStateSelector):
         self._main_selected_sprite.is_selected = True
 
     def determine_set(self, enemies_set:Set[Enemy])->None:
-        self.__set_targets_for_attack = self.__tower.targets_state.determine_set(enemies_set, self.__tower)
+        self.__set_targets_for_attack = self.__tower.targets_state.determine_set(enemies_set, self.__tower, mouse_pos=self.__tower.mouse_point)
 
     def not_used_state(self):
         self.__clear_set()

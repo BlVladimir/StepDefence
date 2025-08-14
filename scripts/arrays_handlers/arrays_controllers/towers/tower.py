@@ -35,7 +35,7 @@ class Tower:
 
         self.__lambda_complete = lambda event_type, data:self.__set_is_charge(True)
         self.__lambda_start = lambda event_type, data:self.__set_is_charge(False)
-        self.__mouse_point = Vec2(0, 0)
+        self._mouse_point = Vec2(0, 0)
         self.__id_target = None
 
         EventBus.subscribe('complete_end_turn', self.__lambda_complete)
@@ -48,10 +48,10 @@ class Tower:
 
     def can_attack_target(self, enemy_sprite:Sprite3D)->bool:
         """Проверяет, в радиусе ли враг"""
-        return self.__radius_state.can_attack_target(enemy_sprite, self.__mouse_point)
+        return self.__radius_state.can_attack_target(enemy_sprite, self._mouse_point)
 
     def is_target_in_radius(self, enemy_sprite:Sprite3D)->bool:
-        return self.__radius_state.is_in_radius(enemy_sprite, self.__mouse_point)
+        return self.__radius_state.is_in_radius(enemy_sprite, self._mouse_point)
 
     def upgrade(self)->None:
         """Улучшает башню"""
@@ -61,12 +61,14 @@ class Tower:
 
     def find_mouse(self, mouse_point:Point3)->None:
         """Поворачивает башню"""
-        self.__mouse_point = Vec2(mouse_point.x, mouse_point.y)
+        self._mouse_point = Vec2(mouse_point.x, mouse_point.y)
         if self._is_charge and self.__gun_state:
             self.__gun_state.rotate_gun(mouse_point)
         if 'cannon' in str(self.__radius_state):
             center = self._tower_sprite.rect.center
             self._radius_node.setPos(mouse_point.x-center.x, 0, mouse_point.y-center.y)
+            EventBus.publish('update_select')
+        if str(self._targets_state) == 'ray':
             EventBus.publish('update_select')
 
     def show_radius(self)->None:
@@ -114,7 +116,7 @@ class Tower:
         self.__set_is_charge(False)
         self.__id_target = id(enemy)
         if 'laser' in self._damage_dict.keys():
-            self._damage_dict['laser'].is_not_end = self.get_laser_func(enemy)
+            self._damage_dict['laser'].is_not_end = self.__get_laser_func(enemy)
         return self._damage_dict
 
     @property
@@ -139,5 +141,13 @@ class Tower:
     def targets_state(self)->'AbstractTargetsState':
         return self._targets_state
 
-    def get_laser_func(self, enemy:Enemy)->Callable[[],bool]:
-        return lambda: self.is_target_in_radius(enemy.sprite) and self.__id_target == id(enemy)
+    @property
+    def sprite(self)->Sprite3D:
+        return self._tower_sprite
+
+    @property
+    def mouse_point(self)->Point3:
+        return Point3(self._mouse_point.x, self._mouse_point.y, 0)
+
+    def __get_laser_func(self, enemy:Enemy)->Callable[[],bool]:
+        return lambda: self.__id_target == id(enemy) and self.is_target_in_radius(enemy.sprite)

@@ -23,3 +23,7 @@ class AbstractTargetsState(ABC):
     @staticmethod
     def __hit_condition(tower:Tower, **kwargs)->bool:
         pass
+
+    @abstractmethod
+    def __str__(self):
+        pass

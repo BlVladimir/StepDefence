@@ -8,7 +8,7 @@ from direct.interval.MetaInterval import Sequence
 
 from scripts.sprite.rect import Rect3D
 from panda3d.core import CardMaker, TransparencyAttrib, PandaNode, CollisionNode, CollisionPolygon, Point3, Vec4, \
-    NodePath, Vec3, Vec2
+    NodePath, Vec3, Vec2, BitMask32, CollisionBox
 
 
 class Sprite3D:
@@ -32,12 +32,14 @@ class Sprite3D:
             self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
 
             collision = CollisionNode(f'{name_group}_collision')
-            collision.addSolid(CollisionPolygon(
-                Point3(-rect.width / 2, 0, -rect.height / 2),
-                Point3(-rect.width / 2, 0, rect.height / 2),
-                Point3(rect.width / 2, 0, rect.height / 2),
-                Point3(rect.width / 2, 0, -rect.height / 2)
-            ))
+            # collision.addSolid(CollisionPolygon(
+            #     Point3(-rect.width / 2, 0, -rect.height / 2),
+            #     Point3(-rect.width / 2, 0, rect.height / 2),
+            #     Point3(rect.width / 2, 0, rect.height / 2),
+            #     Point3(rect.width / 2, 0, -rect.height / 2)
+            # ))
+            collision.addSolid(CollisionBox(Point3(rect.width/2, -0.01, rect.height/2), Point3(-rect.width/2, 0.01, -rect.height/2)))
+            collision.setIntoCollideMask(BitMask32.bit(1) | BitMask32.bit(2))
 
             self._collision_node = node.attachNewNode(collision)
             self._collision_node.setName('sprite_collision')

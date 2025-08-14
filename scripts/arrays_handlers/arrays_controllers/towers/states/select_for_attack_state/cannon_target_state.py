@@ -1,3 +1,4 @@
+from logging import debug
 from typing import Set
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
@@ -17,6 +18,7 @@ class CannonTargetState(AbstractTargetsState):
             if tower.can_attack_target(enemy.sprite):
                 enemy.sprite.is_special_selected = True
                 targets_set.add(enemy.sprite)
+        debug(f'targets_set: {len(targets_set)}')
         return targets_set
 
     def hit(self, tower:Tower, **kwargs)->None:
@@ -32,3 +34,6 @@ class CannonTargetState(AbstractTargetsState):
     @staticmethod
     def __hit_condition(tower:Tower, **kwargs)->bool:
         return tower.is_charge
+
+    def __str__(self):
+        return 'cannon'

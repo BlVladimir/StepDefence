@@ -22,7 +22,7 @@ from scripts.sprite.sprites_factory import SpritesFactory
 class MediatorControllers:
     """Посредник между контроллерами основных классов"""
     def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory):
-        self.__towers_controller = TowersController(sprites_factory, self)
+        self.__towers_controller = TowersController(sprites_factory, self, scene_gameplay_node)
         self.__maps_controller = MapsController(scene_gameplay_node, sprites_factory)
         self.__enemies_controller = EnemiesController(scene_gameplay_node, sprites_factory, self.__maps_controller.track, self)
 

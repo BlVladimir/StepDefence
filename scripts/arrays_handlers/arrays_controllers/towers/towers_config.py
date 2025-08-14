@@ -2,13 +2,14 @@ from copy import copy
 from math import hypot
 from typing import Tuple, Dict, Optional
 
-from panda3d.core import Texture, PNMImage
+from panda3d.core import Texture, PNMImage, NodePath
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.laser_effect import LaserEffect
 from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.cannon_target_state import CannonTargetState
 from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.one_target_state import \
     OneTargetState
+from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.ray_state import RayState
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.sprite.sprites_factory import SpritesFactory
 
@@ -30,9 +31,9 @@ class Radius:
 class TowersConfig:
     """Содержит объекты башен для копирования и их числовые значения"""
 
-    def __init__(self, sprite_factory: SpritesFactory):
+    def __init__(self, sprite_factory: SpritesFactory, render_root:NodePath):
         self._round_texture = self.__texture_round_radius()
-        self.__targets_state_dict = {'one_target': OneTargetState(), 'ray': OneTargetState(),
+        self.__targets_state_dict = {'one_target': OneTargetState(), 'ray': RayState(render_root),
                                      'cannon': CannonTargetState()}
         self.__products = {
             'basic': dict(basic_damage=2, cost=3, radius=Radius(1), improve_cost_array=(4, 6), additional_money=2,
@@ -47,7 +48,7 @@ class TowersConfig:
                                    targets_state='one_target'),
             'cutter': dict(basic_damage=2, cost=5, radius=Radius(type_radius='infinity'), improve_cost_array=(8, 10),
                            targets_state='ray'),
-            'laser': dict(basic_damage=0, cost=6, radius=Radius(1.5), improve_cost_array=(8, 10), laser=LaserEffect(1),
+            'laser': dict(basic_damage=0, cost=6, radius=Radius(1.5), improve_cost_array=(8, 10), laser=LaserEffect(0),
                           targets_state='one_target'),
             'cannon': dict(basic_damage=3, cost=8, radius=Radius(value=0.5, type_radius='infinity_splash'),
                            improve_cost_array=(10, 12), targets_state='cannon')
@@ -79,7 +80,7 @@ class TowersConfig:
             'venom': TowerVisitor(basic_damage=2, radius=1.2),
             'anty_invisible': TowerVisitor(basic_damage=2, radius=1.2),
             'cutter': TowerVisitor(basic_damage=1),
-            'laser': TowerVisitor(basic_damage=1),
+            'laser': TowerVisitor(radius=1.2),
             'cannon': TowerVisitor(basic_damage=1)
         }
 

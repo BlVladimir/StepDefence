@@ -32,3 +32,6 @@ class OneTargetState(AbstractTargetsState):
     @staticmethod
     def __hit_condition(tower:Tower, **kwargs)->bool:
         return kwargs['main_sprite'] in kwargs['targets_set'] and tower.is_charge
+
+    def __str__(self):
+        return 'one'

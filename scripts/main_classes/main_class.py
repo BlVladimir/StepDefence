@@ -28,7 +28,7 @@ class StepDefence(ShowBase):
 
         self.__WIDTH = 1000
         self.__HEIGHT = 600
-        self.__DEBUG_MODE = True
+        self.__DEBUG_MODE = False
 
         # self._set_fullscreen(True)
         self._set_window_size(self.__WIDTH, self.__HEIGHT)

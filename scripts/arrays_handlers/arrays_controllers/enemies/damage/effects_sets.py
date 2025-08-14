@@ -22,7 +22,6 @@ class EffectsSets:
         if self._poison_set or self._laser_set:
             damage = 0
             damage += max(self._poison_set, key=lambda x: x.damage).damage if self._poison_set else 0
-            damage += sum(laser.damage for laser in self._laser_set) if self._laser_set else 0
             for poison in self._poison_set.copy():
                 poison.decrease_duration()
                 if not poison.check_duration():
@@ -31,6 +30,7 @@ class EffectsSets:
                 laser.decrease_duration()
                 if not laser.check_duration():
                     self._laser_set.remove(laser)
+            damage += sum(laser.damage for laser in self._laser_set) if self._laser_set else 0
             return damage
         return 0
 
