@@ -1,5 +1,3 @@
-from functools import singledispatchmethod
-
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, TransparencyAttrib, Vec3, Texture, PNMImage, TextNode, Vec4D
@@ -9,7 +7,7 @@ from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class Shop:
-    def __init__(self, relationship:float, buttons_node:NodePath):
+    def __init__(self, relationship: float, buttons_node: NodePath):
         self.__shop_node = buttons_node.attachNewNode('shop_node')
         self.__shop_node.hide()
         self.__shop_frame = DirectFrame(parent=self.__shop_node,
@@ -29,41 +27,41 @@ class Shop:
         EventBus.subscribe('close_shop', lambda event_type, data: self.__shop_node.hide())
         EventBus.subscribe('discount', lambda event_type, data: self.__update_discount(data))
 
-    def __update_discount(self, discount:float)->None:
+    def __update_discount(self, discount: float) -> None:
         if discount == 1:
-            color = Vec4D(1, 1, 1, 1)
+            color = Vec4D(128 / 255, 64 / 255, 48 / 255, 1)
         elif discount < 1:
-            color = Vec4D(0, 1, 0, 1)
+            color = Vec4D(128 / 255, 128 / 255, 48 / 255, 1)
         else:
-            color = Vec4D(1, 0, 0, 1)
+            color = Vec4D(1, 64 / 255, 48 / 255, 1)
         for product in self.__products:
             product['text'] = f'x{round(product.getPythonTag("cost") * discount)}'
             product['text_fg'] = color
 
-    def __create_products(self, type_tower:str, pos:Vec3)->DirectFrame:
-        SCALE:float = 0.075
+    def __create_products(self, type_tower: str, pos: Vec3) -> DirectFrame:
+        SCALE: float = 0.075
         frame = DirectFrame(parent=self.__shop_frame,
                             frameSize=(0.25, -0.25, SCALE, -SCALE),
                             frameColor=(0.6, 0.6, 0.6, 1),
                             pos=pos,
                             text=f'x{ValueTowerConfig.get_products()[type_tower]['cost']}',
-                            text_fg=(1, 1, 1, 1),
-                            text_pos=(0, -0.035),
-                            text_scale=SCALE,
+                            text_fg=Vec4D(128 / 255, 64 / 255, 48 / 255, 1),
+                            text_pos=(0.25 - SCALE, -0.02),
+                            text_scale=SCALE / 1.2,
                             text_align=TextNode.ACenter,
                             image='images2d/UI/money.png',
-                            image_pos=(0.25-SCALE, 0, 0),
-                            image_scale=(SCALE/1.2, 0, SCALE/1.2))
+                            image_pos=(0.25 - SCALE, 0, 0),
+                            image_scale=(SCALE / 1.2, 0, SCALE / 1.2))
         first_path = ValueTowerConfig.get_sprites_towers_foundations(type_tower)
         second_path = ValueTowerConfig.get_sprites_towers_guns(type_tower)
         DirectButton(image=self.__create_texture(first_path, second_path) if second_path else first_path,
-                              parent=frame,
-                              scale=SCALE,
-                              pos=Vec3(-0.25+SCALE*1.2, 0),
-                              command=lambda: EventBus.publish('buy_tower', type_tower),
-                              frameColor=((0.5, 0.5, 0.5, 1),
-                                          (0.7, 0.7, 0.7, 1),
-                                          (0.3, 0.3, 0.3, 1)))
+                     parent=frame,
+                     scale=SCALE,
+                     pos=Vec3(-0.25 + SCALE * 1.2, 0),
+                     command=lambda: EventBus.publish('buy_tower', type_tower),
+                     frameColor=((0.5, 0.5, 0.5, 1),
+                                 (0.7, 0.7, 0.7, 1),
+                                 (0.3, 0.3, 0.3, 1)))
         frame.setTransparency(TransparencyAttrib.MAlpha)
         frame.setPythonTag('cost', ValueTowerConfig.get_products()[type_tower]['cost'])
         return frame

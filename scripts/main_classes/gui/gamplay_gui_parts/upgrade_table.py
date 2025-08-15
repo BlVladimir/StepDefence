@@ -3,8 +3,10 @@ from typing import Dict
 
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
-from panda3d.core import NodePath, Vec3, TransparencyAttrib, TextNode
+from panda3d.core import NodePath, Vec3, TransparencyAttrib, TextNode, Vec4D
 
+from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
+from scripts.arrays_handlers.arrays_controllers.towers.value_tower_config import ValueTowerConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -18,15 +20,29 @@ class UpgradeTable:
                                                  frameColor=(0.5, 0.5, 0.5, 1),
                                                  pos=Vec3(-relationship + 0.25, 0))
 
+        self.__discount = 1
+        self.__frame = DirectFrame(parent=self.__upgrade_table_frame,
+                            frameSize=(-0.25, 0.25, -0.15, 0.15),
+                            pos=(0, 0, -0.75),
+                            frameColor=(0, 0, 0, 0),
+                            text=f'x{ValueTowerConfig.get_products()['basic']['cost']}',
+                            text_fg=Vec4D(128 / 255, 64 / 255, 48 / 255, 1),
+                            text_pos=(0.175, -0.02),
+                            text_scale=0.075,
+                            text_align=TextNode.ACenter,
+                            image='images2d/UI/money.png',
+                            image_pos=(0.175, 0, 0),
+                            image_scale=(0.075, 0, 0.075))
         self.__button_upgrade = DirectButton(image='images2d/upgrade/1lvl.png',
-                                             parent=self.__upgrade_table_frame,
+                                             parent=self.__frame,
                                              scale=0.15,
-                                             pos=Vec3(0, -0.75),
+                                             pos=Vec3(-0.075, 0),
                                              command=lambda: EventBus.publish('upgrade_tower'),
                                              frameColor=((0.5, 0.5, 0.5, 1),
                                                          (0.7, 0.7, 0.7, 1),
                                                          (0.3, 0.3, 0.3, 1)))
-        self.__button_upgrade.setTransparency(TransparencyAttrib.MAlpha)
+        self.__frame.setTransparency(TransparencyAttrib.MAlpha)
+        self.__frame.setPythonTag('price', 0)
 
         self.__images_list = ['images2d/upgrade/1lvl.png', 'images2d/upgrade/2lvl.png', 'images2d/upgrade/3lvl.png']
         self.__sequence_characteristic = ['basic_damage', 'radius', 'armor_piercing', 'poison', 'additional_money', 'vision', 'laser']
@@ -39,18 +55,39 @@ class UpgradeTable:
                                         text_pos=(0, -0.035),
                                         text_scale=0.06,
                                         text_align=TextNode.ACenter)
-        EventBus.subscribe('using_tower', lambda event_type, data: self.__show(data[1], data[2]))
+
+        EventBus.subscribe('using_tower', lambda event_type, data: self.__show(data[0], data[1], data[2]))
         EventBus.subscribe('not_using_tower', lambda event_type, data: self.__upgrade_table_node.hide())
         EventBus.subscribe('change_scene', lambda event_type, data: self.__clear_characteristic())
+        EventBus.subscribe('discount', lambda event_type, data: self.__update_discount(data))
+
+
+    def __update_discount(self, discount: float) -> None:
+        self.__discount = discount
+        if discount == 1:
+            color = Vec4D(128 / 255, 64 / 255, 48 / 255, 1)
+        elif discount < 1:
+            color = Vec4D(128 / 255, 128 / 255, 48 / 255, 1)
+        else:
+            color = Vec4D(1, 64 / 255, 48 / 255, 1)
+        self.__frame['text_fg'] = color
+        self.__frame['text'] = f'x{round(self.__frame.getPythonTag('price') * discount)}'
+
 
     def __clear_characteristic(self):
         """Очищает характеристики"""
         self.__characteristic_node.getChildren().detach()
 
-    def __show(self, level:int, characteristic:Dict):
+    def __show(self, tower:Tower, level:int, characteristic:Dict):
         """Открывает рамку"""
+        type_tower = tower.type_tower
         self.__button_upgrade['image'] = self.__images_list[level]
         self.__redraw_characteristic(characteristic)
+
+        price = ValueTowerConfig.get_products()[type_tower]['improve_cost_array'][level-1]
+        self.__frame.setPythonTag('price', price)
+        self.__frame['text'] = f'x{round(price * self.__discount)}'
+
         self.__upgrade_table_node.show()
 
     def __redraw_characteristic(self, characteristic:Dict):
