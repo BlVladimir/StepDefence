@@ -28,6 +28,7 @@ class EnemiesController:
         EventBus.subscribe('enter_click', lambda event_type, data: self.__round_ended())
         EventBus.subscribe('start_end_turn', lambda event_type, data: EventBus.publish('add_async_task', self.__move_enemies()))
         EventBus.subscribe('update_enemy', lambda event_type, data: self.__update_enemy())
+        Enemy.subscribe()
 
     def clear_enemies(self)->None:
         """Удаоляет врагов"""

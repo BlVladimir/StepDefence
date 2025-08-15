@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from _weakrefset import WeakSet
+from logging import warning
 from typing import Optional
 
 from panda3d.core import Point3, NodePath
@@ -23,6 +25,7 @@ class TowersController:
         EventBus.subscribe('buy_tower', lambda event_type, data: self.__create_tower(data))
         EventBus.subscribe('rotate_gun', lambda event_type, data: self.__rotate_gun(data))
         EventBus.subscribe('upgrade_tower', lambda event_type, data: self.__upgrade_tower())
+        Tower.subscribe()
 
     def __create_tower(self, type_tower:str):
         if self.__mediator.money >= round(self.__mediator.discount*self.__config.get_cost(type_tower)):
@@ -47,11 +50,11 @@ class TowersController:
     def __upgrade_tower(self):
         tower = self.__mediator.selected_tile.tower
         if tower and tower.level < 2 and self.__mediator.money >= round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level]):
-            EventBus.publish('update_enemy')
             tower.upgrade()
+            EventBus.publish('update_enemy')
             self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level-1]))
             self.__mediator.discount = 1
-            EventBus.publish('open_upgrade_table', [tower.level, tower.characteristic])
+            EventBus.publish('using_tower', [tower, tower.level, tower.characteristic])
 
     def __get_selected_tower(self)->Optional[Tower]:
         tile = self.__mediator.selected_tile

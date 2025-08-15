@@ -1,4 +1,5 @@
-from logging import debug
+from _weakrefset import WeakSet
+from logging import debug, warning
 from typing import Optional, Dict, Callable
 
 from panda3d.core import Point3, CardMaker, TransparencyAttrib, Vec2
@@ -11,6 +12,17 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class Tower:
     """Класс башни"""
+    instances = WeakSet()
+
+    @classmethod
+    def warning(cls):
+        if len(cls.instances) != 0:
+            warning(f"Leftover instances: {len(cls.instances)}!!!")
+
+    @classmethod
+    def subscribe(cls):
+        EventBus.subscribe('change_scene', lambda event_type, data: cls.warning())
+
     def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove', charge_display:'ChargeDisplay', targets_state:'AbstractTargetsState'):
         self._type_tower = type_tower
 

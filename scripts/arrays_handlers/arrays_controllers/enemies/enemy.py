@@ -40,8 +40,6 @@ class Enemy:
 
         self.__log = getLogger(__name__)
 
-        Enemy.subscribe()
-
     def update(self, mediator)->None:
         mediator.has_vision(self)
 
