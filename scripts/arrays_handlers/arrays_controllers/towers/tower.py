@@ -70,6 +70,7 @@ class Tower:
         """Улучшает башню"""
         self.__level += 1
         self.visit(self.__visitor_improve)
+        self._radius_node.show()
         debug(self._damage_dict)
 
     def find_mouse(self, mouse_point:Point3)->None:
@@ -116,6 +117,7 @@ class Tower:
 
             self._radius_node.setTexture(self.__radius_state.texture)
             self._radius_node.setTransparency(TransparencyAttrib.MAlpha)
+            self._radius_node.hide()
 
     def visit(self, visitor:TowerVisitor):
         """Применяет visitor к характеристикам башни"""
