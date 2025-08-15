@@ -30,18 +30,29 @@ class GameplayButtonsController(ButtonsController):
         self.__upgrade_tablet = UpgradeTable(self._relationship, self._buttons_node)
         self.__bugs_list = BugsList(self._relationship, self._buttons_node)
 
-        self.__money_node = self._buttons_node.attachNewNode('money_node')
-        frame = DirectFrame(parent=self.__money_node,
-                            pos=Vec3(-self._relationship * 0.5, 0, 0.9),
-                            frameSize=(-0.2 * self._relationship, 0.2 * self._relationship, -0.1, 0.1),
-                            frameColor=(0, 0, 0, 0),
-                            text='x4',
-                            text_fg=(1, 1, 1, 1),
-                            text_pos=(0.05 * self._relationship, -0.035),
-                            text_scale=0.15,
-                            text_align=TextNode.ACenter,
-                            image='images2d/UI/money.png',
-                            image_pos=(-0.125 * self._relationship, 0, 0),
-                            image_scale=(0.1, 0, 0.1))
-        frame.setTransparency(TransparencyAttrib.MAlpha)
-        EventBus.subscribe('update_money', lambda event_type, data: frame.setText(f'x{data}'))
+        self.__counter_node = self._buttons_node.attachNewNode('counter_node')
+        money_frame = DirectFrame(parent=self.__counter_node,
+                                  pos=Vec3(-self._relationship * 0.5, 0, 0.9),
+                                  frameSize=(-0.2 * self._relationship, 0.2 * self._relationship, -0.1, 0.1),
+                                  frameColor=(0, 0, 0, 0),
+                                  text='x4',
+                                  text_fg=(1, 1, 1, 1),
+                                  text_pos=(0.05 * self._relationship, -0.035),
+                                  text_scale=0.15,
+                                  text_align=TextNode.ACenter,
+                                  image='images2d/UI/money.png',
+                                  image_pos=(-0.125 * self._relationship, 0, 0),
+                                  image_scale=(0.1, 0, 0.1))
+
+        wave_frame = DirectFrame(parent=self.__counter_node,
+                                 pos=Vec3(-self._relationship * 0.1, 0, 0.9),
+                                 frameSize=(-0.2 * self._relationship, 0.2 * self._relationship, -0.1, 0.1),
+                                 frameColor=(0, 0, 0, 0),
+                                 text='wave: 1',
+                                 text_fg=(1, 1, 1, 1),
+                                 text_pos=(0, -0.035),
+                                 text_scale=0.15,
+                                 text_align=TextNode.ACenter)
+        money_frame.setTransparency(TransparencyAttrib.MAlpha)
+        EventBus.subscribe('update_money', lambda event_type, data: money_frame.setText(f'x{data}'))
+        EventBus.subscribe('update_wave', lambda event_type, data: wave_frame.setText(f'wave: {data+1}'))

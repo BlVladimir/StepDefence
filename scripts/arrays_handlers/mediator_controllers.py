@@ -53,6 +53,7 @@ class MediatorControllers:
         self._discount = 1
         self._money = self.__STARTED_MONEY
         EventBus.publish('update_money', self.__STARTED_MONEY)
+        EventBus.publish('update_wave', 0)
 
     def __complete_end_turn(self)->None:
         """Заканчивает смену хода"""
@@ -60,6 +61,7 @@ class MediatorControllers:
             self.__current_wave += 1
             self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
             EventBus.publish('update_select')
+            EventBus.publish('update_wave', self.__current_wave)
         else:
             EventBus.publish('change_scene', 'main_menu')
 
