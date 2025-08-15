@@ -5,6 +5,7 @@ from typing import Optional, Dict, Callable
 from panda3d.core import Point3, CardMaker, TransparencyAttrib, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
+from scripts.arrays_handlers.arrays_controllers.towers.tower_ui.level_display import LevelDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D
@@ -23,7 +24,7 @@ class Tower:
     def subscribe(cls):
         EventBus.subscribe('change_scene', lambda event_type, data: cls.warning())
 
-    def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove', charge_display:'ChargeDisplay', targets_state:'AbstractTargetsState'):
+    def __init__(self, type_tower: str, sprite:Sprite3D, damage_dict:Dict, gun_state:Optional['GunState'], radius_state:'AbstractRadiusState', visitor_improve:'VisitorImprove', charge_display:'ChargeDisplay', level_display:'LevelDisplay', targets_state:'AbstractTargetsState'):
         self._type_tower = type_tower
 
         self._damage_dict = damage_dict
@@ -38,6 +39,7 @@ class Tower:
 
         self.__is_used = False  # башня выстрелила или нет
         self.__level = 0  # уровень башни
+        self.__level_display = level_display
 
         self._radius_node = sprite.main_node.attachNewNode('radius')
         self.__redraw_radius()
@@ -69,6 +71,7 @@ class Tower:
     def upgrade(self)->None:
         """Улучшает башню"""
         self.__level += 1
+        self.__level_display.set_texture(self.__level)
         self.visit(self.__visitor_improve)
         self._radius_node.show()
         debug(self._damage_dict)

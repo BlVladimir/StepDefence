@@ -27,7 +27,7 @@ class MediatorControllers:
 
         self.__current_wave = 0
         self.__level = 0
-        self.__STARTED_MONEY = 4
+        self.__STARTED_MONEY = 400
         self._money = self.__STARTED_MONEY
         self._discount = 0
 

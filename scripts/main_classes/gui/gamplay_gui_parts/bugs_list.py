@@ -40,6 +40,7 @@ class BugsList:
         EventBus.subscribe('change_scene', lambda event_type, data: self.__clear_bugs_list())
         EventBus.subscribe('draw_enemy_characteristic', lambda event_type, data: self.__draw_characteristic(data))
         EventBus.subscribe('close_enemy_characteristic', lambda event_type, data: self.__close_characteristic())
+        EventBus.subscribe('remove_discount', lambda event_type, data: self.__remove_discount())
 
     def __draw_characteristic(self, characteristic:Dict)->None:
         sorted_characteristic = dict(sorted(characteristic.items(), key=lambda x: self.__sequence_characteristic.index(x[0])))
@@ -92,13 +93,12 @@ class BugsList:
                 if luck:
                     return f'{bug} /2'
                 else:
-                    return f'{bug} *2'
+                    return f'{bug} x2'
             case _:
                 return bug
 
-
-
-    def __get_frame(self, parent_node:NodePath, parent:DirectFrame, color:Vec4, text:str='how you see it?', pos:Vec3=Vec3(0, 0)):
+    @staticmethod
+    def __get_frame(parent_node:NodePath, parent:DirectFrame, color:Vec4, text:str= 'how you see it?', pos:Vec3=Vec3(0, 0)):
         bug_frame = parent
         return DirectFrame(
             parent=parent_node,
@@ -111,3 +111,8 @@ class BugsList:
             text_scale=bug_frame['text_scale'],
             text_align=TextNode.ACenter
         )
+
+    def __remove_discount(self):
+        if self.__bugs_array and 'price' == self.__bugs_array[0][0]:
+            self.__bugs_array[0][1].detachNode()
+            self.__bugs_array.pop(0)

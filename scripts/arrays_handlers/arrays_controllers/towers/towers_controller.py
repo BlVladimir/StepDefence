@@ -32,6 +32,7 @@ class TowersController:
             tower = self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile)
             EventBus.publish('update_enemy')
             EventBus.publish('close_shop')
+            EventBus.publish('remove_discount')
             self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_cost(type_tower)))
             self.__mediator.discount = 1
             EventBus.publish('using_tower', [tower, tower.level, tower.characteristic])
@@ -52,6 +53,7 @@ class TowersController:
         if tower and tower.level < 2 and self.__mediator.money >= round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level]):
             tower.upgrade()
             EventBus.publish('update_enemy')
+            EventBus.publish('remove_discount')
             self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level-1]))
             self.__mediator.discount = 1
             EventBus.publish('using_tower', [tower, tower.level, tower.characteristic])

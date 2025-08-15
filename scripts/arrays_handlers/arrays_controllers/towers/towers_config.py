@@ -87,8 +87,15 @@ class TowersConfig:
         self.__charge_textures = (sprite_factory.get_texture('images2d/UI/enemy_characteristic/charged.png'),
                                   sprite_factory.get_texture('images2d/UI/enemy_characteristic/not_charged.png'))
 
+        self.__level_textures = (sprite_factory.get_texture('images2d/upgrade/1lvl.png'),
+                                 sprite_factory.get_texture('images2d/upgrade/2lvl.png'),
+                                 sprite_factory.get_texture('images2d/upgrade/3lvl.png'))
+
     def get_charge_textures(self) -> Tuple[Texture, Texture]:
         return self.__charge_textures
+
+    def get_level_textures(self) -> Tuple[Texture, Texture, Texture]:
+        return self.__level_textures
 
     def get_visitor_improve(self, type_tower: str) -> TowerVisitor:
         return self.__visitors_dict[type_tower]

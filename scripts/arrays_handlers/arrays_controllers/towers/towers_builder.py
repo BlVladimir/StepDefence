@@ -5,11 +5,12 @@ from panda3d.core import CullBinManager
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
-from scripts.arrays_handlers.arrays_controllers.towers.rower_ui.charge_display import ChargeDisplay
+from scripts.arrays_handlers.arrays_controllers.towers.tower_ui.charge_display import ChargeDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state import RoundRadius, InfinityRadius, \
     InfinitySplashRadius
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
+from scripts.arrays_handlers.arrays_controllers.towers.tower_ui.level_display import LevelDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.towers_config import TowersConfig
 from scripts.sprite.sprites_factory import SpritesFactory
@@ -84,6 +85,7 @@ class TowerBuilder(AbstractTowerBuilder):
             gun_state=gun_state,
             visitor_improve=self.__config.get_visitor_improve(type_tower),
             charge_display=ChargeDisplay(sprite.main_node, self.__config.get_charge_textures(), self._counter),
+            level_display=LevelDisplay(sprite.main_node, self.__config.get_level_textures(), self._counter),
             targets_state=self.__config.get_targets_state(type_tower)
         )
 
