@@ -143,5 +143,6 @@ class MediatorControllers:
     def discount(self, value:float):
         if value > 0:
             self._discount = value
+            EventBus.publish('discount', self._discount)
         else:
             raise ValueError('discount must be greater than 0')
