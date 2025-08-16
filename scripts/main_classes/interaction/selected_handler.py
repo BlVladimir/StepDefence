@@ -29,11 +29,14 @@ class SelectedHandler:
 
         self.__last_sprite = set()
 
-        EventBus.subscribe('turn_on_gameplay_task', lambda event_type, data:
-        EventBus.publish('append_task', ['check_collision', self.__check_collision]))
+        add_task = lambda event_type, data: EventBus.publish('append_task', ['check_collision', self.__check_collision])
+        remove_task = lambda event_type, data: EventBus.publish('remove_task', 'check_collision')
 
-        EventBus.subscribe('turn_off_gameplay_task', lambda event_type, data:
-                           EventBus.publish('remove_task', 'check_collision'))
+        EventBus.subscribe('turn_on_gameplay_task', add_task)
+        EventBus.subscribe('resume_game', add_task)
+
+        EventBus.subscribe('turn_off_gameplay_task', remove_task)
+        EventBus.subscribe('pause_game', remove_task)
 
     def __check_collision(self, task):
         """Проверяет, на какой тайл наведена мышка"""

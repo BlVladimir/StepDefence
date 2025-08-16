@@ -24,6 +24,7 @@ class Shop:
         EventBus.subscribe('open_shop', lambda event_type, data: self.__shop_node.show())
         EventBus.subscribe('close_shop', lambda event_type, data: self.__shop_node.hide())
         EventBus.subscribe('discount', lambda event_type, data: self.__update_discount(data))
+        EventBus.subscribe('change_scene', lambda event_type, data: self.__shop_node.hide())
 
     def __update_discount(self, discount: float) -> None:
         if discount == 1:
@@ -65,7 +66,7 @@ class Shop:
                      text_fg=Vec4D(1, 1, 1, 1),
                      parent=frame,
                      scale=SCALE,
-                     pos=Vec3(0.25-SCALE, -0.022),
+                     pos=Vec3(0.25-SCALE, 0),
                      command=lambda: EventBus.publish('open_info', type_tower),
                      frameColor=((0.5, 0.5, 0.5, 1),
                                  (0.7, 0.7, 0.7, 1),
