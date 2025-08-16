@@ -2,6 +2,7 @@ from copy import copy
 from math import hypot
 from typing import Tuple, Dict, Optional
 
+import yaml
 from panda3d.core import Texture, PNMImage, NodePath
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
@@ -171,3 +172,31 @@ class TowersConfig:
         final_texture = Texture()
         final_texture.load(img)
         return final_texture
+
+
+if __name__ == '__main__':
+    tower = {'towers_characteristics':{
+            'basic': dict(basic_damage=2, cost=3, radius={'round':1}, improve_cost_array=[4, 6], additional_money=2,
+                          targets_state='one_target', foundation_image = "images2d/tower/common_foundation.png", gun_image='images2d/tower/common_gun.png'),
+            'sniper': dict(basic_damage=4, cost=5, radius={'round':2}, improve_cost_array=[6, 8],
+                           targets_state='one_target', foundation_image="images2d/tower/sniper_foundation.png", gun_image='images2d/tower/sniper_gun.png'),
+            'anty_shield': dict(basic_damage=3, cost=4, radius={'round':1.5}, improve_cost_array=[5, 7],
+                                armor_piercing=True, targets_state='one_target', foundation_image='images2d/tower/anty_shield.png'),
+            'venom': dict(basic_damage=2, cost=5, radius={'round':1}, improve_cost_array=[4, 6], poison={'poison':[2, 2]},
+                          targets_state='one_target', foundation_image='images2d/tower/venom_foundation.png', gun_image='images2d/tower/venom_gun.png'),
+            'anty_invisible': dict(basic_damage=3, cost=4, radius={'round':1.5}, improve_cost_array=[6, 8], vision=True,
+                                   targets_state='one_target', foundation_image='images2d/tower/anty_invisibility_tower.png'),
+            'cutter': dict(basic_damage=2, cost=5, radius={'infinity':0}, improve_cost_array=[8, 10],
+                           targets_state='ray', foundation_image='images2d/tower/cutter_foundation.png', gun_image='images2d/tower/cutter_gun.png'),
+            'laser': dict(basic_damage=0, cost=6, radius={'round':1.5}, improve_cost_array=[8, 10], laser={'laser':0},
+                          targets_state='one_target', foundation_image='images2d/tower/laser_foundation.png', gun_image='images2d/tower/laser_gun.png'),
+            'cannon': dict(basic_damage=3, cost=8, radius={'infinity_splash':0.5},
+                           improve_cost_array=[10, 12], targets_state='cannon', foundation_image='images2d/tower/cannon.png')
+        },
+        'textures_path':{
+            'charge':['images2d/UI/enemy_characteristic/charged.png', 'images2d/UI/enemy_characteristic/not_charged.png'],
+            'level':['images2d/upgrade/1lvl.png', 'images2d/upgrade/2lvl.png', 'images2d/upgrade/3lvl.png']
+        }
+    }
+
+    yaml.dump(tower, open('../../../../configs/towers_config.yaml', 'w'), default_flow_style=False, sort_keys=True)

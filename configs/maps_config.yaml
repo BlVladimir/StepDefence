@@ -1,0 +1,58 @@
+maps:
+- [[0, 3, 4, 4, 4],
+   [4, 1, 1, 1, 0],
+   [5, 0, 6, 1, 6],
+   [0, 1, 1, 1, 4],
+   [4, 2, 4, 0, 4]]
+- [[3, 1, 1, 1, 4],
+   [4, 5, 4, 1, 4],
+   [1, 1, 1, 1, 0],
+   [1, 4, 0, 7, 0],
+   [2, 4, 6, 0, 0]]
+- [[0, 0, 0, 0, 0, 8, 0],
+   [0, 0, 4, 7, 1, 1, 3],
+   [0, 8, 5, 0, 1, 4, 0],
+   [2, 1, 4, 1, 1, 6, 0],
+   [4, 1, 1, 1, 4, 0, 0]]
+- [[0, 4, 2, 0, 0, 0, 0],
+   [4, 1, 1, 4, 4, 6, 0],
+   [4, 1, 4, 1, 1, 0, 0],
+   [0, 1, 0, 3, 1, 0, 4],
+   [8, 1, 7, 0, 1, 4, 0],
+   [0, 1, 1, 1, 1, 4, 0],
+   [4, 0, 0, 5, 0, 0, 0]]
+- [[0, 0, 0, 0, 4, 0, 0],
+   [4, 4, 0, 1, 1, 1, 0],
+   [0, 1, 1, 1, 0, 1, 8],
+   [4, 1, 4, 9, 0, 1, 4],
+   [5, 1, 0, 0, 0, 1, 4],
+   [0, 3, 0, 6, 7, 1, 2],
+   [0, 0, 0, 0, 0, 4, 0]]
+- [[0, 0, 4, 0, 0, 4, 4],
+   [4, 1, 1, 1, 1, 1, 4],
+   [0, 3, 4, 0, 0, 1, 0],
+   [0, 0, 6, 0, 7, 1, 4],
+   [0, 4, 0, 8, 0, 1, 5],
+   [4, 0, 1, 1, 1, 1, 4],
+   [0, 4, 2, 0, 9, 0, 0]]
+
+keys:
+  1: road
+  2: road
+  3: base
+  4: basic
+  5: increase_damage
+  6: increase_radius
+  7: armor_piercing
+  8: poison
+  9: additional_money
+
+images_path:
+  road: images2d/tile/for_enemies.png
+  base: images2d/tile/common_building.png
+  basic: images2d/tile/common_building.png
+  increase_damage: images2d/tile/damage_up.png
+  increase_radius: images2d/tile/radius_up.png
+  armor_piercing: images2d/tile/piercing_armor.png
+  poison: images2d/tile/poison_up.png
+  additional_money: images2d/tile/money_up.png

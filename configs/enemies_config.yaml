@@ -1,0 +1,22 @@
+enemies_characteristics:
+  basic:
+    image: images2d/enemy/common.png
+    health: 3
+  big:
+    image: images2d/enemy/armored_enemy.png
+    health: 6
+  regen:
+    image: images2d/enemy/regen.png
+    health: 4
+    regen: 2
+  armored:
+    image: images2d/enemy/shield_enemy.png
+    health: 3
+    armor: 3
+  invisible:
+    image: images2d/enemy/invisible.png
+    health: 4
+    invisible: true
+  giant:
+    image: images2d/enemy/giant.png
+    health: 10

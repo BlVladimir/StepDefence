@@ -1,0 +1,103 @@
+textures_path:
+  charge:
+  - images2d/UI/enemy_characteristic/charged.png
+  - images2d/UI/enemy_characteristic/not_charged.png
+  level:
+  - images2d/upgrade/1lvl.png
+  - images2d/upgrade/2lvl.png
+  - images2d/upgrade/3lvl.png
+towers_characteristics:
+  anty_invisible:
+    basic_damage: 3
+    cost: 4
+    foundation_image: images2d/tower/anty_invisibility_tower.png
+    improve_cost_array:
+    - 6
+    - 8
+    radius:
+      round: 1.5
+    targets_state: one_target
+    vision: true
+  anty_shield:
+    armor_piercing: true
+    basic_damage: 3
+    cost: 4
+    foundation_image: images2d/tower/anty_shield.png
+    improve_cost_array:
+    - 5
+    - 7
+    radius:
+      round: 1.5
+    targets_state: one_target
+  basic:
+    additional_money: 2
+    basic_damage: 2
+    cost: 3
+    foundation_image: images2d/tower/common_foundation.png
+    gun_image: images2d/tower/common_gun.png
+    improve_cost_array:
+    - 4
+    - 6
+    radius:
+      round: 1
+    targets_state: one_target
+  cannon:
+    basic_damage: 3
+    cost: 8
+    foundation_image: images2d/tower/cannon.png
+    improve_cost_array:
+    - 10
+    - 12
+    radius:
+      infinity_splash: 0.5
+    targets_state: cannon
+  cutter:
+    basic_damage: 2
+    cost: 5
+    foundation_image: images2d/tower/cutter_foundation.png
+    gun_image: images2d/tower/cutter_gun.png
+    improve_cost_array:
+    - 8
+    - 10
+    radius:
+      infinity: 0
+    targets_state: ray
+  laser:
+    basic_damage: 0
+    cost: 6
+    foundation_image: images2d/tower/laser_foundation.png
+    gun_image: images2d/tower/laser_gun.png
+    improve_cost_array:
+    - 8
+    - 10
+    laser:
+      laser: 0
+    radius:
+      round: 1.5
+    targets_state: one_target
+  sniper:
+    basic_damage: 4
+    cost: 5
+    foundation_image: images2d/tower/sniper_foundation.png
+    gun_image: images2d/tower/sniper_gun.png
+    improve_cost_array:
+    - 6
+    - 8
+    radius:
+      round: 2
+    targets_state: one_target
+  venom:
+    basic_damage: 2
+    cost: 5
+    foundation_image: images2d/tower/venom_foundation.png
+    gun_image: images2d/tower/venom_gun.png
+    improve_cost_array:
+    - 4
+    - 6
+    poison:
+      poison:
+      - 2
+      - 2
+    radius:
+      round: 1
+    targets_state: one_target

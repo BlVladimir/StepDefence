@@ -2,6 +2,8 @@ from logging import error
 from random import randrange
 from typing import Dict
 
+import yaml
+
 
 class EnemiesConfig:
     """Содержит объекты врагов для копирования и их числовые значения"""
@@ -43,3 +45,14 @@ class EnemiesConfig:
             return 1 + (0.1 * (randrange(-1, 2)+wave//2))
         else:
             return 1
+
+if __name__ == '__main__':
+    enemies = dict(enemies_characteristics={'basic': dict(image='images2d/enemy/common.png', health=3),
+                'big': dict(image='images2d/enemy/armored_enemy.png', health=6),
+                'regen': dict(image='images2d/enemy/regen.png', health=4, regen=2),
+                'armored': dict(image='images2d/enemy/shield_enemy.png', health=3, armor=3),
+                'invisible': dict(image='images2d/enemy/invisible.png', health=4, invisible=True),
+                'giant': dict(image='images2d/enemy/giant.png', health=10)
+                })
+
+    yaml.dump(enemies, open('../../../../configs/enemies_config.yaml', 'w'), default_flow_style=False, sort_keys=False)
