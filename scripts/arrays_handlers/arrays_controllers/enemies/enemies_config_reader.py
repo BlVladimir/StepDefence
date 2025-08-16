@@ -25,24 +25,6 @@ class EnemiesConfig(BaseModel):
             raise ValueError(Er)
 
 
-class EnemiesConfigReader:
-    def __init__(self):
-        try:
-            with open('configs/enemies_config.yaml', 'r') as file:
-                enemies_config = yaml.safe_load(file)
-        except Exception as Er:
-            raise ValueError(Er)
-
-        self.__conf = EnemiesConfig(**enemies_config)
-        
-    def get_characteristic(self, type_enemy: str) -> Dict:
-        """Возвращает словарь характеристик врага без поля 'image'."""
-        return self.__conf.get_characteristic(type_enemy)
-
-    def get_path_image(self, type_enemy: str) -> str:
-        """Возвращает путь к изображению врага из конфига."""
-        return self.__conf.get_path_image(type_enemy)
-
 if __name__ == '__main__':
     enemies = dict(enemies_characteristics={'basic': dict(image='images2d/enemy/common.png', health=3),
                 'big': dict(image='images2d/enemy/armored_enemy.png', health=6),

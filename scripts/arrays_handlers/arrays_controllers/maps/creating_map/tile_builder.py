@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from panda3d.core import PandaNode, Loader, CullBinManager
 
+from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
@@ -44,20 +45,13 @@ class AbstractTilesBuilder(ABC):
 #             raise ValueError('Incorrect type of tile')
 
 class TilesBuilder(AbstractTilesBuilder):
-    def __init__(self, maps_node:PandaNode, sprites_factory:SpritesFactory):
+    def __init__(self, maps_node:PandaNode, sprites_factory:SpritesFactory, conf:MapsConfig):
         super().__init__(maps_node, sprites_factory)
-        self.__tiles = {'road':'images2d/tile/for_enemies.png',
-                        'base':'images2d/tile/common_building.png',
-                        'basic':'images2d/tile/common_building.png',
-                        'increase_damage':'images2d/tile/damage_up.png',
-                        'increase_radius':'images2d/tile/radius_up.png',
-                        'armor_piercing':'images2d/tile/piercing_armor.png',
-                        'poison':'images2d/tile/poison_up.png',
-                        'additional_money':'images2d/tile/money_up.png'}
+        self.__conf = conf
 
     def  create_tile(self, type_tile:str, rect:Rect3D)->Tile:
         try:
-            sprite = self._sprites_factory.create_sprite(rect, self.__tiles[type_tile], self._maps_node, 'tile', self._counter)
+            sprite = self._sprites_factory.create_sprite(rect, self.__conf.get_path(type_tile), self._maps_node, 'tile', self._counter)
             self._counter += 1
             return Tile(sprite, type_tile)
         except KeyError:

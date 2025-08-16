@@ -1,13 +1,10 @@
-from logging import debug
-from typing import Optional, List, Set
+from typing import Optional, Set
 
-from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane, NodePath, Loader
+from panda3d.core import CollisionNode, CollisionPlane, Vec3, Point3, Plane, NodePath
 
-from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.maps.tiles_controller import TilesController
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
-from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 from scripts.sprite.sprites_factory import SpritesFactory
@@ -17,8 +14,7 @@ class MapsController:
     """Обработчик карт"""
     def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory):
         self.__map_node = scene_gameplay_node.attachNewNode("map_node")
-        self.__map_config = MapsConfig()
-        self.__tiles_controller = TilesController(self.__map_config, self.__map_node, sprites_factory)
+        self.__tiles_controller = TilesController(self.__map_node, sprites_factory)
 
         self._global_collision_node = None
 

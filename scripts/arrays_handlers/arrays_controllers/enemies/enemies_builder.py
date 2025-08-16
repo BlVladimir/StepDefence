@@ -1,9 +1,10 @@
 from random import randrange
 
+import yaml
 from panda3d.core import NodePath, CullBinManager, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.damage_calculater import DamageCalculater
-from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config_reader import EnemiesConfigReader, EnemiesConfig
+from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config_reader import EnemiesConfig
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.bezier_curve_maker import BezierCurveMaker
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.movement_calculator import MovementCalculator
@@ -26,7 +27,13 @@ class EnemiesBuilder:
 
         self.__damage_calculator = DamageCalculater()
 
-        self.__conf = EnemiesConfigReader()
+        try:
+            with open('configs/enemies_config.yaml', 'r') as file:
+                enemies_config = yaml.safe_load(file)
+        except Exception as Er:
+            raise ValueError(Er)
+
+        self.__conf = EnemiesConfig(**enemies_config)
 
 
     def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2)->None:
