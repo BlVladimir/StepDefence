@@ -1,12 +1,12 @@
 import asyncio
 from asyncio import get_event_loop, get_running_loop, sleep
-from logging import debug
+from logging import debug, error, info
 
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import WindowProperties, CollisionTraverser
 
-from panda3d.core import LineSegs
+from panda3d.core import LineSegs, TextNode
 
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.interaction.key_handler import KeyHandler
@@ -24,6 +24,7 @@ class StepDefence(ShowBase):
     """Главный класс, осуществляющий взаимодействие программы с пользователем"""
     def __init__(self):
         ShowBase.__init__(self)
+        self.__setup_fonts()
         self.cTrav = CollisionTraverser()
 
         self.__WIDTH = 1000
@@ -64,9 +65,30 @@ class StepDefence(ShowBase):
         self.loop.run_forever()
         return task.cont
 
-    @staticmethod
-    def click():
-        print('click')
+    def __setup_fonts(self):
+        """Настройка шрифта по умолчанию с поддержкой кириллицы."""
+        font = None
+        candidates = [
+            'assets/fonts/DejaVuSans.ttf',  # Пользовательский шрифт
+            '/System/Library/Fonts/Supplemental/Arial Unicode.ttf',  # macOS
+            '/Library/Fonts/Arial Unicode.ttf',  # macOS
+            '/Library/Fonts/Arial.ttf',  # macOS
+        ]
+
+        for path in candidates:
+            try:
+                f = self.loader.loadFont(path)
+                if f:
+                    font = f
+                    info(f'Successfully loaded font: {path}')
+                    break
+            except Exception:
+                continue
+
+        if font:
+            TextNode.setDefaultFont(font)
+        else:
+            error('Warning: Unicode font not found')
 
     def _set_fullscreen(self, enabled: bool = True):
         """Включает/выключает полноэкранный режим"""

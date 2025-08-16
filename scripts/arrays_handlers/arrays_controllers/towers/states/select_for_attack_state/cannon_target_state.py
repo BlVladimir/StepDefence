@@ -18,7 +18,7 @@ class CannonTargetState(AbstractTargetsState):
             if tower.can_attack_target(enemy.sprite):
                 enemy.sprite.is_special_selected = True
                 targets_set.add(enemy.sprite)
-        debug(f'targets_set: {len(targets_set)}')
+        # debug(f'targets_set: {len(targets_set)}')
         return targets_set
 
     def hit(self, tower:Tower, **kwargs)->None:

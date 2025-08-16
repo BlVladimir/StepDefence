@@ -7,6 +7,7 @@ from panda3d.core import NodePath, Vec3, TransparencyAttrib, TextNode, Vec4D
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.value_tower_config import ValueTowerConfig
+from scripts.main_classes.gui.text_func import center_text
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -16,7 +17,7 @@ class UpgradeTable:
         self.__upgrade_table_node = buttons_node.attachNewNode('upgrade_table_node')
         self.__upgrade_table_node.hide()
         self.__upgrade_table_frame = DirectFrame(parent=self.__upgrade_table_node,
-                                                 frameSize=(0.25, 0.25, 1, -1),
+                                                 frameSize=(0.25, -0.25, 1, -1),
                                                  frameColor=(0.5, 0.5, 0.5, 1),
                                                  pos=Vec3(-relationship + 0.25, 0))
 
@@ -27,12 +28,13 @@ class UpgradeTable:
                             frameColor=(0, 0, 0, 0),
                             text=f'x{ValueTowerConfig.get_products()['basic']['cost']}',
                             text_fg=Vec4D(128 / 255, 64 / 255, 48 / 255, 1),
-                            text_pos=(0.175, -0.02),
+                            text_pos=(0.175, 0),
                             text_scale=0.075,
                             text_align=TextNode.ACenter,
                             image='images2d/UI/money.png',
                             image_pos=(0.175, 0, 0),
                             image_scale=(0.075, 0, 0.075))
+        center_text(self.__frame)
         self.__button_upgrade = DirectButton(image='images2d/upgrade/1lvl.png',
                                              parent=self.__frame,
                                              scale=0.15,
@@ -52,7 +54,7 @@ class UpgradeTable:
                                         frameColor=(0, 0, 0, 0),
                                         text='',
                                         text_fg=(1, 1, 1, 1),
-                                        text_pos=(0, -0.035),
+                                        text_pos=(0, 0),
                                         text_scale=0.06,
                                         text_align=TextNode.ACenter)
 
@@ -83,10 +85,13 @@ class UpgradeTable:
         type_tower = tower.type_tower
         self.__button_upgrade['image'] = self.__images_list[level]
         self.__redraw_characteristic(characteristic)
-
-        price = ValueTowerConfig.get_products()[type_tower]['improve_cost_array'][level-1]
-        self.__frame.setPythonTag('price', price)
-        self.__frame['text'] = f'x{round(price * self.__discount)}'
+        if level < 2:
+            price = ValueTowerConfig.get_products()[type_tower]['improve_cost_array'][level]
+            self.__frame.setPythonTag('price', price)
+            self.__frame['text'] = f'x{round(price * self.__discount)}'
+        else:
+            self.__frame.setPythonTag('price', 0)
+            self.__frame['text'] = ''
 
         self.__upgrade_table_node.show()
 

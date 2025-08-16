@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Set
+from typing import Set, Iterator
 
 from panda3d.core import NodePath
 
@@ -61,11 +61,9 @@ class EnemiesController:
             case 'using':
                 self.__enemies_selector.set_used_sprite()
 
-    def get_enemies_set(self)->Set[Enemy]:
-        enemies_set = set()
+    def get_enemies_set(self) -> Iterator[Enemy]:
         for enemy_node in self._enemies_node.findAllMatches('**/enemy'):
-            enemies_set.add(enemy_node.getPythonTag('sprite').external_object)
-        return enemies_set
+            yield enemy_node.getPythonTag('sprite').external_object
 
     def __round_ended(self)->None:
         if not self.__is_round_ended:
