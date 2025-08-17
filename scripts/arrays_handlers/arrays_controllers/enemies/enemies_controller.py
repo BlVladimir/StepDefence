@@ -5,6 +5,7 @@ from typing import Set, Iterator
 
 from panda3d.core import NodePath
 
+from scripts.arrays_handlers.arrays_controllers.enemies.enemies_manager import EnemiesManager
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
@@ -19,7 +20,8 @@ class EnemiesController:
     """Обработчик врагов"""
     def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory, track:Track, mediator_controllers: 'MediatorControllers'):
         self._enemies_node = scene_gameplay_node.attachNewNode('enemy')
-        self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, sprites_factory, track)
+        self.__enemies_manager = EnemiesManager()
+        self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, sprites_factory, track, self.__enemies_manager)
 
         self.__enemies_selector = EnemySelector(lambda :self.get_enemies_set())
         self.__mediator_controller = mediator_controllers
@@ -28,11 +30,12 @@ class EnemiesController:
         EventBus.subscribe('enter_click', lambda event_type, data: self.__round_ended())
         EventBus.subscribe('start_end_turn', lambda event_type, data: EventBus.publish('add_async_task', self.__move_enemies()))
         EventBus.subscribe('update_enemy', lambda event_type, data: self.__update_enemy())
-        Enemy.subscribe()
 
     def clear_enemies(self)->None:
         """Удаоляет врагов"""
         self.__group_enemies_builder.clear_enemies()
+        for enemy in self.__enemies_manager:
+            enemy.sprite.external_object = None
 
     def create_enemies(self, wave:int, level:int, tile:Rect3D)->None:
         """Создает врагов"""
@@ -62,8 +65,7 @@ class EnemiesController:
                 self.__enemies_selector.set_used_sprite()
 
     def get_enemies_set(self) -> Iterator[Enemy]:
-        for enemy_node in self._enemies_node.findAllMatches('**/enemy'):
-            yield enemy_node.getPythonTag('sprite').external_object
+        return iter(self.__enemies_manager)
 
     def __round_ended(self)->None:
         if not self.__is_round_ended:

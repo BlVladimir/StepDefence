@@ -3,6 +3,7 @@ from random import randrange, choice, choices, random
 from panda3d.core import NodePath, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
+from scripts.arrays_handlers.arrays_controllers.enemies.enemies_manager import EnemiesManager
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprites_factory import SpritesFactory
@@ -10,9 +11,9 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class GroupEnemiesBuilder:
     """Создает группу врагов"""
-    def __init__(self, enemies_node:NodePath, sprites_factory:SpritesFactory, track:Track):
+    def __init__(self, enemies_node:NodePath, sprites_factory:SpritesFactory, track:Track, enemy_manager:EnemiesManager):
         self._enemies_node = enemies_node
-        self.__enemies_builder = EnemiesBuilder(self._enemies_node, sprites_factory, track)
+        self.__enemies_builder = EnemiesBuilder(self._enemies_node, sprites_factory, track, enemy_manager)
         self.__type_tuple = ('basic', 'big', 'armored', 'regen', 'invisible', 'giant')
 
     def clear_enemies(self)->None:

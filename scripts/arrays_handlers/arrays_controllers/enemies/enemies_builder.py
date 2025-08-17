@@ -5,6 +5,7 @@ from panda3d.core import NodePath, CullBinManager, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.damage_calculater import DamageCalculater
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config import EnemiesConfig
+from scripts.arrays_handlers.arrays_controllers.enemies.enemies_manager import EnemiesManager
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.bezier_curve_maker import BezierCurveMaker
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.movement_calculator import MovementCalculator
@@ -16,11 +17,12 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class EnemiesBuilder:
     """Создает врагов"""
-    def __init__(self, node:NodePath, sprites_factory:SpritesFactory, track:Track):
+    def __init__(self, node:NodePath, sprites_factory:SpritesFactory, track:Track, enemies_manager:EnemiesManager):
         self.__enemies_node = node
+        self.__enemies_manager = enemies_manager
         self.__sprites_factory = sprites_factory
         self.__bezier_curve_maker = BezierCurveMaker()
-        self._counter = 0
+
         self.__track = track
 
         CullBinManager.get_global_ptr().add_bin('enemy', CullBinManager.BT_fixed, 4)
@@ -34,15 +36,15 @@ class EnemiesBuilder:
         parameters = EnemiesConfig.get_characteristic(type_enemy)
         parameters['health'] = round(parameters['health'] * self.__get_wave_health_modifier(wave))
         sprite = self.__sprites_factory.create_sprite(rect, EnemiesConfig.get_path_image(type_enemy), self.__enemies_node,
-                                                      'enemy', self._counter)
-        Enemy(sprite,
-              parameters,
-              MovementCalculator(self.__bezier_curve_maker, pos_on_tile, started_division_vec, self.__track),
-              self.__damage_calculator, wave//4+2),
-        self._counter += 1
+                                                      'enemy', len(self.__enemies_manager))
+        enemy = Enemy(sprite,
+                      parameters,
+                      MovementCalculator(self.__bezier_curve_maker, pos_on_tile,
+                                         started_division_vec, self.__track),
+                      self.__damage_calculator, wave // 4 + 2)
+        self.__enemies_manager + enemy
 
     def clear_enemies(self):
-        self._counter = 0
         self.__enemies_node.getChildren().detach()
 
     @staticmethod
