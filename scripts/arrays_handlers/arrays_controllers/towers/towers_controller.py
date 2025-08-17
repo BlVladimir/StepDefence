@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from _weakrefset import WeakSet
-from logging import warning
 from typing import Optional
 
 from panda3d.core import Point3, NodePath
@@ -9,8 +7,8 @@ from panda3d.core import Point3, NodePath
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy_visitor import EnemyVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
+from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
 from scripts.arrays_handlers.arrays_controllers.towers.towers_builder import TowerBuilder
-from scripts.arrays_handlers.arrays_controllers.towers.towers_config import TowersConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprites_factory import SpritesFactory
 
@@ -18,8 +16,8 @@ from scripts.sprite.sprites_factory import SpritesFactory
 class TowersController:
     """Обработчик башен"""
     def __init__(self, sprites_factory:SpritesFactory, mediator: 'MediatorControllers', render_root:NodePath):
-        self.__config = TowersConfig(sprites_factory, render_root)
-        self.__tower_builder = TowerBuilder(sprites_factory, self.__config)
+        TowerConfig.load_config(sprites_factory, render_root)
+        self.__tower_builder = TowerBuilder(sprites_factory)
         self.__mediator = mediator
 
         EventBus.subscribe('buy_tower', lambda event_type, data: self.__create_tower(data))
@@ -28,12 +26,12 @@ class TowersController:
         Tower.subscribe()
 
     def __create_tower(self, type_tower:str):
-        if self.__mediator.money >= round(self.__mediator.discount*self.__config.get_cost(type_tower)):
+        if self.__mediator.money >= round(self.__mediator.discount*TowerConfig.get_cost(type_tower)):
             tower = self.__tower_builder.create_tower(type_tower, self.__mediator.selected_tile)
             EventBus.publish('update_enemy')
             EventBus.publish('close_shop')
             EventBus.publish('remove_discount')
-            self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_cost(type_tower)))
+            self.__mediator.remove_money(round(self.__mediator.discount * TowerConfig.get_cost(type_tower)))
             self.__mediator.discount = 1
             EventBus.publish('using_tower', [tower, tower.level, tower.characteristic])
 
@@ -50,11 +48,11 @@ class TowersController:
 
     def __upgrade_tower(self):
         tower = self.__mediator.selected_tile.tower
-        if tower and tower.level < 2 and self.__mediator.money >= round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level]):
+        if tower and tower.level < 2 and self.__mediator.money >= round(self.__mediator.discount*TowerConfig.get_improve_cost_array(tower.type_tower)[tower.level]):
             tower.upgrade()
             EventBus.publish('update_enemy')
             EventBus.publish('remove_discount')
-            self.__mediator.remove_money(round(self.__mediator.discount*self.__config.get_improve_cost_array(tower.type_tower)[tower.level-1]))
+            self.__mediator.remove_money(round(self.__mediator.discount * TowerConfig.get_improve_cost_array(tower.type_tower)[tower.level - 1]))
             self.__mediator.discount = 1
             EventBus.publish('using_tower', [tower, tower.level, tower.characteristic])
 

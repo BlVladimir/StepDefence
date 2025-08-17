@@ -6,7 +6,7 @@ from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, Vec3, TransparencyAttrib, TextNode, Vec4D
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
-from scripts.arrays_handlers.arrays_controllers.towers.value_tower_config import ValueTowerConfig
+from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
 from scripts.main_classes.gui.text_func import center_text
 from scripts.main_classes.interaction.event_bus import EventBus
 
@@ -26,7 +26,7 @@ class UpgradeTable:
                             frameSize=(-0.25, 0.25, -0.15, 0.15),
                             pos=(0, 0, -0.75),
                             frameColor=(0, 0, 0, 0),
-                            text=f'x{ValueTowerConfig.get_products()['basic']['cost']}',
+                            text=f'x0',
                             text_fg=Vec4D(128 / 255, 64 / 255, 48 / 255, 1),
                             text_pos=(0.175, 0),
                             text_scale=0.075,
@@ -86,7 +86,7 @@ class UpgradeTable:
         self.__button_upgrade['image'] = self.__images_list[level]
         self.__redraw_characteristic(characteristic)
         if level < 2:
-            price = ValueTowerConfig.get_products()[type_tower]['improve_cost_array'][level]
+            price = TowerConfig.get_improve_cost_array(type_tower)[level]
             self.__frame.setPythonTag('price', price)
             self.__frame['text'] = f'x{round(price * self.__discount)}'
         else:

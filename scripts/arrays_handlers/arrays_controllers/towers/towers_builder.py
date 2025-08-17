@@ -5,6 +5,7 @@ from panda3d.core import CullBinManager
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effect import Effect
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
 from scripts.arrays_handlers.arrays_controllers.towers.tower_ui.charge_display import ChargeDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.states.gun_state import GunState
 from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state import RoundRadius, InfinityRadius, \
@@ -12,7 +13,6 @@ from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state impor
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.tower_ui.level_display import LevelDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
-from scripts.arrays_handlers.arrays_controllers.towers.towers_config import TowersConfig
 from scripts.sprite.sprites_factory import SpritesFactory
 
 
@@ -34,26 +34,24 @@ class AbstractTowerBuilder(ABC):
     def reset_counter(self):
         self._counter = 0
 
-
 class TowerBuilder(AbstractTowerBuilder):
     """Создает башни"""
-    def __init__(self, sprites_factory:SpritesFactory, config:TowersConfig)->None:
+    def __init__(self, sprites_factory:SpritesFactory)->None:
         super().__init__(sprites_factory)
-        self.__config = config
 
     def create_tower(self, type_tower:str, tile:Tile)->Tower:
 
-        match self.__config.get_radius(type_tower).type_radius:
+        match TowerConfig.get_radius(type_tower).type_radius:
             case 'round':
-                radius = RoundRadius(self.__config.get_radius(type_tower).value, self.__config.round_texture, tile.sprite.rect.center)
+                radius = RoundRadius(TowerConfig.get_radius(type_tower).value, TowerConfig.get_round_texture(), tile.sprite.rect.center)
             case 'infinity':
                 radius = InfinityRadius()
             case 'infinity_splash':
-                radius = InfinitySplashRadius(self.__config.get_radius(type_tower).value, self.__config.round_texture)
+                radius = InfinitySplashRadius(TowerConfig.get_radius(type_tower).value, TowerConfig.get_round_texture())
             case _:
                 raise Exception('Incorrect radius type')
 
-        characteristic = self.__config.get_started_characteristic_dict(type_tower)
+        characteristic = TowerConfig.get_started_characteristic_dict(type_tower)
         match tile.effect:
             case 'increase_damage':
                 characteristic['basic_damage'] = round(characteristic['basic_damage']*1.5)
@@ -70,12 +68,12 @@ class TowerBuilder(AbstractTowerBuilder):
         debug(characteristic)
 
 
-        if self.__config.get_gun(type_tower):
-            gun_state = GunState(sprite=self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_gun(type_tower),
-                                                tile.sprite, 'gun', self._counter))
+        if TowerConfig.get_image_gun(type_tower):
+            gun_state = GunState(sprite=self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_image_gun(type_tower),
+                                                                            tile.sprite, 'gun', self._counter))
         else:
             gun_state = None
-        sprite = self._sprites_factory.create_sprite(tile.sprite.rect, self.__config.get_image_foundation(type_tower),
+        sprite = self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_image_foundation(type_tower),
                                                        tile.sprite, 'tower', self._counter)
         tower = Tower(
             type_tower=type_tower,
@@ -83,10 +81,10 @@ class TowerBuilder(AbstractTowerBuilder):
             damage_dict=characteristic,
             radius_state=radius,
             gun_state=gun_state,
-            visitor_improve=self.__config.get_visitor_improve(type_tower),
-            charge_display=ChargeDisplay(sprite.main_node, self.__config.get_charge_textures(), self._counter),
-            level_display=LevelDisplay(sprite.main_node, self.__config.get_level_textures(), self._counter),
-            targets_state=self.__config.get_targets_state(type_tower)
+            visitor_improve=TowerConfig.get_visitor_improve(type_tower),
+            charge_display=ChargeDisplay(sprite.main_node, TowerConfig.get_charge_textures(), self._counter),
+            level_display=LevelDisplay(sprite.main_node, TowerConfig.get_level_textures(), self._counter),
+            targets_state=TowerConfig.get_targets_state(type_tower)
         )
 
         self._counter += 1

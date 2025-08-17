@@ -69,3 +69,19 @@ class EnemiesController:
         if not self.__is_round_ended:
             self.__is_round_ended = True
             EventBus.publish('start_end_turn')
+
+
+if __name__ == '__main__':
+    class Cl:
+        a:int = 1
+        b:int = 2
+        c:int = 3
+
+        def __init__(self):
+            self.a = 3
+
+    cl = Cl()
+    cl1 = Cl
+    cl.b = 3
+    print(cl.a, cl.b, cl.c)
+    print(cl1.a, cl1.b, cl1.c)

@@ -2,7 +2,7 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, TransparencyAttrib, Vec3, Texture, PNMImage, TextNode, Vec4D
 
-from scripts.arrays_handlers.arrays_controllers.towers.value_tower_config import ValueTowerConfig
+from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
 from scripts.main_classes.gui.text_func import center_text
 from scripts.main_classes.interaction.event_bus import EventBus
 
@@ -19,7 +19,7 @@ class Shop:
         START_Y = 0.87
         STEP = -0.25
         self.__products = set([self.__create_products(type_tower, Vec3(0, START_Y + STEP * i)) for i, type_tower in
-                               enumerate(list(ValueTowerConfig.get_products().keys()))])
+                               enumerate(TowerConfig.get_all_towers_name())])
 
         EventBus.subscribe('open_shop', lambda event_type, data: self.__shop_node.show())
         EventBus.subscribe('close_shop', lambda event_type, data: self.__shop_node.hide())
@@ -43,7 +43,7 @@ class Shop:
                             frameSize=(0.25, -0.25, SCALE, -SCALE),
                             frameColor=(0.6, 0.6, 0.6, 1),
                             pos=pos,
-                            text=f'x{ValueTowerConfig.get_products()[type_tower]['cost']}',
+                            text=f'x{TowerConfig.get_cost(type_tower)}',
                             text_fg=Vec4D(128 / 255, 64 / 255, 48 / 255, 1),
                             text_pos=(-0.25 + SCALE * 3, 0),
                             text_scale=SCALE / 1.2,
@@ -52,8 +52,8 @@ class Shop:
                             image_pos=(-0.25 + SCALE * 3, 0, 0),
                             image_scale=(SCALE / 1.2, 0, SCALE / 1.2))
         center_text(frame)
-        first_path = ValueTowerConfig.get_sprites_towers_foundations(type_tower)
-        second_path = ValueTowerConfig.get_sprites_towers_guns(type_tower)
+        first_path = TowerConfig.get_image_foundation(type_tower)
+        second_path = TowerConfig.get_image_gun(type_tower)
         DirectButton(image=self.__create_texture(first_path, second_path) if second_path else first_path,
                      parent=frame,
                      scale=SCALE,
@@ -72,7 +72,7 @@ class Shop:
                                  (0.7, 0.7, 0.7, 1),
                                  (0.3, 0.3, 0.3, 1)))
         frame.setTransparency(TransparencyAttrib.MAlpha)
-        frame.setPythonTag('cost', ValueTowerConfig.get_products()[type_tower]['cost'])
+        frame.setPythonTag('cost', TowerConfig.get_cost(type_tower))
         return frame
 
     @staticmethod
