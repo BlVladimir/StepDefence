@@ -27,19 +27,13 @@ class EnemiesBuilder:
 
         self.__damage_calculator = DamageCalculater()
 
-        try:
-            with open('configs/enemies_config.yaml', 'r') as file:
-                enemies_config = yaml.safe_load(file)
-        except Exception as Er:
-            raise ValueError(Er)
-
-        self.__conf = EnemiesConfig(**enemies_config)
+        EnemiesConfig.load_config()
 
 
     def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2)->None:
-        parameters = self.__conf.get_characteristic(type_enemy)
+        parameters = EnemiesConfig.get_characteristic(type_enemy)
         parameters['health'] = round(parameters['health'] * self.__get_wave_health_modifier(wave))
-        sprite = self.__sprites_factory.create_sprite(rect, self.__conf.get_path_image(type_enemy), self.__enemies_node,
+        sprite = self.__sprites_factory.create_sprite(rect, EnemiesConfig.get_path_image(type_enemy), self.__enemies_node,
                                                       'enemy', self._counter)
         Enemy(sprite,
               parameters,

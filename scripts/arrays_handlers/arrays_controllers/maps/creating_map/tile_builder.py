@@ -45,13 +45,9 @@ class AbstractTilesBuilder(ABC):
 #             raise ValueError('Incorrect type of tile')
 
 class TilesBuilder(AbstractTilesBuilder):
-    def __init__(self, maps_node:PandaNode, sprites_factory:SpritesFactory, conf:MapsConfig):
-        super().__init__(maps_node, sprites_factory)
-        self.__conf = conf
-
     def  create_tile(self, type_tile:str, rect:Rect3D)->Tile:
         try:
-            sprite = self._sprites_factory.create_sprite(rect, self.__conf.get_path(type_tile), self._maps_node, 'tile', self._counter)
+            sprite = self._sprites_factory.create_sprite(rect, MapsConfig.get_path(type_tile), self._maps_node, 'tile', self._counter)
             self._counter += 1
             return Tile(sprite, type_tile)
         except KeyError:

@@ -17,8 +17,17 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class Radius:
-    
+    def __init__(self, value: float = 0.0, type_radius: str = 'round'):
+        self._value = value
+        self._type_radius = type_radius
 
+    @property
+    def value(self):
+        return self._value
+
+    @property
+    def type_radius(self):
+        return self._type_radius
 
 class TowerConfig:
     _instance: Optional['TowerConfig'] = None
@@ -66,55 +75,91 @@ class TowerConfig:
 
     @classmethod
     def get_charge_textures(cls):
-        return cls._charge_textures
+        try:
+            return cls._instance._charge_textures
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_level_textures(cls):
-        return cls._instance._level_textures
+        try:
+            return cls._instance._level_textures
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_visitor_improve(cls, type_tower: str) -> TowerVisitor:
-        return cls._instance._visitors_dict[type_tower]
+        try:
+            return cls._instance._visitors_dict[type_tower]
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_improve_cost_array(cls, type_tower: str) -> List:
-        return cls._instance._towers_characteristics[type_tower]['improve_cost_array']
+        try:
+            return cls._instance._towers_characteristics[type_tower]['improve_cost_array']
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_started_characteristic_dict(cls, type_tower: str) -> Dict:
-        r = {}
-        for i in ['basic_damage', 'armor_piercing', 'poison', 'additional_money', 'vision', 'laser']:
-            if i in cls._instance._towers_characteristics[type_tower].keys():
-                r[i] = copy(cls._instance._towers_characteristics[type_tower][i])
-        return r
+        try:
+            r = {}
+            for i in ['basic_damage', 'armor_piercing', 'poison', 'additional_money', 'vision', 'laser']:
+                if i in cls._instance._towers_characteristics[type_tower].keys():
+                    r[i] = copy(cls._instance._towers_characteristics[type_tower][i])
+            return r
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_targets_state(cls, type_tower: str) -> 'OneTargetState':
-        return cls._instance._targets_state_dict[cls._instance._towers_characteristics[type_tower]['targets_state']]
+        try:
+            return cls._instance._targets_state_dict[cls._instance._towers_characteristics[type_tower]['targets_state']]
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_cost(cls, type_tower: str) -> int:
-        return cls._instance._towers_characteristics[type_tower]['cost']
+        try:
+            return cls._instance._towers_characteristics[type_tower]['cost']
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_image_foundation(cls, type_tower: str) -> str:
-        return cls._instance._towers_characteristics[type_tower]['foundation_image']
+        try:
+            return cls._instance._towers_characteristics[type_tower]['foundation_image']
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_image_gun(cls, type_tower: str) -> Optional[str]:
-        return cls._instance._towers_characteristics[type_tower].get('gun_image')
+        try:
+            return cls._instance._towers_characteristics[type_tower].get('gun_image')
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_radius(cls, type_tower: str) -> Radius:
-        return cls._instance._towers_characteristics[type_tower]['radius']
+        try:
+            return cls._instance._towers_characteristics[type_tower]['radius']
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_round_texture(cls) -> Texture:
-        return cls._instance._round_texture
+        try:
+            return cls._instance._round_texture
+        except Exception as Er:
+            raise ValueError(Er)
 
     @classmethod
     def get_all_towers_name(cls):
-        return list(cls._instance._towers_characteristics.keys())
+        try:
+            return list(cls._instance._towers_characteristics.keys())
+        except Exception as Er:
+            raise ValueError(Er)
 
     @staticmethod
     def __texture_round_radius(size: int = 512, radius_relationship: float = 0.1, brightness: int = 255) -> Texture:
@@ -156,4 +201,3 @@ class TowerConfig:
         final_texture = Texture()
         final_texture.load(img)
         return final_texture
-

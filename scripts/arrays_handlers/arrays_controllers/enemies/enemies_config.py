@@ -1,26 +1,41 @@
 from logging import error
-from typing import Dict
+from typing import Dict, Optional
 
 import yaml
-from pydantic import BaseModel
 
 
-class EnemiesConfig(BaseModel):
-    enemies_characteristics: Dict
+class EnemiesConfig:
+    _instance: Optional['EnemiesConfig'] = None
 
-    def get_characteristic(self, type_enemy:str)->Dict:
+    _enemies_characteristics: Dict[str, Dict]
+
+    @classmethod
+    def load_config(cls) -> None:
+        """Загружает конфиг врагов один раз в память."""
+        try:
+            with open('configs/enemies_config.yaml', 'r') as file:
+                conf = yaml.safe_load(file)
+        except Exception as Er:
+            raise ValueError(Er)
+        obj = cls()
+        obj._enemies_characteristics = conf['enemies_characteristics']
+        cls._instance = obj
+
+    @classmethod
+    def get_characteristic(cls, type_enemy: str) -> Dict:
         """Возвращает словарь характеристик врага без поля 'image'."""
         try:
-            data = self.enemies_characteristics[type_enemy]
+            data = cls._instance._enemies_characteristics[type_enemy]
             return {k: v for k, v in data.items() if k != 'image'}
         except Exception as Er:
             error('Error in get_enemies_characteristic')
             raise ValueError(Er)
 
-    def get_path_image(self, type_enemy:str)->str:
+    @classmethod
+    def get_path_image(cls, type_enemy: str) -> str:
         """Возвращает путь к изображению врага из конфига."""
         try:
-            return self.enemies_characteristics[type_enemy]['image']
+            return cls._instance._enemies_characteristics[type_enemy]['image']
         except Exception as Er:
             raise ValueError(Er)
 

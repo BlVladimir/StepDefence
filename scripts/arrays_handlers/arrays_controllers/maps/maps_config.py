@@ -1,30 +1,50 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
+import yaml
 
-from pydantic import BaseModel
 
+class MapsConfig:
+    _instance: Optional['MapsConfig'] = None
 
-class MapsConfig(BaseModel):
-    maps: List
-    keys: Dict
-    images_path: Dict
+    _maps: List
+    _keys: Dict
+    _images_path: Dict
 
-    def get_map(self, level:int)->List:
+    @classmethod
+    def load_config(cls) -> None:
         try:
-            return self.maps[level]
+            with open('configs/maps_config.yaml', 'r') as file:
+                conf = yaml.safe_load(file)
+        except Exception as Er:
+            raise ValueError(Er)
+
+        obj = cls()
+        obj._maps = conf['maps']
+        obj._keys = conf['keys']
+        obj._images_path = conf['images_path']
+
+        cls._instance = obj
+
+    @classmethod
+    def get_map(cls, level:int)->List:
+        try:
+            return cls._instance._maps[level]
         except IndexError:
             raise ValueError(f'Level {level} not found')
 
-    def get_tile(self, key:int)->str:
+    @classmethod
+    def get_tile(cls, key:int)->str:
         try:
-            return self.keys[key]
+            return cls._instance._keys[key]
         except IndexError:
             raise ValueError(f'Key {key} not found')
 
-    def get_path(self, value:str)->str:
+    @classmethod
+    def get_path(cls, value:str)->str:
         try:
-            return self.images_path[value]
+            return cls._instance._images_path[value]
         except IndexError:
             raise ValueError(f'Path {value} not found')
 
-    def get_all_keys(self)->List:
-        return list(self.keys.keys())
+    @classmethod
+    def get_all_keys(cls)->List:
+        return list(cls._instance._keys.keys())
