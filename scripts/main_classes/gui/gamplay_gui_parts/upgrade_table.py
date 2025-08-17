@@ -18,7 +18,7 @@ class UpgradeTable:
         self.__upgrade_table_node.hide()
         self.__upgrade_table_frame = DirectFrame(parent=self.__upgrade_table_node,
                                                  frameSize=(0.25, -0.25, 1, -1),
-                                                 frameColor=(0.5, 0.5, 0.5, 1),
+                                                 frameColor=(0.5, 0.5, 0.5, 0),
                                                  pos=Vec3(-relationship + 0.25, 0))
 
         self.__discount = 1

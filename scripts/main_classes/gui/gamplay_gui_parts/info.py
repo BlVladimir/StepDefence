@@ -1,5 +1,5 @@
 from logging import error, debug
-from typing import Tuple
+from typing import List
 
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
@@ -62,6 +62,7 @@ class Info:
         center_text(self.__button_more_info)
         self.__button_more_info.setPythonTag('scale', (0.6, 0.1))
         self.__more_info_text:str = ''
+        InfoConfig.load_config()
 
         EventBus.subscribe('open_info', lambda event_type, data:self.__show(InfoConfig.get_tower_info(data)))
         EventBus.subscribe('change_scene', lambda event_type, data:self.__info_node.hide())
@@ -70,7 +71,7 @@ class Info:
         EventBus.publish('resume_game')
         self.__info_node.hide()
 
-    def __show(self, text: Tuple[str, str]) -> None:
+    def __show(self, text: List[str]) -> None:
         EventBus.publish('pause_game')
         self.__info_frame['text'] = f'{text[0]}'
         self.__more_info_text = text[1]

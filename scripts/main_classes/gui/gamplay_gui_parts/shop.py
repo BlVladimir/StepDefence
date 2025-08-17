@@ -13,7 +13,7 @@ class Shop:
         self.__shop_node.hide()
         self.__shop_frame = DirectFrame(parent=self.__shop_node,
                                         frameSize=(0.25, -0.25, 1, -1),
-                                        frameColor=(0.5, 0.5, 0.5, 1),
+                                        frameColor=(0.5, 0.5, 0.5, 0),
                                         pos=Vec3(-relationship + 0.25, 0))
 
         START_Y = 0.87

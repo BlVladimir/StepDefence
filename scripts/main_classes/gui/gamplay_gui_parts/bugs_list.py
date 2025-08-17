@@ -3,6 +3,7 @@ from typing import Dict
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, Vec3, TextNode, Vec4
 
+from scripts.main_classes.gui.text_func import center_text
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -11,7 +12,7 @@ class BugsList:
         self.__bugs_list = buttons_node.attachNewNode('bugs_list')
         self.__bugs_list_frame = DirectFrame(parent=self.__bugs_list,
                                                  frameSize=(0.25, -0.25, 1, -1),
-                                                 frameColor=(0.5, 0.5, 0.5, 1),
+                                                 frameColor=(0.5, 0.5, 0.5, 0),
                                                  pos=Vec3(relationship - 0.25, 0))
 
         self.__bugs_list_node = self.__bugs_list_frame.attachNewNode('bugs_list_node')
@@ -31,7 +32,7 @@ class BugsList:
                                         frameColor=(0, 0, 0, 0),
                                         text='',
                                         text_fg=(1, 1, 1, 1),
-                                        text_pos=(0, -0.035),
+                                        text_pos=(0, 0),
                                         text_scale=0.06,
                                         text_align=TextNode.ACenter)
         self.__sequence_characteristic = ['health', 'armor', 'regen', 'poison', 'invisible', 'laser']
@@ -46,7 +47,11 @@ class BugsList:
         sorted_characteristic = dict(sorted(characteristic.items(), key=lambda x: self.__sequence_characteristic.index(x[0])))
         self.__enemies_char_node.getChildren().detach()
         for i, (char, value_char) in enumerate(sorted_characteristic.items()):
-            self.__get_frame(self.__enemies_char_node, self.__frame_char, Vec4(1, 1, 1, 1),f'{char}: {value_char}', Vec3(0, 0.8 - 0.15 * i))
+            self.__get_frame(self.__enemies_char_node,
+                             self.__frame_char,
+                             Vec4(1, 1, 1, 1),
+                             f'{char}: {value_char}',
+                             Vec3(0, 0.6 - 0.15 * i))
 
     def __close_characteristic(self):
         self.__enemies_char_node.getChildren().detach()

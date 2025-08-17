@@ -20,12 +20,13 @@ class GameplayButtonsController(ButtonsController):
                                              DirectButton(image='images2d/UI/exit_in_main_menu.png',
                                                           parent=self._buttons_node,
                                                           scale=0.1,
-                                                          pos=Vec3(-self._relationship + 0.1,
+                                                          pos=Vec3(self._relationship - 0.1,
                                                                    0.9),
                                                           command=lambda: EventBus.publish('change_scene', 'main_menu'),
                                                           frameColor=((0.5, 0.5, 0.5, 1),
                                                                       (0.7, 0.7, 0.7, 1),
-                                                                      (0.3, 0.3, 0.3, 1))))
+                                                                      (0.3, 0.3, 0.3, 1)),
+                                                          frameSize=(-1, 1, -1, 1)))
         self.__gameplay_group.hide()
 
         self.__shop = Shop(self._relationship, self._buttons_node)

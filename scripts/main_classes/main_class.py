@@ -31,6 +31,9 @@ class StepDefence(ShowBase):
         self.__HEIGHT = 600
         self.__DEBUG_MODE = False
 
+        self.setBackgroundColor(0, 0, 0, 1)
+
+
         # self._set_fullscreen(True)
         self._set_window_size(self.__WIDTH, self.__HEIGHT)
 
@@ -69,7 +72,7 @@ class StepDefence(ShowBase):
         """Настройка шрифта по умолчанию с поддержкой кириллицы."""
         font = None
         candidates = [
-            'assets/fonts/DejaVuSans.ttf',  # Пользовательский шрифт
+            'configs/ShareTechMono.otf',  # Пользовательский шрифт
             '/System/Library/Fonts/Supplemental/Arial Unicode.ttf',  # macOS
             '/Library/Fonts/Arial Unicode.ttf',  # macOS
             '/Library/Fonts/Arial.ttf',  # macOS
