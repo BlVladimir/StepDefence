@@ -28,8 +28,6 @@ class EnemiesBuilder:
 
         self.__damage_calculator = DamageCalculater()
 
-        EnemiesConfig.load_config()
-
 
     def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2)->None:
         parameters = EnemiesConfig.get_characteristic(type_enemy)

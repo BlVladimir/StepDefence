@@ -1,11 +1,9 @@
-from _weakrefset import WeakSet
-from logging import debug, warning
+from logging import debug
 from typing import Optional, Dict, Callable
 
 from panda3d.core import Point3, CardMaker, TransparencyAttrib, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
-from scripts.arrays_handlers.arrays_controllers.towers.tower_ui.level_display import LevelDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.sprite.sprite3D import Sprite3D

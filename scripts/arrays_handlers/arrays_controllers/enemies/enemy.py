@@ -70,6 +70,3 @@ class Enemy:
     @property
     def sprite(self)->Sprite3D:
         return self._sprite
-
-    def __del__(self):
-        debug(f'Node {self._sprite.main_node} deleted')

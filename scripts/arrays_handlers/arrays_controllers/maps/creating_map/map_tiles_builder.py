@@ -18,8 +18,6 @@ class MapTilesBuilder:
 
         self._first_tile_rect = None
 
-        MapsConfig.load_config()
-
         self.__tile_mng = tile_mng
         self.__tiles_builder = TilesBuilder(maps_node, sprites_factory, tile_mng)
 

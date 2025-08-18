@@ -62,15 +62,18 @@ class Shop:
                      frameColor=((0.5, 0.5, 0.5, 1),
                                  (0.7, 0.7, 0.7, 1),
                                  (0.3, 0.3, 0.3, 1)))
-        DirectButton(text='<i>',
-                     text_fg=Vec4D(1, 1, 1, 1),
-                     parent=frame,
-                     scale=SCALE,
-                     pos=Vec3(0.25-SCALE, 0),
-                     command=lambda: EventBus.publish('open_info', type_tower),
-                     frameColor=((0.5, 0.5, 0.5, 1),
-                                 (0.7, 0.7, 0.7, 1),
-                                 (0.3, 0.3, 0.3, 1)))
+        but_info = DirectButton(text='<i>',
+                                text_fg=Vec4D(1, 1, 1, 1),
+                                parent=frame,
+                                scale=SCALE / 2,
+                                pos=Vec3(0.25 - SCALE, 0),
+                                command=lambda: EventBus.publish('open_info', type_tower),
+                                text_align=TextNode.ACenter,
+                                frameColor=((0.5, 0.5, 0.5, 1),
+                                            (0.7, 0.7, 0.7, 1),
+                                            (0.3, 0.3, 0.3, 1)),
+                                frameSize=(-1, 1, -1, 1))
+        center_text(but_info)
         frame.setTransparency(TransparencyAttrib.MAlpha)
         frame.setPythonTag('cost', TowerConfig.get_cost(type_tower))
         return frame

@@ -1,10 +1,11 @@
 from logging import error
 
+from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import Vec3
 
 
-def center_text(frame:DirectFrame, displacement_vec:Vec3=Vec3(0, 0, 0)):
+def center_text(frame:DirectFrame|DirectButton, displacement_vec:Vec3=Vec3(0, 0, 0)):
     try:
         text  = frame.component('text0')
     except KeyError:

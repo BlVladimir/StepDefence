@@ -27,8 +27,3 @@ class Tile:
         if sprite_tower:
             return sprite_tower.external_object
         return None
-
-    def __del__(self):
-        debug(f'Node {self._sprite.main_node} deleted')
-
-

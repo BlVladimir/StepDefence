@@ -5,7 +5,7 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import Vec3, NodePath, TextNode, Vec4D
 
-from scripts.main_classes.gui.gamplay_gui_parts.info_config import InfoConfig
+from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.gui.text_func import center_text
 from scripts.main_classes.interaction.event_bus import EventBus
 

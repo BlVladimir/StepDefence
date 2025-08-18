@@ -1,0 +1,2 @@
+class LinkInfo:
+    pass

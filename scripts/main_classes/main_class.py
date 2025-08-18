@@ -8,6 +8,9 @@ from panda3d.core import WindowProperties, CollisionTraverser
 
 from panda3d.core import LineSegs, TextNode
 
+from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config import EnemiesConfig
+from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
+from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.interaction.key_handler import KeyHandler
 from scripts.main_classes.interaction.render_manager import RenderManager
@@ -24,6 +27,10 @@ class StepDefence(ShowBase):
     """Главный класс, осуществляющий взаимодействие программы с пользователем"""
     def __init__(self):
         ShowBase.__init__(self)
+        InfoConfig.load_config()
+        MapsConfig.load_config()
+        EnemiesConfig.load_config()
+
         self.__setup_fonts()
         self.cTrav = CollisionTraverser()
 
