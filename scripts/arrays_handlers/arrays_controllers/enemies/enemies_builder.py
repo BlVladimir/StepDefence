@@ -1,11 +1,10 @@
 from random import randrange
 
-import yaml
 from panda3d.core import NodePath, CullBinManager, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.damage_calculater import DamageCalculater
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config import EnemiesConfig
-from scripts.arrays_handlers.arrays_controllers.enemies.enemies_manager import EnemiesManager
+from scripts.arrays_handlers.objects_manager import ObjectsManager
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.bezier_curve_maker import BezierCurveMaker
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.movement.movement_calculator import MovementCalculator
@@ -17,7 +16,7 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class EnemiesBuilder:
     """Создает врагов"""
-    def __init__(self, node:NodePath, sprites_factory:SpritesFactory, track:Track, enemies_manager:EnemiesManager):
+    def __init__(self, node:NodePath, sprites_factory:SpritesFactory, track:Track, enemies_manager:ObjectsManager):
         self.__enemies_node = node
         self.__enemies_manager = enemies_manager
         self.__sprites_factory = sprites_factory

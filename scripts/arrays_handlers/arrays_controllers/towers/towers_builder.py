@@ -13,6 +13,7 @@ from scripts.arrays_handlers.arrays_controllers.towers.states.radius_state impor
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.tower_ui.level_display import LevelDisplay
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
+from scripts.arrays_handlers.objects_manager import ObjectsManager
 from scripts.sprite.sprites_factory import SpritesFactory
 
 
@@ -20,7 +21,6 @@ class AbstractTowerBuilder(ABC):
     """Абстракция создания башни"""
     def __init__(self, sprites_factory:SpritesFactory)->None:
         self._sprites_factory = sprites_factory
-        self._counter = 0
 
         CullBinManager.get_global_ptr().add_bin('tower', CullBinManager.BT_fixed, 2)
         CullBinManager.get_global_ptr().add_bin('gun', CullBinManager.BT_fixed, 3)
@@ -31,13 +31,11 @@ class AbstractTowerBuilder(ABC):
     def create_tower(self, type_tower:str, tile:Tile)->None:
         pass
 
-    def reset_counter(self):
-        self._counter = 0
-
 class TowerBuilder(AbstractTowerBuilder):
     """Создает башни"""
-    def __init__(self, sprites_factory:SpritesFactory)->None:
+    def __init__(self, sprites_factory:SpritesFactory, tower_manager:ObjectsManager)->None:
         super().__init__(sprites_factory)
+        self.__tower_mng = tower_manager
 
     def create_tower(self, type_tower:str, tile:Tile)->Tower:
 
@@ -70,11 +68,11 @@ class TowerBuilder(AbstractTowerBuilder):
 
         if TowerConfig.get_image_gun(type_tower):
             gun_state = GunState(sprite=self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_image_gun(type_tower),
-                                                                            tile.sprite, 'gun', self._counter))
+                                                                            tile.sprite, 'gun', len(self.__tower_mng)))
         else:
             gun_state = None
         sprite = self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_image_foundation(type_tower),
-                                                       tile.sprite, 'tower', self._counter)
+                                                       tile.sprite, 'tower', len(self.__tower_mng))
         tower = Tower(
             type_tower=type_tower,
             sprite=sprite,
@@ -82,11 +80,11 @@ class TowerBuilder(AbstractTowerBuilder):
             radius_state=radius,
             gun_state=gun_state,
             visitor_improve=TowerConfig.get_visitor_improve(type_tower),
-            charge_display=ChargeDisplay(sprite.main_node, TowerConfig.get_charge_textures(), self._counter),
-            level_display=LevelDisplay(sprite.main_node, TowerConfig.get_level_textures(), self._counter),
+            charge_display=ChargeDisplay(sprite.main_node, TowerConfig.get_charge_textures(), len(self.__tower_mng)),
+            level_display=LevelDisplay(sprite.main_node, TowerConfig.get_level_textures(), len(self.__tower_mng)),
             targets_state=TowerConfig.get_targets_state(type_tower)
         )
 
-        self._counter += 1
+        self.__tower_mng + tower
 
         return tower

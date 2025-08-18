@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Set, Iterator
+from typing import Iterator
 
 from panda3d.core import NodePath
 
-from scripts.arrays_handlers.arrays_controllers.enemies.enemies_manager import EnemiesManager
+from scripts.arrays_handlers.objects_manager import ObjectsManager
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
 from scripts.arrays_handlers.arrays_controllers.enemies.group_enemies_builder import GroupEnemiesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
@@ -20,7 +20,7 @@ class EnemiesController:
     """Обработчик врагов"""
     def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory, track:Track, mediator_controllers: 'MediatorControllers'):
         self._enemies_node = scene_gameplay_node.attachNewNode('enemy')
-        self.__enemies_manager = EnemiesManager()
+        self.__enemies_manager = ObjectsManager()
         self.__group_enemies_builder = GroupEnemiesBuilder(self._enemies_node, sprites_factory, track, self.__enemies_manager)
 
         self.__enemies_selector = EnemySelector(lambda :self.get_enemies_set())

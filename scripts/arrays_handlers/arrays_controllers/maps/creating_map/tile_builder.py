@@ -4,6 +4,7 @@ from panda3d.core import PandaNode, Loader, CullBinManager
 
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.arrays_handlers.objects_manager import ObjectsManager
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import CopyingSprite3D, Sprite3D
@@ -12,19 +13,17 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class AbstractTilesBuilder(ABC):
     """Интерфейс для создания тайлов"""
-    def __init__(self, maps_node:PandaNode, sprites_factory:SpritesFactory):
+    def __init__(self, maps_node:PandaNode, sprites_factory:SpritesFactory, tile_mng:ObjectsManager):
         self._maps_node = maps_node
         self._sprites_factory = sprites_factory
-        self._counter = 0
+
+        self._tile_mng = tile_mng
 
         CullBinManager.get_global_ptr().add_bin('tile', CullBinManager.BT_fixed, 1)
 
     @abstractmethod
     def create_tile(self, type_tile:str, rect:Rect3D)->Tile:
         pass
-
-    def reset_counter(self):
-        self._counter = 0
 
 # class TilesPrototype(AbstractTilesBuilder):
 #     def __init__(self, maps_node:PandaNode, loader):
@@ -47,8 +46,7 @@ class AbstractTilesBuilder(ABC):
 class TilesBuilder(AbstractTilesBuilder):
     def  create_tile(self, type_tile:str, rect:Rect3D)->Tile:
         try:
-            sprite = self._sprites_factory.create_sprite(rect, MapsConfig.get_path(type_tile), self._maps_node, 'tile', self._counter)
-            self._counter += 1
+            sprite = self._sprites_factory.create_sprite(rect, MapsConfig.get_path(type_tile), self._maps_node, 'tile', len(self._tile_mng))
             return Tile(sprite, type_tile)
         except KeyError:
             raise KeyError('Incorrect type of tile')

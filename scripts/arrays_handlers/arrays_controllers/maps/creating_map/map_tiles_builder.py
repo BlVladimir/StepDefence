@@ -6,12 +6,13 @@ from scripts.arrays_handlers.arrays_controllers.maps.creating_map.finder_track i
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.tile_builder import TilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
+from scripts.arrays_handlers.objects_manager import ObjectsManager
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprites_factory import SpritesFactory
 
 
 class MapTilesBuilder:
-    def __init__(self, maps_node:NodePath, sprites_factory:SpritesFactory):
+    def __init__(self, maps_node:NodePath, sprites_factory:SpritesFactory, tile_mng:ObjectsManager):
         self.__finder_track = FinderTrack()
         self._track = Track()
 
@@ -19,7 +20,8 @@ class MapTilesBuilder:
 
         MapsConfig.load_config()
 
-        self.__tiles_builder = TilesBuilder(maps_node, sprites_factory)
+        self.__tile_mng = tile_mng
+        self.__tiles_builder = TilesBuilder(maps_node, sprites_factory, tile_mng)
 
     def create_map_tiles(self, level: int):
         """Создает тайлы для карты карту"""
@@ -34,6 +36,7 @@ class MapTilesBuilder:
                                       Vec2(1.2 * x - half_x + 0.5, - 1.2 * y + half_y - 0.5))
                         tile = self.__tiles_builder.create_tile(MapsConfig.get_tile(map_array[y][x]), rect)
                         tile.sprite.rotate(-(track[(x, y)]) * 90)
+                        self.__tile_mng + tile
                     except KeyError:
                         error(f'key: {(x, y)}, track: {track}')
                         raise KeyError('(x, y) not in track keys')
@@ -48,7 +51,6 @@ class MapTilesBuilder:
 
     def reset_map(self)->None:
         """Удаляет карту"""
-        self.__tiles_builder.reset_counter()
         self._first_tile_rect = None
 
     @property

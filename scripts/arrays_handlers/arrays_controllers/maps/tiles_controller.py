@@ -4,6 +4,7 @@ from panda3d.core import PandaNode
 
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.map_tiles_builder import MapTilesBuilder
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
+from scripts.arrays_handlers.objects_manager import ObjectsManager
 from scripts.arrays_handlers.selector.tile_selector.tile_selector import TileSelector
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
@@ -13,7 +14,8 @@ from scripts.sprite.sprites_factory import SpritesFactory
 class TilesController:
     """Содержит группу всех тайлов"""
     def __init__(self, maps_node:PandaNode, sprites_factory:SpritesFactory):
-        self.__map_tiles_builder = MapTilesBuilder(maps_node, sprites_factory)
+        self.__tile_manager = ObjectsManager()
+        self.__map_tiles_builder = MapTilesBuilder(maps_node, sprites_factory, self.__tile_manager)
         self.__tile_selector = TileSelector()
 
     def create_map_tiles(self, level):
@@ -23,6 +25,8 @@ class TilesController:
     def reset_tiles(self):
         """Очищает карту"""
         self.__map_tiles_builder.reset_map()
+        for tile in self.__tile_manager:
+            tile.sprite.external_object = None
 
     def handle_tile_action(self, action: str, tile_sprite: Sprite3D = None) -> None:
         """Обрабатывает действия с тайлами.
