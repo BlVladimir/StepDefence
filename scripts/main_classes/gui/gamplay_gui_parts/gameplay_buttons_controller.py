@@ -8,6 +8,7 @@ from scripts.main_classes.gui.gamplay_gui_parts.bugs_list import BugsList
 from scripts.main_classes.gui.info.info import Info
 from scripts.main_classes.gui.gamplay_gui_parts.shop import Shop
 from scripts.main_classes.gui.gamplay_gui_parts.upgrade_table import UpgradeTable
+from scripts.main_classes.gui.info.new_info import NewInfo
 from scripts.main_classes.gui.text_func import center_text
 from scripts.main_classes.interaction.event_bus import EventBus
 
@@ -32,7 +33,7 @@ class GameplayButtonsController(ButtonsController):
         self.__shop = Shop(self._relationship, self._buttons_node)
         self.__upgrade_tablet = UpgradeTable(self._relationship, self._buttons_node)
         self.__bugs_list = BugsList(self._relationship, self._buttons_node)
-        self.__info = Info(self._buttons_node)
+        self.__info = NewInfo(self._buttons_node)
 
         self.__counter_node = self._buttons_node.attachNewNode('counter_node')
         money_frame = DirectFrame(parent=self.__counter_node,

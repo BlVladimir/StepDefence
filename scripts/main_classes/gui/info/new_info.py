@@ -1,3 +1,4 @@
+from logging import debug
 from typing import List, Optional
 
 from direct.gui.DirectButton import DirectButton
@@ -17,6 +18,7 @@ class NewInfo:
         self.__info_node.hide()
         self.__info_frame = DirectFrame(parent=self.__info_node,
                                         frameColor=(0.5, 0.5, 0.5, 1),
+                                        frameSize=(-0.5, -0.5, -0.5, 0.5),
                                         pos=Vec3(0, 0),
                                         text='',
                                         text_fg=(1, 1, 1, 1),
@@ -38,7 +40,7 @@ class NewInfo:
         InfoConfig.center_text(self.__button_close)
         self.__button_close.setPythonTag('scale', (0.2, 0.1))
 
-        self.__extra_info = ExtraInfo(self.__info_node, self.__info_frame)
+        self.__extra_info = ExtraInfo(self.__info_node, self.__info_frame, self.__set_close_button)
 
         EventBus.subscribe('open_info', lambda event_type, data: self.__show_info(InfoConfig.get_tower_info(data)))
         EventBus.subscribe('change_scene', lambda event_type, data: self.__info_node.hide())
@@ -50,5 +52,18 @@ class NewInfo:
     def __show_info(self, text: List[str]) -> None:
         EventBus.publish('pause_game')
         self.__info_frame['text'] = f'{text[0]}'
-        InfoConfig.set_frame(self.__info_frame)
+        self.__extra_info.hide_extra_info()
+        if len(text) == 2:
+            min_pt, max_pt, xf, zf=InfoConfig.set_frame(self.__info_frame, bottom=0.2)
+            self.__extra_info.show_button_extra_info(text[1])
+            self.__extra_info.set_button_extra_info(min_pt, max_pt, xf, zf)
+        else:
+            min_pt, max_pt, xf, zf=InfoConfig.set_frame(self.__info_frame)
         self.__info_node.show()
+
+        self.__set_close_button(max_pt, xf, zf)
+
+    def __set_close_button(self, max_pt, xf, zf):
+        scale_close = self.__button_close.getPythonTag('scale')
+        self.__button_close.setPos(max_pt.x + 0.1 - xf - scale_close[0] / 2, 0,
+                                   max_pt.z + 0.1 - zf - scale_close[1] / 2)
