@@ -1,5 +1,6 @@
 from logging import error, debug
 from typing import Dict, List, Optional
+from unittest import case
 
 import yaml
 from direct.gui.DirectButton import DirectButton
@@ -11,8 +12,9 @@ class InfoConfig:
     _instance: Optional['InfoConfig'] = None
 
     _towers_rus_info:Dict[str, List[str]]
-    _enemies_rus_info:Dict[str, str]
-    _effects_rus_info:Dict[str, str]
+    _enemies_rus_info:Dict[str, List[str]]
+    _effects_rus_info:Dict[str, List[str]]
+    _tiles_rus_info:Dict[str, List[str]]
 
     @classmethod
     def load_config(cls)->None:
@@ -26,15 +28,26 @@ class InfoConfig:
         obj._towers_rus_info = conf['towers_rus_info']
         obj._enemies_rus_info = conf['enemies_rus_info']
         obj._effects_rus_info = conf['effects_rus_info']
+        obj._tiles_rus_info = conf['tiles_rus_info']
         cls._instance = obj
 
 
     @classmethod
-    def get_tower_info(cls, tower_type:str)->List[str]:
+    def get_obj_info(cls, type_obj:str, obj_name:str)->List[str]:
         try:
-            return cls._instance._towers_rus_info[tower_type]
+            match type_obj:
+                case 'tower':
+                    return cls._instance._towers_rus_info[obj_name]
+                case 'enemy':
+                    return cls._instance._enemies_rus_info[obj_name]
+                case 'effect':
+                    return cls._instance._effects_rus_info[obj_name]
+                case 'tile':
+                        return cls._instance._tiles_rus_info[obj_name]
+                case _:
+                    raise ValueError(f'Incorrect type:{type_obj}')
         except Exception as Er:
-            raise ValueError(Er)
+            raise ValueError(f'{Er}, {type_obj}, {obj_name}')
 
     @staticmethod
     def center_text(frame: DirectFrame | DirectButton, displacement_vec: Vec3 = Vec3(0, 0, 0)):
@@ -79,61 +92,38 @@ class InfoConfig:
 
 if __name__ == '__main__':
     info = dict(towers_rus_info={
-        'basic': ['Дешёвая башня, способная\nдавать дополнительные 2\nмонеты за убийство.',
-                  'Бонус за убийство\nсуммируется с тайлом.'],
-        'sniper': ['Сильная башня, без эффектов.',
-                   'Нет.'],
-        'anty_shield': ['Игнорирует броню противника.',
-                        'На бронибойном тайле не\nприобретает дополнительных\nэффектов.'],
-        'venom': ['При ударе по врагу\nнакладывает эффект яда.',
-                  'Яд игнорирует броню.\nТайл яда увеличит урон\nот яда на 1.'],
-        'anty_invisible': ['Раскрывает невидимость\nврагов в своем радиусе.',
-                           'На противоинвизном тайле\nне приобретает\nдополнительных эффектов.'],
-        'cutter': ['Наносит урон всем врагам,\nкоторых пронизал его луч.',
-                   'Игнорирует невидимость.'],
-        'laser': ['Накладывает эффект лазер.\nОдновременно может наложить\nлазер только на одного врага.',
-                  'Нет.'],
-        'cannon': ['Бьёт в любую точку карты\nи наносит урон всем врагам\nв радиусе взрыва.',
-                   'Игнорирует невидимость.\nТайл радиуса увеличит\nрадиус взрыва.']
+        'basic': dict(info=['Дешёвая башня, способная\nдавать дополнительные 2\nмонеты за убийство.',
+                  'Бонус за убийство\nсуммируется с тайлом.'], links=[['tile', 'additional_money']]),
+        'sniper': dict(info=['Сильная башня, без эффектов.']),
+        'anty_shield': dict(info=['Игнорирует броню противника.',
+                        'На бронибойном тайле не\nприобретает дополнительных\nэффектов.'], links=[['tile', 'piercing_armor'], ['enemy', 'armored']]),
+        'venom': dict(info=['При ударе по врагу\nнакладывает эффект яда.',
+                  'Яд игнорирует броню.\nТайл яда увеличит урон\nот яда на 1.'], links=[['effect', 'poison'], ['tile', 'poison']]),
+        'anty_invisible': dict(info=['Раскрывает невидимость\nврагов в своем радиусе.',
+                           'На противоинвизном тайле\nне приобретает\nдополнительных эффектов.'], links=[['enemy', 'invisible']]),
+        'cutter': dict(info=['Наносит урон всем врагам,\nкоторых пронизал его луч.',
+                   'Игнорирует невидимость.'], links=[['enemy', 'invisible']]),
+        'laser': dict(info=['Накладывает эффект лазер.\nОдновременно может наложить\nлазер только на одного врага.'], links=[['effect', 'laser']]),
+        'cannon': dict(info=['Бьёт в любую точку карты\nи наносит урон всем врагам\nв радиусе взрыва.',
+                   'Игнорирует невидимость.\nТайл радиуса увеличит\nрадиус взрыва.'])
     },
-        enemies_rus_info=dict(basic='Обычный враг без эффектов.',
-                              big='Враг с увеличенным количеством здоровья.',
-                              regen='Каждый ход увеличивает свое здоровье.',
-                              armored='Урон по врагу уменьшается на количество брони вплоть до 0.',
-                              invisible='Радиус башен по этому врагу уменьшается в 3 раза. Не действует на сплэш-башни',
-                              giant='Враг с огромным количеством здоровья.'),
+        enemies_rus_info=dict(basic=dict(info=['Обычный враг без эффектов.']),
+                              big=dict(info=['Враг с увеличенным количеством здоровья.']),
+                              regen=dict(info=['Каждый ход увеличивает свое здоровье.'], links=[['tower', 'venom']]),
+                              armored=dict(info=['Урон по врагу уменьшается на количество брони вплоть до 0.'], links=[['tower', 'anty_shield']]),
+                              invisible=dict(info=['Радиус башен по этому врагу уменьшается в 3 раза. Не действует на сплэш-башни'], links=[['tower', 'anty_invisible']]),
+                              giant=dict(info=['Враг с огромным количеством здоровья.'])),
         effects_rus_info=dict(
-            poison='В конце каждого хода наносит урон, ад длительность уменьшается на 1. При нескольких эффектах яда наносится наибольший урон, но длительность уменьшается у всех эффектов.',
-            laser='В конце каждого хода наносит урон. Каждый ход урон увеличивается на 1. Урон суммируется от всех лазеров.')
-    )
+            poison=dict(info=['В конце каждого хода наносит урон, ад длительность уменьшается на 1. При нескольких эффектах яда наносится наибольший урон, но длительность уменьшается у всех эффектов.'], links=[['tower', 'venom'], ['tile', 'poison']]),
+            laser=dict(info=['В конце каждого хода наносит урон. Каждый ход урон увеличивается на 1. Урон суммируется от всех лазеров.'], links=[['tower', 'laser']]),),
 
-    new_info = dict(towers_rus_info={
-        'basic': ['Дешёвая башня, способная\nдавать дополнительные 2\nмонеты за убийство.',
-                  'Бонус за убийство\nсуммируется с тайлом.'],
-        'sniper': ['Сильная башня, без эффектов.'],
-        'anty_shield': ['Игнорирует броню противника.',
-                        'На бронибойном тайле не\nприобретает дополнительных\nэффектов.'],
-        'venom': ['При ударе по врагу\nнакладывает эффект яда.',
-                  'Яд игнорирует броню.\nТайл яда увеличит урон\nот яда на 1.'],
-        'anty_invisible': ['Раскрывает невидимость\nврагов в своем радиусе.',
-                           'На противоинвизном тайле\nне приобретает\nдополнительных эффектов.'],
-        'cutter': ['Наносит урон всем врагам,\nкоторых пронизал его луч.',
-                   'Игнорирует невидимость.'],
-        'laser': ['Накладывает эффект лазер.\nОдновременно может наложить\nлазер только на одного врага.'],
-        'cannon': ['Бьёт в любую точку карты\nи наносит урон всем врагам\nв радиусе взрыва.',
-                   'Игнорирует невидимость.\nТайл радиуса увеличит\nрадиус взрыва.']
-    },
-        enemies_rus_info=dict(basic='Обычный враг без эффектов.',
-                              big='Враг с увеличенным количеством здоровья.',
-                              regen='Каждый ход увеличивает свое здоровье.',
-                              armored='Урон по врагу уменьшается на количество брони вплоть до 0.',
-                              invisible='Радиус башен по этому врагу уменьшается в 3 раза. Не действует на сплэш-башни',
-                              giant='Враг с огромным количеством здоровья.'),
-        effects_rus_info=dict(
-            poison='В конце каждого хода наносит урон, ад длительность уменьшается на 1. При нескольких эффектах яда наносится наибольший урон, но длительность уменьшается у всех эффектов.',
-            laser='В конце каждого хода наносит урон. Каждый ход урон увеличивается на 1. Урон суммируется от всех лазеров.')
+        tiles_rus_info=dict(increase_damage=dict(info=['Увеличивает урон на 1']),
+                        increase_radius=dict(info=['Увеличивает радиус в 1.5 раза']),
+                        piercing_armor=dict(info=['Башня пробивает броню'], links=[['tower', 'anty_shield'], ['enemy', 'armored']]),
+                        poison=dict(info=['Дает башне эффект яда'], links=[['tower', 'venom'], ['effect', 'poison']]),
+                        additional_money=dict(info=['При убийстве 1 дополнительное золото'], links=[['tower', 'basic']]),)
     )
 
     # Пишем файл в UTF-8 и разрешаем вывод кириллицы без \u-экранирования
     with open('../../../../configs/info_config.yaml', 'w', encoding='utf-8') as f:
-        yaml.safe_dump(new_info, f, allow_unicode=True, sort_keys=False)
+        yaml.safe_dump(info, f, allow_unicode=True, sort_keys=False)

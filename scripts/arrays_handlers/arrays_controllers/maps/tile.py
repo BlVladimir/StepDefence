@@ -1,4 +1,3 @@
-from logging import debug
 from typing import Optional
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower

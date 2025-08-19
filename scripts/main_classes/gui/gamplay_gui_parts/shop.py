@@ -3,7 +3,7 @@ from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, TransparencyAttrib, Vec3, Texture, PNMImage, TextNode, Vec4D
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
-from scripts.main_classes.gui.text_func import center_text
+from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -51,7 +51,7 @@ class Shop:
                             image='images2d/UI/money.png',
                             image_pos=(-0.25 + SCALE * 3, 0, 0),
                             image_scale=(SCALE / 1.2, 0, SCALE / 1.2))
-        center_text(frame)
+        InfoConfig.center_text(frame)
         first_path = TowerConfig.get_image_foundation(type_tower)
         second_path = TowerConfig.get_image_gun(type_tower)
         DirectButton(image=self.__create_texture(first_path, second_path) if second_path else first_path,
@@ -67,13 +67,13 @@ class Shop:
                                 parent=frame,
                                 scale=SCALE / 2,
                                 pos=Vec3(0.25 - SCALE, 0),
-                                command=lambda: EventBus.publish('open_info', type_tower),
+                                command=lambda: EventBus.publish('open_info', ['tower', type_tower]),
                                 text_align=TextNode.ACenter,
                                 frameColor=((0.5, 0.5, 0.5, 1),
                                             (0.7, 0.7, 0.7, 1),
                                             (0.3, 0.3, 0.3, 1)),
                                 frameSize=(-1, 1, -1, 1))
-        center_text(but_info)
+        InfoConfig.center_text(but_info)
         frame.setTransparency(TransparencyAttrib.MAlpha)
         frame.setPythonTag('cost', TowerConfig.get_cost(type_tower))
         return frame

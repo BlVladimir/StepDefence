@@ -7,7 +7,7 @@ from panda3d.core import NodePath, Vec3, TransparencyAttrib, TextNode, Vec4D
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
-from scripts.main_classes.gui.text_func import center_text
+from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -34,7 +34,7 @@ class UpgradeTable:
                             image='images2d/UI/money.png',
                             image_pos=(0.175, 0, 0),
                             image_scale=(0.075, 0, 0.075))
-        center_text(self.__frame)
+        InfoConfig.center_text(self.__frame)
         self.__button_upgrade = DirectButton(image='images2d/upgrade/1lvl.png',
                                              parent=self.__frame,
                                              scale=0.15,

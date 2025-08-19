@@ -5,11 +5,10 @@ from panda3d.core import Vec3, TransparencyAttrib, NodePath, TextNode
 from scripts.main_classes.gui.buttons_controller import ButtonsController
 from scripts.main_classes.gui.buttons_group import ButtonsGroup
 from scripts.main_classes.gui.gamplay_gui_parts.bugs_list import BugsList
-from scripts.main_classes.gui.info.info import Info
 from scripts.main_classes.gui.gamplay_gui_parts.shop import Shop
 from scripts.main_classes.gui.gamplay_gui_parts.upgrade_table import UpgradeTable
-from scripts.main_classes.gui.info.new_info import NewInfo
-from scripts.main_classes.gui.text_func import center_text
+from scripts.main_classes.gui.info.info import NewInfo
+from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -59,7 +58,7 @@ class GameplayButtonsController(ButtonsController):
                                  text_scale=0.1,
                                  text_align=TextNode.ACenter)
         money_frame.setTransparency(TransparencyAttrib.MAlpha)
-        center_text(money_frame)
-        center_text(wave_frame)
+        InfoConfig.center_text(money_frame)
+        InfoConfig.center_text(wave_frame)
         EventBus.subscribe('update_money', lambda event_type, data: money_frame.setText(f'x{data}'))
         EventBus.subscribe('update_wave', lambda event_type, data: wave_frame.setText(f'wave: {data+1}'))

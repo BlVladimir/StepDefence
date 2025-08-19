@@ -3,7 +3,6 @@ from typing import Dict
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, Vec3, TextNode, Vec4
 
-from scripts.main_classes.gui.text_func import center_text
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
