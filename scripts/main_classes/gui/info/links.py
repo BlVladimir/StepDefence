@@ -55,6 +55,6 @@ class Links:
 
         width, height = (max_pt.x-min_pt.x)/2, (max_pt.z-min_pt.z)/2
 
-        button['frameSize'] = (width, -width, height, -height)
+        button['frameSize'] = (-width, width, -height, height)
 
         button.show()

@@ -33,6 +33,8 @@ class MediatorControllers:
         self.__is_lose = False
         self.__random_bug = RandomBug(self)
 
+        self.__is_pause = False
+
         EventBus.subscribe('right_click', lambda event_type, data: self.__using_element())
         EventBus.subscribe('unselect_element', lambda event_type, data: self.__unselect_element(data))
         EventBus.subscribe('select_element', lambda event_type, data: self.__select_element(data))
@@ -40,6 +42,9 @@ class MediatorControllers:
         EventBus.subscribe('enemy_die', lambda event_type, data: self.__enemy_die(data))
         EventBus.subscribe('lose', lambda event_type, data: self.__lose())
         EventBus.subscribe('change_scene', lambda event_type, data: self.__set_lose())
+
+        EventBus.subscribe('pause_game', lambda event_type, data: self.__set_is_pause(True))
+        EventBus.subscribe('resume_game', lambda event_type, data: self.__set_is_pause(False))
 
 
 
@@ -88,8 +93,9 @@ class MediatorControllers:
 
     def __using_element(self)->None:
         """Назначить тайл активным"""
-        self.__enemies_controller.handle_enemy_action('using')
-        self.__maps_controller.using_element()
+        if not self.__is_pause:
+            self.__enemies_controller.handle_enemy_action('using')
+            self.__maps_controller.using_element()
 
     def __lose(self)->None:
         """Активирует проигрыш"""
@@ -141,3 +147,8 @@ class MediatorControllers:
             EventBus.publish('discount', self._discount)
         else:
             raise ValueError('discount must be greater than 0')
+
+    def __set_is_pause(self, value:bool)->None:
+        self.__is_pause = value
+
+
