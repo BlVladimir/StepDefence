@@ -62,17 +62,17 @@ class StepDefence(ShowBase):
         if self.__DEBUG_MODE:
             self.__draw_basis()
 
-        self.loop = asyncio.get_event_loop()
+        self.__loop = asyncio.get_event_loop()
         EventBus.publish('append_task', ['update_async', self.__update_async])
         EventBus.subscribe('add_async_task', lambda event_type, data: self.__add_async_task(data))
 
     def __add_async_task(self, task):
-        self.async_task = self.loop.create_task(task)
+        self.async_task = self.__loop.create_task(task)
 
     def __update_async(self, task):
         # Выполняем одну итерацию asyncio loop
-        self.loop.call_soon(self.loop.stop)
-        self.loop.run_forever()
+        self.__loop.call_soon(self.__loop.stop)
+        self.__loop.run_forever()
         return task.cont
 
     def __setup_fonts(self):

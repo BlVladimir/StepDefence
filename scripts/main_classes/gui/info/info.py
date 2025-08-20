@@ -63,6 +63,8 @@ class NewInfo:
             min_pt, max_pt, xf, zf=InfoConfig.set_frame(self.__info_frame)
         if 'links' in text.keys():
             self.__links.add_links(text['links'])
+        else:
+            self.__links.clear_links()
         self.__info_node.show()
 
         self.__set_close_button(max_pt, xf, zf)
