@@ -34,8 +34,11 @@ class EffectsSets:
             return damage
         return 0
 
-    def __str__(self):
-        return str(',\n'.join(str(eff) for eff in self._poison_set))
+    def get_poison_str(self)->str:
+        return str('\n'.join(str(eff) for eff in self._poison_set))
+
+    def get_laser_str(self)->str:
+        return str('\n'.join(str(eff) for eff in self._laser_set))
 
 class EffectSetsTest(TestCase):
     def setUp(self):

@@ -48,9 +48,9 @@ class Tower:
         self._is_charge = value
         self.__charge_display.set_texture(value)
 
-    def can_attack_target(self, enemy_sprite:Sprite3D)->bool:
+    def can_attack_target(self, enemy:Enemy)->bool:
         """Проверяет, в радиусе ли враг"""
-        return self.__radius_state.can_attack_target(enemy_sprite, self._mouse_point)
+        return self.__radius_state.can_attack_target(enemy, self._mouse_point)
 
     def is_target_in_radius(self, enemy_sprite:Sprite3D)->bool:
         return self.__radius_state.is_in_radius(enemy_sprite, self._mouse_point)

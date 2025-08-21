@@ -17,7 +17,7 @@ class Effect:
         return Effect(self._damage, self._duration)
 
     def __str__(self):
-        return f'[Damage: {self._damage}, Duration: {self._duration}]'
+        return f'[Dam: {self._damage}, Dur: {self._duration}]'
 
     def __add__(self, other:int):
         return Effect(self._damage + other, self._duration)

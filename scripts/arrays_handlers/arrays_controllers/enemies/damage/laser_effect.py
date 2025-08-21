@@ -23,7 +23,7 @@ class LaserEffect(Effect):
         return LaserEffect(self._damage, self._is_not_end)
 
     def __str__(self):
-        return f'[Damage: {self._damage+self._duration}]'
+        return f'[Dam: {self._damage+self._duration}]'
 
     def __add__(self, other:int):
         return Effect(self._damage + other, self._duration)

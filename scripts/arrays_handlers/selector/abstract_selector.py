@@ -19,20 +19,20 @@ class AbstractSelector(ABC):
             self._used_sprite = self._state_dict[self._current_state_name].get_used_sprite()
             self._state_dict[self._current_state_name].unselect_sprite()
         except KeyError:
-            error('State not found')
+            error(f'State not found in set_used_sprite')
 
     def select_sprite(self, sprite:Sprite3D)->None:
         try:
             self._state_dict[self._current_state_name].select_sprite(sprite)
         except KeyError:
-            error('State not found')
+            error('State not found in select_sprite')
 
     def change_state(self, state_name:str)->None:
         try:
             self._state_dict[self._current_state_name].unselect_sprite()
             self._current_state_name = state_name
         except KeyError:
-            error('State not found')
+            error('State not found in change_state')
 
     def unselect_sprite(self)->None:
         self._state_dict[self._current_state_name].unselect_sprite()

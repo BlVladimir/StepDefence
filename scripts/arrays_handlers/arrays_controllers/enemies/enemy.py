@@ -64,7 +64,17 @@ class Enemy:
     @property
     def characteristic(self)->Dict:
         char = self._characteristic_dict.copy()
-        char['poison'] = str(self.__effects_sets)
+        poison_str = self.__effects_sets.get_poison_str()
+        if poison_str:
+            char['poison'] = poison_str
+        else:
+            char.pop('poison', None)
+
+        laser_str = self.__effects_sets.get_laser_str()
+        if laser_str:
+            char['laser'] = laser_str
+        else:
+            char.pop('laser', None)
         return char
 
     @property

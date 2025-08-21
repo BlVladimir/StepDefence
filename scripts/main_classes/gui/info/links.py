@@ -1,4 +1,4 @@
-from logging import debug
+from functools import partial
 from typing import List
 
 from direct.gui.DirectButton import DirectButton
@@ -16,7 +16,7 @@ class Links:
                                             text_fg=Vec4(1, 1, 1, 1),
                                             parent=self.__info_frame.parent,
                                             scale=0.1,
-                                            pos=Vec3(i * 0.8, 0, -0.9),
+                                            pos=Vec3(i * 0.8, 0, -0.85),
                                             command=lambda: None,
                                             frameColor=((0.5, 0.5, 0.5, 1),
                                                         (0.7, 0.7, 0.7, 1),
@@ -27,33 +27,26 @@ class Links:
             button.hide()
 
     def add_links(self, links:List[str]):
-        if len(links) > len(self.__buttons_link):
-            raise ValueError('more links than buttons')
-        else:
-            for num_link in range(len(self.__buttons_link)):
-                if num_link < len(links):
-                    self.__set_button(self.__buttons_link[num_link], links[num_link])
-                else:
-                    self.__buttons_link[num_link]['text'] = ''
-                    self.__buttons_link[num_link]['command'] = lambda:None
-                    self.__buttons_link[num_link].hide()
+        for i, button in enumerate(self.__buttons_link):
+            if i < len(links):
+                self.__set_button(self.__buttons_link[i], links[i])
+            else:
+                self.__buttons_link[i].hide()
 
     def clear_links(self):
         for button in self.__buttons_link:
-            button['text'] = ''
-            button['command'] = lambda:None
             button.hide()
 
     @staticmethod
     def __set_button(button:DirectButton, texts:List[str]):
-        button['text'] = texts[1]
-        button['command'] = lambda: EventBus.publish('open_info', texts)
+        button['text'] = ':\n'.join(texts)
+        button['command'] = partial(EventBus.publish, 'open_info', texts)
         InfoConfig.center_text(button)
 
         text = button.component('text0')
         min_pt, max_pt = text.getTightBounds()
 
-        width, height = (max_pt.x-min_pt.x)/2, (max_pt.z-min_pt.z)/2
+        width, height = (max_pt.x-min_pt.x)/2+0.1, (max_pt.z-min_pt.z)/2+0.1
 
         button['frameSize'] = (-width, width, -height, height)
 
