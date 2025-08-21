@@ -173,7 +173,7 @@ tiles_rus_info:
   increase_radius:
     info:
     - Увеличивает радиус в 1.5 раза
-  piercing_armor:
+  armor_piercing:
     info:
     - Башня пробивает броню
     links:

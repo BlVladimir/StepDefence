@@ -1,6 +1,6 @@
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
-from panda3d.core import Vec3, TransparencyAttrib, NodePath, TextNode
+from panda3d.core import Vec3, TransparencyAttrib, NodePath, TextNode, Vec4
 
 from scripts.main_classes.gui.buttons_controller import ButtonsController
 from scripts.main_classes.gui.buttons_group import ButtonsGroup
@@ -29,7 +29,21 @@ class GameplayButtonsController(ButtonsController):
                                                           frameSize=(-1, 1, -1, 1)))
         self.__gameplay_group.hide()
 
-        self.__shop = Shop(self._relationship, self._buttons_node)
+        tile_info = DirectButton(parent=self._buttons_node,
+                                        text='<tile_info>',
+                                        text_fg=Vec4(1, 1, 1, 1),
+                                        scale=0.1,
+                                        pos=Vec3(-relationship+0.6, 0.7),
+                                        command=lambda: None,
+                                        text_align=TextNode.ALeft,
+                                        frameColor=((0.5, 0.5, 0.5, 1),
+                                                    (0.7, 0.7, 0.7, 1),
+                                                    (0.3, 0.3, 0.3, 1))
+                                        )
+        tile_info.hide()
+        InfoConfig.set_frame(tile_info)
+
+        self.__shop = Shop(self._relationship, self._buttons_node, tile_info)
         self.__upgrade_tablet = UpgradeTable(self._relationship, self._buttons_node)
         self.__bugs_list = BugsList(self._relationship, self._buttons_node)
         self.__info = NewInfo(self._buttons_node)

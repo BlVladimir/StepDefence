@@ -69,7 +69,7 @@ class BugsList:
             self.__char_frames[i]['text'] = f'{char}: {value_char}' if char not in ['poison', 'laser'] else f'{value_char}'
             InfoConfig.center_text(self.__char_frames[i])
 
-            min_pt, max_pt, xf, zf = InfoConfig.set_frame(self.__char_frames[i])
+            min_pt, max_pt, xf, zf= InfoConfig.set_frame(self.__char_frames[i])
             but = self.__char_frames[i].getPythonTag('button_inf')
             if char in ['poison', 'laser']:
                 but.setPos(Vec3(min_pt.x - 0.07, 0))

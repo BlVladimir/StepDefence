@@ -83,10 +83,10 @@ class InfoConfig:
         xf, zf = vec_pos.x, vec_pos.z
 
         set_frame['frameSize'] = [
-            min_pt.x - left - xf,
-            max_pt.x + right - xf,
-            min_pt.z - bottom - zf,
-            max_pt.z + top - zf
+            min_pt.x - left,
+            max_pt.x + right,
+            min_pt.z - bottom,
+            max_pt.z + top
         ]
         return min_pt, max_pt, xf, zf
 

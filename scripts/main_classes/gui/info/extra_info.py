@@ -66,6 +66,3 @@ class ExtraInfo:
 
         self.set_button_extra_info(min_pt, max_pt, xf, zf)
         self.__set_close_button_func(max_pt, xf, zf)
-
-
-

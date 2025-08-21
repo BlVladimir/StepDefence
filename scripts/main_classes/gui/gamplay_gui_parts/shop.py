@@ -1,3 +1,5 @@
+from functools import partial
+
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, TransparencyAttrib, Vec3, Texture, PNMImage, TextNode, Vec4D
@@ -8,8 +10,10 @@ from scripts.main_classes.interaction.event_bus import EventBus
 
 
 class Shop:
-    def __init__(self, relationship: float, buttons_node: NodePath):
+    def __init__(self, relationship: float, buttons_node: NodePath, tile_info:DirectButton):
         self.__shop_node = buttons_node.attachNewNode('shop_node')
+
+        self.__tile_info = tile_info
         self.__shop_node.hide()
         self.__shop_frame = DirectFrame(parent=self.__shop_node,
                                         frameSize=(0.25, -0.25, 1, -1),
@@ -21,10 +25,22 @@ class Shop:
         self.__products = set([self.__create_products(type_tower, Vec3(0, START_Y + STEP * i)) for i, type_tower in
                                enumerate(TowerConfig.get_all_towers_name())])
 
-        EventBus.subscribe('open_shop', lambda event_type, data: self.__shop_node.show())
-        EventBus.subscribe('close_shop', lambda event_type, data: self.__shop_node.hide())
+        EventBus.subscribe('open_shop', lambda event_type, data: self.__show(data))
+        EventBus.subscribe('close_shop', lambda event_type, data: self.__hide())
         EventBus.subscribe('discount', lambda event_type, data: self.__update_discount(data))
         EventBus.subscribe('change_scene', lambda event_type, data: self.__shop_node.hide())
+
+    def __show(self, tile:str):
+        self.__shop_node.show()
+        if tile != 'basic' and tile != 'base':
+            self.__tile_info['command'] = partial(EventBus.publish, 'open_info', ['tile', tile])
+            self.__tile_info.show()
+        else:
+            self.__tile_info.hide()
+
+    def __hide(self):
+        self.__shop_node.hide()
+        self.__tile_info.hide()
 
     def __update_discount(self, discount: float) -> None:
         if discount == 1:
