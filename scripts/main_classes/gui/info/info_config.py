@@ -96,7 +96,7 @@ if __name__ == '__main__':
                   'Бонус за убийство\nсуммируется с тайлом.'], links=[['tile', 'additional_money']]),
         'sniper': dict(info=['Сильная башня, без эффектов.']),
         'anty_shield': dict(info=['Игнорирует броню противника.',
-                        'На бронибойном тайле не\nприобретает дополнительных\nэффектов.'], links=[['tile', 'piercing_armor'], ['enemy', 'armored']]),
+                        'На бронибойном тайле не\nприобретает дополнительных\nэффектов.'], links=[['enemy', 'armored'], ['tile', 'armor_piercing']]),
         'venom': dict(info=['При ударе по врагу\nнакладывает эффект яда.',
                   'Яд игнорирует броню.\nТайл яда увеличит урон\nот яда на 1.'], links=[['effect', 'poison'], ['tile', 'poison']]),
         'anty_invisible': dict(info=['Раскрывает невидимость\nврагов в своем радиусе.',
@@ -110,7 +110,7 @@ if __name__ == '__main__':
         enemies_rus_info=dict(basic=dict(info=['Обычный враг без эффектов.']),
                               big=dict(info=['Враг с увеличенным\nколичеством здоровья.']),
                               regen=dict(info=['Каждый ход увеличивает\nсвое здоровье.'], links=[['tower', 'venom']]),
-                              armored=dict(info=['Урон по врагу уменьшается\nна количество брони\nвплоть до 0.'], links=[['tower', 'anty_shield']]),
+                              armored=dict(info=['Урон по врагу уменьшается\nна количество брони\nвплоть до 0.'], links=[['tower', 'anty_shield'], ['tile', 'armor_piercing']]),
                               invisible=dict(info=['Радиус башен по этому врагу\nуменьшается в 3 раза.\nНе действует на\nсплэш-башни'], links=[['tower', 'anty_invisible']]),
                               giant=dict(info=['Враг с огромным количеством\nздоровья.'])),
         effects_rus_info=dict(
@@ -119,7 +119,7 @@ if __name__ == '__main__':
 
         tiles_rus_info=dict(increase_damage=dict(info=['Увеличивает урон на 1']),
                         increase_radius=dict(info=['Увеличивает радиус в 1.5 раза']),
-                        piercing_armor=dict(info=['Башня пробивает броню'], links=[['tower', 'anty_shield'], ['enemy', 'armored']]),
+                        armor_piercing=dict(info=['Башня пробивает броню'], links=[['tower', 'anty_shield'], ['enemy', 'armored']]),
                         poison=dict(info=['Дает башне эффект яда'], links=[['tower', 'venom'], ['effect', 'poison']]),
                         additional_money=dict(info=['При убийстве 1 дополнительное золото'], links=[['tower', 'basic']]),)
     )

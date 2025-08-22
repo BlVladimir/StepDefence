@@ -12,7 +12,8 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class Enemy:
     """Класс врагов"""
-    def __init__(self, sprite:Sprite3D, characteristic_dict:Dict, movement_calculator:MovementCalculator, damage_calculator:DamageCalculater, cost:int):
+    def __init__(self, type_enemy:str, sprite:Sprite3D, characteristic_dict:Dict, movement_calculator:MovementCalculator, damage_calculator:DamageCalculater, cost:int):
+        self._type_enemy = type_enemy
         self._sprite = sprite
         self._sprite.external_object = self
         self._characteristic_dict = characteristic_dict
@@ -75,6 +76,8 @@ class Enemy:
             char['laser'] = laser_str
         else:
             char.pop('laser', None)
+
+        char['type_enemy'] = self._type_enemy
         return char
 
     @property

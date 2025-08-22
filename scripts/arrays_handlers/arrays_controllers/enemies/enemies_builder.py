@@ -34,7 +34,8 @@ class EnemiesBuilder:
         parameters['health'] = round(parameters['health'] * self.__get_wave_health_modifier(wave))
         sprite = self.__sprites_factory.create_sprite(rect, EnemiesConfig.get_path_image(type_enemy), self.__enemies_node,
                                                       'enemy', len(self.__enemies_manager))
-        enemy = Enemy(sprite,
+        enemy = Enemy(type_enemy,
+                      sprite,
                       parameters,
                       MovementCalculator(self.__bezier_curve_maker, pos_on_tile,
                                          started_division_vec, self.__track),

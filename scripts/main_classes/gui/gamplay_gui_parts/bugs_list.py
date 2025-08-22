@@ -31,7 +31,7 @@ class BugsList:
         self.__bugs_array = []
 
         self.__enemies_char_node = self.__bugs_list_frame.attachNewNode('enemies_char_node')
-        self.__sequence_characteristic = ['health', 'armor', 'regen', 'poison', 'invisible', 'laser']
+        self.__sequence_characteristic = ['type_enemy', 'health', 'armor', 'regen', 'poison', 'invisible', 'laser']
 
         self.__char_frames = [DirectFrame(parent=self.__enemies_char_node,
                                           text='',
@@ -66,14 +66,14 @@ class BugsList:
     def __draw_characteristic(self, characteristic:Dict)->None:
         sorted_characteristic = dict(sorted(characteristic.items(), key=lambda x: self.__sequence_characteristic.index(x[0])))
         for i, (char, value_char) in enumerate(sorted_characteristic.items()):
-            self.__char_frames[i]['text'] = f'{char}: {value_char}' if char not in ['poison', 'laser'] else f'{value_char}'
+            self.__char_frames[i]['text'] = f'{char}: {value_char}' if char not in ['type_enemy', 'poison', 'laser'] else f'{value_char}'
             InfoConfig.center_text(self.__char_frames[i])
 
             min_pt, max_pt, xf, zf= InfoConfig.set_frame(self.__char_frames[i])
             but = self.__char_frames[i].getPythonTag('button_inf')
-            if char in ['poison', 'laser']:
+            if char in ['type_enemy', 'poison', 'laser']:
                 but.setPos(Vec3(min_pt.x - 0.07, 0))
-                but['command'] = partial(EventBus.publish, 'open_info', ['effect', char])
+                but['command'] = partial(EventBus.publish, 'open_info', [('effect' if char != 'type_enemy' else 'enemy'), (char if char != 'type_enemy' else value_char)])
                 but.show()
             else:
                 but.hide()

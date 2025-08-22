@@ -24,10 +24,10 @@ towers_rus_info:
 
       эффектов.'
     links:
-    - - tile
-      - piercing_armor
     - - enemy
       - armored
+    - - tile
+      - armor_piercing
   venom:
     info:
     - 'При ударе по врагу
@@ -114,6 +114,8 @@ enemies_rus_info:
     links:
     - - tower
       - anty_shield
+    - - tile
+      - armor_piercing
   invisible:
     info:
     - 'Радиус башен по этому врагу

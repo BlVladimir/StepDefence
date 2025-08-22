@@ -18,7 +18,7 @@ class TileSelector(AbstractSelector):
                 tower.hide_radius()
                 EventBus.publish('not_using_tower')
                 self._used_sprite.is_using = False
-            elif self._used_sprite and self._used_sprite.external_object.effect != 'road':
+            elif self._used_sprite and self._used_sprite.external_object and self._used_sprite.external_object.effect != 'road':
                 EventBus.publish('close_shop')
                 self._used_sprite.is_using = False
             elif self._used_sprite:
