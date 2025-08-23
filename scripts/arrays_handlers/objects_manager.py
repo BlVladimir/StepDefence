@@ -1,9 +1,7 @@
 from logging import warning
+from typing import Any
 from weakref import WeakSet
 
-from scripts.arrays_handlers.arrays_controllers.enemies.enemy import Enemy
-from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
-from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.main_classes.interaction.event_bus import EventBus
 
 
@@ -16,7 +14,7 @@ class ObjectsManager:
         if scene in '012345' and len(self.__objects) > 0:
             warning(f'Object manager is not empty: len = {len(self.__objects)}')
 
-    def __add__(self, new_object: Enemy | Tower | Tile):
+    def __add__(self, new_object:Any):
         self.__objects.add(new_object)
 
     def __iter__(self):

@@ -20,7 +20,7 @@ class Track:
         return deepcopy(self._track[tile])
 
     def set_track(self, value:List[int]):
-        pos = Vec2(self._first_tile_rect.x, self._first_tile_rect.y)
+        pos = self._first_tile_rect.top_left
         scale = 1.2*self._first_tile_rect.width  # 1.2 от промежутка
         self._track = []
         for i, rotate in enumerate(value):

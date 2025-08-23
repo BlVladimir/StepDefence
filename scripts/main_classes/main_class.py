@@ -36,7 +36,7 @@ class StepDefence(ShowBase):
 
         self.__WIDTH = 1000
         self.__HEIGHT = 600
-        self.__DEBUG_MODE = False
+        self.__DEBUG_MODE = True
 
         self.setBackgroundColor(0, 0, 0, 1)
 

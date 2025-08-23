@@ -19,5 +19,8 @@ class Effect:
     def __str__(self):
         return f'[Dam: {self._damage}, Dur: {self._duration}]'
 
+    def __repr__(self):
+        return  f'damage={self._damage}, duration={self._duration}'
+
     def __add__(self, other:int):
         return Effect(self._damage + other, self._duration)

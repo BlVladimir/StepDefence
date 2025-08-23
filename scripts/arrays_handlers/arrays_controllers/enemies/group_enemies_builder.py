@@ -47,7 +47,7 @@ class GroupEnemiesBuilder:
                 if (x, y) in points:
                     pos_on_tile = Vec2(1/6*size*(1+3*x), - 1/6*size*(1+3*y))
                     started_division = Vec2(1/6*size*random(), -1/6*size*random())
-                    rects.append(Rect3D(top_left=Vec2(rect.x, rect.y) + started_division + pos_on_tile + Vec2(-0.25*size, 0.25*size),
+                    rects.append(Rect3D(top_left=rect.top_left + started_division + pos_on_tile + Vec2(-0.25*size, 0.25*size),
                                         width=0.5*size,
                                         height=0.5*size))
                     poses_on_tile.append(pos_on_tile)

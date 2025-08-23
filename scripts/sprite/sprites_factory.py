@@ -1,5 +1,7 @@
 from panda3d.core import NodePath, CardMaker, Texture
 
+from scripts.arrays_handlers.arrays_controllers.enemies.enemy_sprite import EnemySprite
+from scripts.arrays_handlers.arrays_controllers.maps.tile_sprite import TileSprite
 from scripts.main_classes.interaction.render_manager import RenderManager
 from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
@@ -13,7 +15,13 @@ class SpritesFactory:
         self._relationship = relationship
 
     def create_sprite(self, rect:Rect3D, path_image:str, parent:NodePath|Sprite3D, name_group:str, number:int)->Sprite3D:
-        return Sprite3D(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
+        match name_group:
+            case 'enemy':
+                return EnemySprite(rect=rect, path_image=path_image, parent=parent, name_group=name_group, loader=self.__render_manager.loader, number=number, debug_mode=self.__settings.debug_mode)
+            case 'tile':
+                return TileSprite(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
+            case _:
+                return Sprite3D(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
 
     def get_texture(self, path_image:str)->Texture:
         return self.__render_manager.loader.loadTexture(path_image)
