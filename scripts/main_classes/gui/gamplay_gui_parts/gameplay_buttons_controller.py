@@ -3,7 +3,6 @@ from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import Vec3, TransparencyAttrib, NodePath, TextNode, Vec4
 
 from scripts.main_classes.gui.buttons_controller import ButtonsController
-from scripts.main_classes.gui.buttons_group import ButtonsGroup
 from scripts.main_classes.gui.gamplay_gui_parts.bugs_list import BugsList
 from scripts.main_classes.gui.gamplay_gui_parts.shop import Shop
 from scripts.main_classes.gui.gamplay_gui_parts.upgrade_table import UpgradeTable
@@ -16,18 +15,17 @@ class GameplayButtonsController(ButtonsController):
     def __init__(self, relationship: float, buttons_node: NodePath):
         super().__init__(relationship, buttons_node)
 
-        self.__gameplay_group = ButtonsGroup(self._buttons_node,
-                                             DirectButton(image='images2d/UI/exit_in_main_menu.png',
-                                                          parent=self._buttons_node,
-                                                          scale=0.1,
-                                                          pos=Vec3(self._relationship - 0.1,
-                                                                   0.9),
-                                                          command=lambda: EventBus.publish('change_scene', 'main_menu'),
-                                                          frameColor=((0.5, 0.5, 0.5, 1),
-                                                                      (0.7, 0.7, 0.7, 1),
-                                                                      (0.3, 0.3, 0.3, 1)),
-                                                          frameSize=(-1, 1, -1, 1)))
-        self.__gameplay_group.hide()
+        DirectButton(image='images2d/UI/exit_in_main_menu.png',
+                     parent=self._buttons_node,
+                     scale=0.1,
+                     pos=Vec3(self._relationship - 0.1,
+                              0.9),
+                     command=lambda: EventBus.publish('change_scene', 'main_menu'),
+                     frameColor=((0.5, 0.5, 0.5, 1),
+                                 (0.7, 0.7, 0.7, 1),
+                                 (0.3, 0.3, 0.3, 1)),
+                     frameSize=(-1, 1, -1, 1))
+        self._buttons_node.hide()
 
         tile_info = DirectButton(parent=self._buttons_node,
                                         text='<tile_info>',

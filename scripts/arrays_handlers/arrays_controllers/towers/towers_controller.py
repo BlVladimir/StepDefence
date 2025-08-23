@@ -51,7 +51,7 @@ class TowersController:
 
     def __upgrade_tower(self):
         tower = self.__mediator.selected_tile.tower
-        if tower and tower.level < 2 and self.__mediator.money >= round(self.__mediator.discount*TowerConfig.get_improve_cost_array(tower.type_tower)[tower.level]):
+        if tower and tower.level < 2 and self.__mediator.money >= round(self.__mediator.discount * TowerConfig.get_improve_cost_array(tower.type_tower)[tower.level]):
             tower.upgrade()
             EventBus.publish('update_enemy')
             EventBus.publish('remove_discount')

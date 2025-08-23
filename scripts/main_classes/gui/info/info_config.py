@@ -125,5 +125,5 @@ if __name__ == '__main__':
     )
 
     # Пишем файл в UTF-8 и разрешаем вывод кириллицы без \u-экранирования
-    with open('../../../../configs/info_config.yaml', 'w', encoding='utf-8') as f:
+    with open('configs/info_config.yaml', 'w', encoding='utf-8') as f:
         yaml.safe_dump(info, f, allow_unicode=True, sort_keys=False)

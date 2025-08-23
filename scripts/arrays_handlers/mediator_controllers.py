@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from logging import info
 from typing import Optional
 
 from panda3d.core import NodePath
@@ -13,6 +14,7 @@ from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import Towe
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
 from scripts.arrays_handlers.random_bug import RandomBug
 from scripts.main_classes.interaction.event_bus import EventBus
+from scripts.main_classes.save_mng import SaveMng
 from scripts.sprite.sprite3D import Sprite3D
 from scripts.sprite.sprites_factory import SpritesFactory
 
@@ -63,6 +65,9 @@ class MediatorControllers:
         """Заканчивает смену хода"""
         if not self.__is_lose:
             self.__current_wave += 1
+            if self.__current_wave == 40 and self.__level == SaveMng.get_level():
+                info('You win!')
+                EventBus.publish('win', self.__level)
             self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
             EventBus.publish('update_select')
             EventBus.publish('update_wave', self.__current_wave)

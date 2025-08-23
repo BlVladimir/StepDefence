@@ -18,6 +18,7 @@ from math import radians, sin, cos
 
 from scripts.main_classes.interaction.selected_handler import SelectedHandler
 from scripts.main_classes.interaction.task_manager import TaskManager
+from scripts.main_classes.save_mng import SaveMng
 from scripts.main_classes.scene.scene_controller import SceneController
 from scripts.main_classes.settings import Settings
 from scripts.sprite.sprites_factory import SpritesFactory
@@ -30,13 +31,14 @@ class StepDefence(ShowBase):
         InfoConfig.load_config()
         MapsConfig.load_config()
         EnemiesConfig.load_config()
+        SaveMng.load()
 
         self.__setup_fonts()
         self.cTrav = CollisionTraverser()
 
         self.__WIDTH = 1000
         self.__HEIGHT = 600
-        self.__DEBUG_MODE = True
+        self.__DEBUG_MODE = False
 
         self.setBackgroundColor(0, 0, 0, 1)
 

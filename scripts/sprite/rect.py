@@ -107,7 +107,7 @@ class Rect3D:
         return f'Текущий прямоугольник: ширина-{round(self._width, 2)}, высота-{round(self._height, 2)},  X-{round(self._top_left.x, 2)}, Y-{round(self._top_left.y, 2)}, центр-({round(self.center[0], 2)}, {round(self.center[1], 2)})'
 
     def __repr__(self):
-        return f'{round(self._width, 2)}, {round(self._height, 2)}, {round(self._height, 2)}, {self.center}'
+        return f'{round(self._width, 2)}, {round(self._height, 2)}, {self.center}'
 
     def __copy__(self):
         return Rect3D(self._top_left, self._width, self._height, self.__rotation_center)

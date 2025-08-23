@@ -5,9 +5,7 @@ from panda3d.core import PandaNode, Loader, CullBinManager
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.objects_manager import ObjectsManager
-from scripts.main_classes.settings import Settings
 from scripts.sprite.rect import Rect3D
-from scripts.sprite.sprite3D import CopyingSprite3D, Sprite3D
 from scripts.sprite.sprites_factory import SpritesFactory
 
 
