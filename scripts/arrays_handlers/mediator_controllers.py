@@ -28,7 +28,7 @@ class MediatorControllers:
 
         self.__current_wave = 0
         self.__level = 0
-        self.__STARTED_MONEY = 400
+        self.__STARTED_MONEY = 4
         self._money = self.__STARTED_MONEY
         self._discount = 0
 
@@ -65,9 +65,9 @@ class MediatorControllers:
         """Заканчивает смену хода"""
         if not self.__is_lose:
             self.__current_wave += 1
-            if self.__current_wave == 40 and self.__level == SaveMng.get_level():
+            if self.__current_wave == 39 and self.__level == SaveMng.get_level():
                 info('You win!')
-                EventBus.publish('win', self.__level)
+                EventBus.publish('win', self.__level+1)
             self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
             EventBus.publish('update_select')
             EventBus.publish('update_wave', self.__current_wave)

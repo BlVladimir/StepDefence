@@ -39,7 +39,7 @@ class EnemySprite(Sprite3D):
 
         return wireframe
 
-    def move(self, movement_array: List[Vec3], move_rect: bool = False) -> None:
+    def move(self, movement_array: List[Vec3]) -> None:
         intervals = []
         for i in range(1, len(movement_array)):
             intervals.append(
@@ -52,9 +52,8 @@ class EnemySprite(Sprite3D):
             )
         sequence = Sequence(*intervals)
         sequence.start()
-        if move_rect:
-            vec_move = movement_array[-1] - movement_array[0]
-            self._rect.move(Vec2(vec_move.x, vec_move.y))
+        vec_move = movement_array[-1] - movement_array[0]
+        self._rect.move(Vec2(vec_move.x, vec_move.y))
 
     @property
     def is_selected(self):
