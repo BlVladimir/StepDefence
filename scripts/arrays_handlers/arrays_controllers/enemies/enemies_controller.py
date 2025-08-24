@@ -42,10 +42,11 @@ class EnemiesController:
         self.__group_enemies_builder.create_enemies(wave, level, tile)
 
     async def __move_enemies(self)->None:
-        for enemy in self._enemies_node.getChildren():
-            enemy.getPythonTag('sprite').external_object.end_turn()
-        await asyncio.sleep(1)
-        self.__update_enemy()
+        if len(self.__enemies_manager) > 0:
+            for enemy in self._enemies_node.getChildren():
+                enemy.getPythonTag('sprite').external_object.end_turn()
+            await asyncio.sleep(1)
+            self.__update_enemy()
         EventBus.publish('complete_end_turn')
         self.__is_round_ended = False
 

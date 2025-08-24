@@ -125,6 +125,12 @@ class Tower:
             self._damage_dict['laser'].is_not_end = self.__get_laser_func(enemy)
         return self._damage_dict
 
+    def destroy(self)->None:
+        self._tower_sprite.main_node.removeNode()
+        self.unsubscribe()
+        self.__gun_state.destroy()
+        self._tower_sprite.external_object = None
+
     @property
     def is_charge(self)->bool:
         return self._is_charge

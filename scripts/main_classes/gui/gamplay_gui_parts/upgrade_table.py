@@ -1,3 +1,4 @@
+from functools import partial
 from logging import debug
 from typing import Dict
 
@@ -26,7 +27,7 @@ class UpgradeTable:
         self.__discount = 1
         self.__frame = DirectFrame(parent=self.__upgrade_table_frame,
                             frameSize=(-0.25, 0.25, -0.15, 0.15),
-                            pos=(0, 0, -0.75),
+                            pos=(0, 0, -0.6),
                             frameColor=(0, 0, 0, 0),
                             text=f'x0',
                             text_fg=Vec4D(128 / 255, 64 / 255, 48 / 255, 1),
@@ -45,6 +46,17 @@ class UpgradeTable:
                                              frameColor=((0.5, 0.5, 0.5, 1),
                                                          (0.7, 0.7, 0.7, 1),
                                                          (0.3, 0.3, 0.3, 1)))
+        DirectButton(text='sell',
+                     text_fg=Vec4D(1, 1, 1, 1),
+                     text_align=TextNode.ACenter,
+                     parent=self.__frame,
+                     scale=0.1,
+                     pos=Vec3(0, -0.3),
+                     command=partial(EventBus.publish, 'sell_tower'),
+                     frameColor=((0.5, 0.5, 0.5, 1),
+                                 (0.7, 0.7, 0.7, 1),
+                                 (0.3, 0.3, 0.3, 1))
+                     )
         self.__frame.setTransparency(TransparencyAttrib.MAlpha)
         self.__frame.setPythonTag('price', 0)
 
@@ -60,7 +72,7 @@ class UpgradeTable:
                                           text_align=TextNode.ALeft,
                                           scale=1,
                                           text_scale=0.1,
-                                          pos=Vec3(-0.2, 0, 0.2 - 0.2 * i),
+                                          pos=Vec3(-0.2, 0, 0.6 - 0.2 * i),
                                           frameSize=(0, 0.5, -0.1, 0.1),
                                           frameColor=Vec4(1, 0, 0, 0)) for i in range(6)]
 

@@ -15,6 +15,9 @@ class GunState:
             -vec.signedAngleDeg(Vec2(1, 0))-90
         )
 
+    def destroy(self)->None:
+        self.__sprite.main_node.removeNode()
+
     @property
     def gun_sprite(self):
         return self.__sprite

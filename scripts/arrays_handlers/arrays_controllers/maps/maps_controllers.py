@@ -12,9 +12,9 @@ from scripts.sprite.sprites_factory import SpritesFactory
 
 class MapsController:
     """Обработчик карт"""
-    def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory):
+    def __init__(self, scene_gameplay_node:NodePath, sprites_factory:SpritesFactory, mediator:'MediatorControllers'):
         self.__map_node = scene_gameplay_node.attachNewNode("map_node")
-        self.__tiles_controller = TilesController(self.__map_node, sprites_factory)
+        self.__tiles_controller = TilesController(self.__map_node, sprites_factory, mediator)
 
         self._global_collision_node = None
 
