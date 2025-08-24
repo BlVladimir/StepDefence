@@ -15,6 +15,7 @@ class Tower:
         self._type_tower = type_tower
 
         self._damage_dict = damage_dict
+        self.__min_damage = damage_dict['basic_damage']
         self.__gun_state = gun_state
         self.__radius_state = radius_state
         self._targets_state = targets_state
@@ -59,6 +60,7 @@ class Tower:
         """Улучшает башню"""
         self.__level += 1
         self.__level_display.set_texture(self.__level)
+        self.__min_damage += self.__visitor_improve.get_dmg_change()
         self.visit(self.__visitor_improve)
         self._radius_node.show()
         debug(self._damage_dict)
@@ -112,7 +114,7 @@ class Tower:
     def visit(self, visitor:TowerVisitor):
         """Применяет visitor к характеристикам башни"""
         self.__radius_state.upgrade(visitor)
-        visitor.visit_damage_dict(self._damage_dict)
+        visitor.visit_damage_dict(self._damage_dict, self.__min_damage)
         self.__redraw_radius()
 
     def damage_dict(self, enemy:Enemy)->Dict:

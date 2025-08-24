@@ -48,6 +48,6 @@ class EnemiesBuilder:
     @staticmethod
     def __get_wave_health_modifier(wave:int)->float:
         if wave != 0:
-            return 1 + (0.1 * (randrange(-1, 2)+wave//2))
+            return 1 + (0.3 * (randrange(-1, 2)+wave//2))
         else:
             return 1
