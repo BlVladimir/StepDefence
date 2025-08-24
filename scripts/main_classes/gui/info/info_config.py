@@ -7,6 +7,8 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import Vec3
 
+from scripts.main_classes import rp
+
 
 class InfoConfig:
     _instance: Optional['InfoConfig'] = None
@@ -19,7 +21,7 @@ class InfoConfig:
     @classmethod
     def load_config(cls)->None:
         try:
-            with open('configs/info_config.yaml', 'r') as file:
+            with open(rp.resource_path('configs/info_config.yaml'), 'r', encoding='utf-8') as file:
                 conf = yaml.safe_load(file)
         except Exception as Er:
             raise ValueError(Er)

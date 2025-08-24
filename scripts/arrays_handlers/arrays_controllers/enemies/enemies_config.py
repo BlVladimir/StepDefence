@@ -3,6 +3,8 @@ from typing import Dict, Optional
 
 import yaml
 
+from scripts.main_classes import rp
+
 
 class EnemiesConfig:
     _instance: Optional['EnemiesConfig'] = None
@@ -13,7 +15,7 @@ class EnemiesConfig:
     def load_config(cls) -> None:
         """Загружает конфиг врагов один раз в память."""
         try:
-            with open('configs/enemies_config.yaml', 'r') as file:
+            with open(rp.resource_path('configs/enemies_config.yaml'), 'r', encoding='utf-8') as file:
                 conf = yaml.safe_load(file)
         except Exception as Er:
             raise ValueError(Er)
@@ -35,7 +37,7 @@ class EnemiesConfig:
     def get_path_image(cls, type_enemy: str) -> str:
         """Возвращает путь к изображению врага из конфига."""
         try:
-            return cls._instance._enemies_characteristics[type_enemy]['image']
+            return rp.resource_path(cls._instance._enemies_characteristics[type_enemy]['image'])
         except Exception as Er:
             raise ValueError(Er)
 

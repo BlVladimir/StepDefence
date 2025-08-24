@@ -1,6 +1,8 @@
 from typing import List, Dict, Optional
 import yaml
 
+from scripts.main_classes import rp
+
 
 class MapsConfig:
     _instance: Optional['MapsConfig'] = None
@@ -12,7 +14,7 @@ class MapsConfig:
     @classmethod
     def load_config(cls) -> None:
         try:
-            with open('configs/maps_config.yaml', 'r') as file:
+            with open(rp.resource_path('configs/maps_config.yaml'), 'r', encoding='utf-8') as file:
                 conf = yaml.safe_load(file)
         except Exception as Er:
             raise ValueError(Er)
@@ -41,7 +43,7 @@ class MapsConfig:
     @classmethod
     def get_path(cls, value:str)->str:
         try:
-            return cls._instance._images_path[value]
+            return rp.resource_path(cls._instance._images_path[value])
         except IndexError:
             raise ValueError(f'Path {value} not found')
 

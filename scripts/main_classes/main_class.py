@@ -1,15 +1,18 @@
 import asyncio
+import os
+import sys
 from asyncio import get_event_loop, get_running_loop, sleep
 from logging import debug, error, info
 
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from panda3d.core import WindowProperties, CollisionTraverser
+from panda3d.core import WindowProperties, CollisionTraverser, loadPrcFileData, loadPrcFile
 
 from panda3d.core import LineSegs, TextNode
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config import EnemiesConfig
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
+from scripts.main_classes import rp
 from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.interaction.key_handler import KeyHandler
@@ -28,6 +31,7 @@ class StepDefence(ShowBase):
     """Главный класс, осуществляющий взаимодействие программы с пользователем"""
     def __init__(self):
         ShowBase.__init__(self)
+
         InfoConfig.load_config()
         MapsConfig.load_config()
         EnemiesConfig.load_config()
@@ -36,8 +40,8 @@ class StepDefence(ShowBase):
         self.__setup_fonts()
         self.cTrav = CollisionTraverser()
 
-        self.__WIDTH = 1000
-        self.__HEIGHT = 600
+        self.__WIDTH = 1280
+        self.__HEIGHT = 720
         self.__DEBUG_MODE = False
 
         self.setBackgroundColor(0, 0, 0, 1)
@@ -68,6 +72,7 @@ class StepDefence(ShowBase):
         EventBus.publish('append_task', ['update_async', self.__update_async])
         EventBus.subscribe('add_async_task', lambda event_type, data: self.__add_async_task(data))
 
+
     def __add_async_task(self, task):
         self.async_task = self.__loop.create_task(task)
 
@@ -81,10 +86,7 @@ class StepDefence(ShowBase):
         """Настройка шрифта по умолчанию с поддержкой кириллицы."""
         font = None
         candidates = [
-            'configs/ShareTechMono.otf',  # Пользовательский шрифт
-            '/System/Library/Fonts/Supplemental/Arial Unicode.ttf',  # macOS
-            '/Library/Fonts/Arial Unicode.ttf',  # macOS
-            '/Library/Fonts/Arial.ttf',  # macOS
+            rp.resource_path('configs/ShareTechMono.otf')  # Пользовательский шрифт
         ]
 
         for path in candidates:

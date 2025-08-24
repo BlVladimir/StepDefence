@@ -13,6 +13,7 @@ from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_
     OneTargetState
 from scripts.arrays_handlers.arrays_controllers.towers.states.select_for_attack_state.ray_state import RayState
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
+from scripts.main_classes import rp
 from scripts.sprite.sprites_factory import SpritesFactory
 
 
@@ -45,7 +46,7 @@ class TowerConfig:
     @classmethod
     def load_config(cls, sprite_factory: SpritesFactory, render_root:NodePath)->None:
         try:
-            with open('configs/towers_config.yaml', 'r') as file:
+            with open(rp.resource_path('configs/towers_config.yaml'), 'r', encoding='utf-8') as file:
                 conf = yaml.safe_load(file)
         except Exception as Er:
             raise ValueError(Er)
@@ -64,8 +65,8 @@ class TowerConfig:
             if 'laser' in obj._towers_characteristics[tower].keys():
                 obj._towers_characteristics[tower]['laser'] = LaserEffect(**obj._towers_characteristics[tower]['laser'])
 
-        obj._charge_textures = [sprite_factory.get_texture(texture) for texture in obj._textures_path['charge']]
-        obj._level_textures = [sprite_factory.get_texture(texture) for texture in obj._textures_path['level']]
+        obj._charge_textures = [sprite_factory.get_texture(rp.resource_path(texture)) for texture in obj._textures_path['charge']]
+        obj._level_textures = [sprite_factory.get_texture(rp.resource_path(texture)) for texture in obj._textures_path['level']]
 
         obj._visitors_dict = {k: TowerVisitor(**obj._towers_characteristics[k]['improves']) for k in obj._towers_characteristics.keys()}
 
@@ -129,14 +130,16 @@ class TowerConfig:
     @classmethod
     def get_image_foundation(cls, type_tower: str) -> str:
         try:
-            return cls._instance._towers_characteristics[type_tower]['foundation_image']
+            return rp.resource_path(cls._instance._towers_characteristics[type_tower]['foundation_image'])
         except Exception as Er:
             raise ValueError(Er)
 
     @classmethod
     def get_image_gun(cls, type_tower: str) -> Optional[str]:
         try:
-            return cls._instance._towers_characteristics[type_tower].get('gun_image')
+            if 'gun_image' in cls._instance._towers_characteristics[type_tower]:
+                return rp.resource_path(cls._instance._towers_characteristics[type_tower]['gun_image'])
+            return None
         except Exception as Er:
             raise ValueError(Er)
 

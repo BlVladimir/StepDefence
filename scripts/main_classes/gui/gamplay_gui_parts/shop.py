@@ -5,6 +5,7 @@ from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, TransparencyAttrib, Vec3, Texture, PNMImage, TextNode, Vec4D
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
+from scripts.main_classes import rp
 from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 
@@ -64,7 +65,7 @@ class Shop:
                             text_pos=(-0.25 + SCALE * 3, 0),
                             text_scale=SCALE / 1.2,
                             text_align=TextNode.ACenter,
-                            image='images2d/UI/money.png',
+                            image=rp.resource_path('images2d/UI/money.png'),
                             image_pos=(-0.25 + SCALE * 3, 0, 0),
                             image_scale=(SCALE / 1.2, 0, SCALE / 1.2))
         InfoConfig.center_text(frame)

@@ -1,5 +1,6 @@
 from json import loads, dumps, dump
-from os import makedirs, path
+
+from scripts.main_classes import rp
 
 
 class SaveMng:
@@ -8,19 +9,15 @@ class SaveMng:
     @classmethod
     def load(cls):
         try:
-            with open('saves/save.json', 'r', encoding='utf-8') as f:
+            with open(rp.resource_path('saves/save.json'), 'r', encoding='utf-8') as f:
                 save_value = loads(f.read())
                 cls._level = save_value['level']
         except Exception:
-            cls._level = 0
-            makedirs(path.dirname('saves/save.json'), exist_ok=True)
-            with open('saves/save.json', 'w', encoding='utf-8') as f:
-                dump({'level': 0}, f)
+            raise ValueError('Error in load save')
 
     @classmethod
     def save(cls, level:int):
-        makedirs(path.dirname('saves/save.json'), exist_ok=True)
-        with open('saves/save.json', 'w', encoding='utf-8') as f:
+        with open(rp.resource_path('saves/save.json'), 'w', encoding='utf-8') as f:
             dump({'level': level}, f)
 
     @classmethod

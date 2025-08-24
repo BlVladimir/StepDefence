@@ -2,6 +2,7 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import Vec3, NodePath, Texture, PNMImage, TextNode
 
+from scripts.main_classes import rp
 from scripts.main_classes.gui.buttons_controller import ButtonsController
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.save_mng import SaveMng
@@ -27,7 +28,7 @@ class MainMenuButtonsController(ButtonsController):
                            text_align=TextNode.ACenter)
         info.hide()
         for i, coord in enumerate(coords):
-            self.__buttons_main_menu.append(DirectButton(image=f'images2d/UI/lvl/lvl{i + 1}.png' if i <= level else self.__get_dark_texture(f'images2d/UI/lvl/lvl{i + 1}.png'),
+            self.__buttons_main_menu.append(DirectButton(image=rp.resource_path(f'images2d/UI/lvl/lvl{i + 1}.png') if i <= level else self.__get_dark_texture(f'images2d/UI/lvl/lvl{i + 1}.png'),
                                                   parent=self._buttons_node,
                                                   scale=MMSC,
                                                   pos=coord,
@@ -47,7 +48,7 @@ class MainMenuButtonsController(ButtonsController):
 
     @staticmethod
     def __get_dark_texture(path:str)->Texture:
-        img = PNMImage(path)
+        img = PNMImage(rp.resource_path(path))
         k=0.6
 
         for x in range(img.getXSize()):

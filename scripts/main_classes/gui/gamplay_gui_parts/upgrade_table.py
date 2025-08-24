@@ -7,6 +7,7 @@ from panda3d.core import NodePath, Vec3, TransparencyAttrib, TextNode, Vec4D, Ve
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower import Tower
 from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
+from scripts.main_classes import rp
 from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
 
@@ -32,11 +33,11 @@ class UpgradeTable:
                             text_pos=(0.175, 0),
                             text_scale=0.075,
                             text_align=TextNode.ACenter,
-                            image='images2d/UI/money.png',
+                            image=rp.resource_path('images2d/UI/money.png'),
                             image_pos=(0.175, 0, 0),
                             image_scale=(0.075, 0, 0.075))
         InfoConfig.center_text(self.__frame)
-        self.__button_upgrade = DirectButton(image='images2d/upgrade/1lvl.png',
+        self.__button_upgrade = DirectButton(image=rp.resource_path('images2d/upgrade/1lvl.png'),
                                              parent=self.__frame,
                                              scale=0.15,
                                              pos=Vec3(-0.075, 0),
@@ -47,7 +48,9 @@ class UpgradeTable:
         self.__frame.setTransparency(TransparencyAttrib.MAlpha)
         self.__frame.setPythonTag('price', 0)
 
-        self.__images_list = ['images2d/upgrade/1lvl.png', 'images2d/upgrade/2lvl.png', 'images2d/upgrade/3lvl.png']
+        self.__images_list = [rp.resource_path('images2d/upgrade/1lvl.png'),
+                              rp.resource_path('images2d/upgrade/2lvl.png'),
+                              rp.resource_path('images2d/upgrade/3lvl.png')]
         self.__sequence_characteristic = ['basic_damage', 'radius', 'armor_piercing', 'poison', 'additional_money', 'vision', 'laser']
         self.__characteristic_node = self.__upgrade_table_frame.attachNewNode('characteristic_node')
 

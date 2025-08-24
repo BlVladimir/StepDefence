@@ -1,7 +1,10 @@
+from logging import debug
+
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import Vec3, TransparencyAttrib, NodePath, TextNode, Vec4
 
+from scripts.main_classes import rp
 from scripts.main_classes.gui.buttons_controller import ButtonsController
 from scripts.main_classes.gui.gamplay_gui_parts.bugs_list import BugsList
 from scripts.main_classes.gui.gamplay_gui_parts.shop import Shop
@@ -14,8 +17,8 @@ from scripts.main_classes.interaction.event_bus import EventBus
 class GameplayButtonsController(ButtonsController):
     def __init__(self, relationship: float, buttons_node: NodePath):
         super().__init__(relationship, buttons_node)
-
-        DirectButton(image='images2d/UI/exit_in_main_menu.png',
+        debug(rp.resource_path('images2d/UI/exit_in_main_menu.png'))
+        DirectButton(image=rp.resource_path('images2d/UI/exit_in_main_menu.png'),
                      parent=self._buttons_node,
                      scale=0.1,
                      pos=Vec3(self._relationship - 0.1,

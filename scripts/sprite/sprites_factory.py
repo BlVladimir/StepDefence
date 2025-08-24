@@ -1,4 +1,6 @@
-from panda3d.core import NodePath, CardMaker, Texture
+from logging import error
+
+from panda3d.core import NodePath, Texture
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemy_sprite import EnemySprite
 from scripts.arrays_handlers.arrays_controllers.maps.tile_sprite import TileSprite
@@ -23,8 +25,19 @@ class SpritesFactory:
             case _:
                 return Sprite3D(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
 
-    def get_texture(self, path_image:str)->Texture:
-        return self.__render_manager.loader.loadTexture(path_image)
+    def get_texture(self, path_image: str)->Texture:
+
+        try:
+            texture = self.__render_manager.loader.loadTexture(path_image)
+            return texture
+        except Exception as e:
+            error(f"❌ Failed to load texture: {e}")
+            from panda3d.core import PNMImage
+            fallback_texture = Texture("fallback")
+            image = PNMImage(32, 32)
+            image.fill(1, 0, 0)  # Красный цвет для заметности
+            fallback_texture.load(image)
+            return fallback_texture
 
     def create2Dnode(self, name:str)->NodePath:
         return self.__render_manager.main_node2d.attachNewNode(name)
