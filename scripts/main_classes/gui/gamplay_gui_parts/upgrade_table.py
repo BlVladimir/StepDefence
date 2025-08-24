@@ -84,6 +84,7 @@ class UpgradeTable:
 
     def __clear_characteristic(self):
         """Очищает характеристики"""
+        self.__upgrade_table_node.hide()
         for frame in self.__char_frames:
             frame['text'] = ''
 
