@@ -63,7 +63,7 @@ class Shop:
             color = Vec4D(128 / 255, 128 / 255, 48 / 255, 1)
         else:
             color = Vec4D(1, 64 / 255, 48 / 255, 1)
-        for product in self.__products:
+        for product in self.__products.values():
             product['text'] = f'x{round(product.getPythonTag("cost") * discount)}'
             product['text_fg'] = color
 

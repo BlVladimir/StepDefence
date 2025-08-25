@@ -1,5 +1,6 @@
 from typing import List, Dict, Optional
 import yaml
+from panda3d.core import Loader, Texture
 
 from scripts.main_classes import rp
 
@@ -9,9 +10,10 @@ class MapsConfig:
 
     _keys: Dict
     _images_path: Dict
+    _textures: Dict
 
     @classmethod
-    def load_config(cls) -> None:
+    def load_config(cls, loader:Loader) -> None:
         try:
             with open(rp.resource_path('configs/maps_config.yaml'), 'r', encoding='utf-8') as file:
                 conf = yaml.safe_load(file)
@@ -21,6 +23,7 @@ class MapsConfig:
         obj = cls()
         obj._keys = conf['keys']
         obj._images_path = conf['images_path']
+        obj._textures = {tile: loader.loadTexture(conf['images_path'][tile]) for tile in conf['images_path'].keys()}
 
         cls._instance = obj
 
@@ -39,11 +42,8 @@ class MapsConfig:
             raise ValueError(f'Key {key} not found')
 
     @classmethod
-    def get_path(cls, value:str)->str:
-        try:
-            return rp.resource_path(cls._instance._images_path[value])
-        except IndexError:
-            raise ValueError(f'Path {value} not found')
+    def get_texture(cls, type_tile:str)->Texture:
+        return cls._instance._textures[type_tile]
 
     @classmethod
     def get_all_keys(cls)->List:

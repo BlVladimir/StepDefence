@@ -16,14 +16,14 @@ class SpritesFactory:
         self.__render_manager = render_manager
         self._relationship = relationship
 
-    def create_sprite(self, rect:Rect3D, path_image:str, parent:NodePath|Sprite3D, name_group:str, number:int)->Sprite3D:
+    def create_sprite(self, rect:Rect3D, texture:Texture, parent: NodePath | Sprite3D, name_group:str, number:int)->Sprite3D:
         match name_group:
             case 'enemy':
-                return EnemySprite(rect=rect, path_image=path_image, parent=parent, name_group=name_group, loader=self.__render_manager.loader, number=number, debug_mode=self.__settings.debug_mode)
+                return EnemySprite(rect=rect, texture=texture, parent=parent, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
             case 'tile':
-                return TileSprite(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
+                return TileSprite(rect = rect, texture=texture, parent=parent, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
             case _:
-                return Sprite3D(rect = rect, path_image=path_image, parent=parent, loader=self.__render_manager.loader, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
+                return Sprite3D(rect = rect, texture=texture, parent=parent, name_group=name_group, number=number, debug_mode=self.__settings.debug_mode)
 
     def get_texture(self, path_image: str)->Texture:
 

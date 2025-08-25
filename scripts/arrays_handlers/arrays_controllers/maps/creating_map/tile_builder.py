@@ -44,7 +44,7 @@ class AbstractTilesBuilder(ABC):
 class TilesBuilder(AbstractTilesBuilder):
     def  create_tile(self, type_tile:str, rect:Rect3D)->Tile:
         try:
-            sprite = self._sprites_factory.create_sprite(rect, MapsConfig.get_path(type_tile), self._maps_node, 'tile', len(self._tile_mng))
+            sprite = self._sprites_factory.create_sprite(rect, MapsConfig.get_texture(type_tile), self._maps_node, 'tile', len(self._tile_mng))
             return Tile(sprite, type_tile)
         except KeyError:
             raise KeyError('Incorrect type of tile')

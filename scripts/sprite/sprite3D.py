@@ -4,12 +4,12 @@ from copy import copy
 from typing import Any
 
 from scripts.sprite.rect import Rect3D
-from panda3d.core import CardMaker, TransparencyAttrib, CollisionNode, Point3, NodePath, Vec3, BitMask32, CollisionBox, Loader
+from panda3d.core import CardMaker, TransparencyAttrib, CollisionNode, Point3, NodePath, Vec3, BitMask32, CollisionBox, Texture
 
 
 class Sprite3D:
     """Прямоугольный спрайт в 3d"""
-    def __init__(self, rect: Rect3D, path_image:str, parent:NodePath|Sprite3D, loader:Loader, name_group:str, number:int, external_object=None, debug_mode:bool=True):
+    def __init__(self, rect: Rect3D, texture:Texture, parent: NodePath | Sprite3D, name_group:str, number:int, external_object=None, debug_mode:bool=True):
         self._external_object = external_object
 
         self._rect = rect
@@ -20,13 +20,13 @@ class Sprite3D:
         self._debug_mode = debug_mode
         if isinstance(parent, NodePath):
             self._main_node = parent.attachNewNode(name_group)
-            self.__setup_node(rect, path_image, loader, name_group, number)
+            self.__setup_node(rect, texture, name_group, number)
             self._main_node.setPos(self._rect.center.x, self._rect.center.y, 0)
             self.__rotation_vec += Vec3(0, -90, 0)
             self._main_node.setHpr(self.__rotation_vec)
         else:
             self._main_node = parent._main_node.attachNewNode(name_group)
-            self.__setup_node(rect, path_image, loader, name_group, number)
+            self.__setup_node(rect, texture, name_group, number)
             self.__convert_vec = Vec3(parent._rect.center.x, parent._rect.center.y, 0)
 
         self._main_node.setPythonTag('sprite', self)
@@ -60,7 +60,7 @@ class Sprite3D:
     def __str__(self):
         return str(self._rect) + f' Node: {self._main_node.getName()}'
 
-    def __setup_node(self, rect:Rect3D, path_image:str, loader:Loader, name_group:str, number:int):
+    def __setup_node(self, rect:Rect3D, texture:Texture, name_group:str, number:int):
         card = CardMaker(f'{name_group}_card')
         card.setFrame(self._rect.scale)
         self._texture_node = self._main_node.attachNewNode(card.generate())
@@ -69,7 +69,6 @@ class Sprite3D:
         self._texture_node.setDepthTest(False)
         self._texture_node.setDepthWrite(False)
 
-        texture = loader.loadTexture(path_image)
         self._texture_node.setTexture(texture)
         self._texture_node.setTransparency(TransparencyAttrib.MAlpha)
 

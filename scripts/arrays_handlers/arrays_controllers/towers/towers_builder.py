@@ -66,12 +66,12 @@ class TowerBuilder(AbstractTowerBuilder):
         debug(characteristic)
 
 
-        if TowerConfig.get_image_gun(type_tower):
-            gun_state = GunState(sprite=self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_image_gun(type_tower),
+        if TowerConfig.get_gun_texture(type_tower):
+            gun_state = GunState(sprite=self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_gun_texture(type_tower),
                                                                             tile.sprite, 'gun', len(self.__tower_mng)))
         else:
             gun_state = None
-        sprite = self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_image_foundation(type_tower),
+        sprite = self._sprites_factory.create_sprite(tile.sprite.rect, TowerConfig.get_foundation_texture(type_tower),
                                                        tile.sprite, 'tower', len(self.__tower_mng))
         tower = Tower(
             type_tower=type_tower,

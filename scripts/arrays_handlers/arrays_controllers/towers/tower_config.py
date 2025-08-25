@@ -43,6 +43,9 @@ class TowerConfig:
     _level_textures: List[Texture]
     _round_texture: Texture
 
+    _foundation_textures: Dict[str, Texture]
+    _gun_textures: Dict[str, Texture]
+
     @classmethod
     def load_config(cls, sprite_factory: SpritesFactory, render_root:NodePath)->None:
         try:
@@ -64,6 +67,15 @@ class TowerConfig:
                 obj._towers_characteristics[tower]['poison'] = Effect(**obj._towers_characteristics[tower]['poison'])
             if 'laser' in obj._towers_characteristics[tower].keys():
                 obj._towers_characteristics[tower]['laser'] = LaserEffect(**obj._towers_characteristics[tower]['laser'])
+
+        obj._foundation_textures = {type_twr: sprite_factory.get_texture(
+                                    rp.resource_path(conf['towers_characteristics'][type_twr]['foundation_image']))
+                                    for type_twr in conf['towers_characteristics'].keys()}
+
+        obj._gun_textures = {type_twr: sprite_factory.get_texture(
+            rp.resource_path(conf['towers_characteristics'][type_twr]['gun_image']))
+            for type_twr in
+            filter(lambda el: 'gun_image' in conf['towers_characteristics'][el], conf['towers_characteristics'].keys())}
 
         obj._charge_textures = [sprite_factory.get_texture(rp.resource_path(texture)) for texture in obj._textures_path['charge']]
         obj._level_textures = [sprite_factory.get_texture(rp.resource_path(texture)) for texture in obj._textures_path['level']]
@@ -163,6 +175,14 @@ class TowerConfig:
             return list(cls._instance._towers_characteristics.keys())
         except Exception as Er:
             raise ValueError(Er)
+
+    @classmethod
+    def get_foundation_texture(cls, type_tower: str) -> Texture:
+        return cls._instance._foundation_textures[type_tower]
+
+    @classmethod
+    def get_gun_texture(cls, type_tower:str)->Optional[Texture]:
+        return cls._instance._gun_textures.get(type_tower, None)
 
     @staticmethod
     def __texture_round_radius(size: int = 512, radius_relationship: float = 0.1, brightness: int = 255) -> Texture:

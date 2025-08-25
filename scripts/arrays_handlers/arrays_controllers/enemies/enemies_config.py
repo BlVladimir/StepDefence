@@ -1,7 +1,8 @@
 from logging import error
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 
 import yaml
+from panda3d.core import Texture, Loader, PNMImage
 
 from scripts.main_classes import rp
 
@@ -10,9 +11,10 @@ class EnemiesConfig:
     _instance: Optional['EnemiesConfig'] = None
 
     _enemies_characteristics: Dict[str, Dict]
+    _enemies_textures: Dict[str, Tuple[Texture, Texture]]
 
     @classmethod
-    def load_config(cls) -> None:
+    def load_config(cls, loader:Loader) -> None:
         """Загружает конфиг врагов один раз в память."""
         try:
             with open(rp.resource_path('configs/enemies_config.yaml'), 'r', encoding='utf-8') as file:
@@ -21,6 +23,8 @@ class EnemiesConfig:
             raise ValueError(Er)
         obj = cls()
         obj._enemies_characteristics = conf['enemies_characteristics']
+        obj._enemies_textures = {enm:cls.__get_textures(conf['enemies_characteristics'][enm]['image'], loader) for enm in conf['enemies_characteristics'].keys()}
+
         cls._instance = obj
 
     @classmethod
@@ -34,12 +38,22 @@ class EnemiesConfig:
             raise ValueError(Er)
 
     @classmethod
-    def get_path_image(cls, type_enemy: str) -> str:
-        """Возвращает путь к изображению врага из конфига."""
-        try:
-            return rp.resource_path(cls._instance._enemies_characteristics[type_enemy]['image'])
-        except Exception as Er:
-            raise ValueError(Er)
+    def get_textures(cls, type_enemy)->Tuple[Texture, Texture]:
+        return cls._instance._enemies_textures[type_enemy]
+
+    @staticmethod
+    def __get_textures(path_image: str, loader:Loader) -> Tuple[Texture, Texture]:
+        first_texture = loader.loadTexture(path_image)
+        img = PNMImage()
+        img.read(path_image)
+        for x in range(img.get_x_size()):
+            for y in range(img.get_y_size()):
+                r, g, b, a = img.getXelA(x, y)
+                if a > 0:
+                    img.setXelA(x, y, r, g, b, a*0.3)
+        second_texture = Texture("processed_texture")
+        second_texture.load(img)
+        return first_texture, second_texture
 
 
 if __name__ == '__main__':

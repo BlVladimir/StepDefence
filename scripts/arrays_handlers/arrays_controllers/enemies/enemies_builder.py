@@ -32,14 +32,14 @@ class EnemiesBuilder:
     def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2, health_k)->None:
         parameters = EnemiesConfig.get_characteristic(type_enemy)
         parameters['health'] = round(parameters['health'] * health_k)
-        sprite = self.__sprites_factory.create_sprite(rect, EnemiesConfig.get_path_image(type_enemy), self.__enemies_node,
+        sprite = self.__sprites_factory.create_sprite(rect, EnemiesConfig.get_textures(type_enemy)[0], self.__enemies_node,
                                                       'enemy', len(self.__enemies_manager))
         enemy = Enemy(type_enemy,
                       sprite,
                       parameters,
                       MovementCalculator(self.__bezier_curve_maker, pos_on_tile,
                                          started_division_vec, self.__track),
-                      self.__damage_calculator, wave // 4 + 2)
+                      self.__damage_calculator, wave // 4 + 2, EnemiesConfig.get_textures(type_enemy))
         self.__enemies_manager + enemy
 
     def clear_enemies(self):

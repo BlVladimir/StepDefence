@@ -34,8 +34,8 @@ class StepDefence(ShowBase):
         ShowBase.__init__(self)
 
         InfoConfig.load_config()
-        MapsConfig.load_config()
-        EnemiesConfig.load_config()
+        MapsConfig.load_config(self.loader)
+        EnemiesConfig.load_config(self.loader)
         LevelsConfig.load_config()
         SaveMng.load()
 

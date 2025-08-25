@@ -1,5 +1,7 @@
 from logging import debug, getLogger
-from typing import Dict
+from typing import Dict, Tuple
+
+from panda3d.core import Texture
 
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.damage_calculater import DamageCalculater
 from scripts.arrays_handlers.arrays_controllers.enemies.damage.effects_sets import EffectsSets
@@ -12,7 +14,7 @@ from scripts.sprite.sprite3D import Sprite3D
 
 class Enemy:
     """Класс врагов"""
-    def __init__(self, type_enemy:str, sprite:Sprite3D, characteristic_dict:Dict, movement_calculator:MovementCalculator, damage_calculator:DamageCalculater, cost:int):
+    def __init__(self, type_enemy:str, sprite:Sprite3D, characteristic_dict:Dict, movement_calculator:MovementCalculator, damage_calculator:DamageCalculater, cost:int, textures:Tuple[Texture, Texture]):
         self._type_enemy = type_enemy
         self._sprite = sprite
         self._sprite.external_object = self
@@ -26,11 +28,14 @@ class Enemy:
         self.__cost = cost
 
         self.__health_display = HealthDisplay(self._sprite.main_node, self._characteristic_dict['health'])
+        self._textures = textures
+        self.__update_texture()
 
         self.__log = getLogger(__name__)
 
     def update(self, mediator)->None:
         mediator.has_vision(self)
+        self.__update_texture()
 
     def end_turn(self)->None:
         """Двигает всех врагов"""
@@ -60,7 +65,9 @@ class Enemy:
         """Применяет visitor к врагу"""
         visitor.visit_characteristic_dict(self._characteristic_dict)
         visitor.visit_invisible_value(self._characteristic_dict)
+        self.__update_texture()
         self.__health_display.update_health(self._characteristic_dict['health'])
+
 
     @property
     def characteristic(self)->Dict:
@@ -83,3 +90,10 @@ class Enemy:
     @property
     def sprite(self)->Sprite3D:
         return self._sprite
+
+    def __update_texture(self):
+        if 'invisible' in self._characteristic_dict.keys():
+            if self._characteristic_dict['invisible']:
+                self._sprite.main_node.getPythonTag('texture_node').setTexture(self._textures[1])
+            else:
+                self._sprite.main_node.getPythonTag('texture_node').setTexture(self._textures[0])

@@ -1,12 +1,12 @@
-from panda3d.core import NodePath, Loader, Vec4
+from panda3d.core import NodePath, Loader, Vec4, Texture
 
 from scripts.sprite.rect import Rect3D
 from scripts.sprite.sprite3D import Sprite3D
 
 
 class TileSprite(Sprite3D):
-    def __init__(self, rect: Rect3D, path_image: str, parent: NodePath, loader: Loader, name_group: str, number: int, external_object=None, debug_mode: bool = True):
-        super().__init__(rect, path_image, parent, loader, name_group, number, external_object, debug_mode)
+    def __init__(self, rect: Rect3D, texture: Texture, parent: NodePath, name_group: str, number: int, external_object=None, debug_mode: bool = True):
+        super().__init__(rect, texture, parent, name_group, number, external_object, debug_mode)
 
         self.__select_frame = self.__wireframe(Vec4(0.5, 0, 0, 0.8))
         self.__select_frame.hide()
