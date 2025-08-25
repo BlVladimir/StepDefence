@@ -7,7 +7,6 @@ from scripts.main_classes import rp
 class MapsConfig:
     _instance: Optional['MapsConfig'] = None
 
-    _maps: List
     _keys: Dict
     _images_path: Dict
 
@@ -20,7 +19,6 @@ class MapsConfig:
             raise ValueError(Er)
 
         obj = cls()
-        obj._maps = conf['maps']
         obj._keys = conf['keys']
         obj._images_path = conf['images_path']
 

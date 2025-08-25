@@ -12,6 +12,7 @@ from scripts.arrays_handlers.arrays_controllers.maps.maps_controllers import Map
 from scripts.arrays_handlers.arrays_controllers.maps.tile import Tile
 from scripts.arrays_handlers.arrays_controllers.towers.tower_visitor import TowerVisitor
 from scripts.arrays_handlers.arrays_controllers.towers.towers_controller import TowersController
+from scripts.arrays_handlers.levels_config import LevelsConfig
 from scripts.arrays_handlers.random_bug import RandomBug
 from scripts.main_classes.interaction.event_bus import EventBus
 from scripts.main_classes.save_mng import SaveMng
@@ -28,8 +29,7 @@ class MediatorControllers:
 
         self.__current_wave = 0
         self.__level = 0
-        self.__STARTED_MONEY = 4000
-        self._money = self.__STARTED_MONEY
+        self._money = LevelsConfig.get_level_money(self.__level)
         self._discount = 0
 
         self.__is_lose = False
@@ -57,17 +57,19 @@ class MediatorControllers:
         self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
         self.__level = level
         self._discount = 1
-        self._money = self.__STARTED_MONEY
-        EventBus.publish('update_money', self.__STARTED_MONEY)
+        self._money = LevelsConfig.get_level_money(self.__level)
+        EventBus.publish('update_money', LevelsConfig.get_level_money(self.__level))
         EventBus.publish('update_wave', 0)
 
     def __complete_end_turn(self)->None:
         """Заканчивает смену хода"""
         if not self.__is_lose:
             self.__current_wave += 1
-            if self.__current_wave == 39 and self.__level == SaveMng.get_level():
+            if self.__current_wave == LevelsConfig.get_level_count_wave(self.__level)-1:
                 info('You win!')
-                EventBus.publish('win', self.__level+1)
+                EventBus.publish('change_scene', 'main_menu')
+                if self.__level == SaveMng.get_level():
+                    EventBus.publish('win', self.__level+1)
             self.__enemies_controller.create_enemies(self.__current_wave, self.__level, self.__maps_controller.first_tile_rect)
             EventBus.publish('update_select')
             EventBus.publish('update_wave', self.__current_wave)

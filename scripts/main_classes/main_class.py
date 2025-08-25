@@ -12,6 +12,7 @@ from panda3d.core import LineSegs, TextNode
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_config import EnemiesConfig
 from scripts.arrays_handlers.arrays_controllers.maps.maps_config import MapsConfig
+from scripts.arrays_handlers.levels_config import LevelsConfig
 from scripts.main_classes import rp
 from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
@@ -35,6 +36,7 @@ class StepDefence(ShowBase):
         InfoConfig.load_config()
         MapsConfig.load_config()
         EnemiesConfig.load_config()
+        LevelsConfig.load_config()
         SaveMng.load()
 
         self.__setup_fonts()

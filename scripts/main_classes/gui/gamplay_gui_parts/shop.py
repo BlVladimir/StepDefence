@@ -5,6 +5,7 @@ from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import NodePath, TransparencyAttrib, Vec3, Texture, PNMImage, TextNode, Vec4D
 
 from scripts.arrays_handlers.arrays_controllers.towers.tower_config import TowerConfig
+from scripts.arrays_handlers.levels_config import LevelsConfig
 from scripts.main_classes import rp
 from scripts.main_classes.gui.info.info_config import InfoConfig
 from scripts.main_classes.interaction.event_bus import EventBus
@@ -21,15 +22,27 @@ class Shop:
                                         frameColor=(0.5, 0.5, 0.5, 0),
                                         pos=Vec3(-relationship + 0.25, 0))
 
-        START_Y = 0.87
-        STEP = -0.25
-        self.__products = set([self.__create_products(type_tower, Vec3(0, START_Y + STEP * i)) for i, type_tower in
-                               enumerate(TowerConfig.get_all_towers_name())])
+        self.__products = {type_tower:self.__create_products(type_tower) for type_tower in
+                               TowerConfig.get_all_towers_name()}
 
         EventBus.subscribe('open_shop', lambda event_type, data: self.__show(data))
         EventBus.subscribe('close_shop', lambda event_type, data: self.__hide())
         EventBus.subscribe('discount', lambda event_type, data: self.__update_discount(data))
-        EventBus.subscribe('change_scene', lambda event_type, data: self.__shop_node.hide())
+        EventBus.subscribe('change_scene', lambda event_type, data: self.__change_scene(data))
+
+    def __change_scene(self, level:str):
+        self.__shop_node.hide()
+        self.__tile_info.hide()
+        if level in '012345':
+            for frame in self.__products.values():
+                frame.hide()
+            level = int(level)
+            START_Y = 0.87
+            STEP = -0.25
+            for i, type_tower in enumerate(LevelsConfig.get_level_towers(level)):
+                self.__products[type_tower].setPos(Vec3(0, START_Y + STEP * i))
+                self.__products[type_tower].show()
+
 
     def __show(self, tile:str):
         self.__shop_node.show()
@@ -54,12 +67,12 @@ class Shop:
             product['text'] = f'x{round(product.getPythonTag("cost") * discount)}'
             product['text_fg'] = color
 
-    def __create_products(self, type_tower: str, pos: Vec3) -> DirectFrame:
+    def __create_products(self, type_tower: str) -> DirectFrame:
         SCALE: float = 0.09
         frame = DirectFrame(parent=self.__shop_frame,
                             frameSize=(0.25, -0.25, SCALE, -SCALE),
                             frameColor=(0.6, 0.6, 0.6, 1),
-                            pos=pos,
+                            pos=Vec3(0, 0),
                             text=f'x{TowerConfig.get_cost(type_tower)}',
                             text_fg=Vec4D(128 / 255, 64 / 255, 48 / 255, 1),
                             text_pos=(-0.25 + SCALE * 3, 0),
@@ -93,6 +106,7 @@ class Shop:
         InfoConfig.center_text(but_info)
         frame.setTransparency(TransparencyAttrib.MAlpha)
         frame.setPythonTag('cost', TowerConfig.get_cost(type_tower))
+        frame.hide()
         return frame
 
     @staticmethod

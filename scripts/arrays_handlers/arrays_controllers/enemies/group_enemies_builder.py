@@ -1,8 +1,10 @@
-from random import randrange, choice, choices, random
+from logging import debug
+from random import randrange, choice, choices, random, sample
 
 from panda3d.core import NodePath, Vec2
 
 from scripts.arrays_handlers.arrays_controllers.enemies.enemies_builder import EnemiesBuilder
+from scripts.arrays_handlers.levels_config import LevelsConfig
 from scripts.arrays_handlers.objects_manager import ObjectsManager
 from scripts.arrays_handlers.arrays_controllers.maps.creating_map.track import Track
 from scripts.sprite.rect import Rect3D
@@ -22,10 +24,10 @@ class GroupEnemiesBuilder:
 
     def create_enemies(self, wave:int, level:int, tile:Rect3D)->None:
         """Создает врагов"""
-        rects, poses_on_tile, started_divisiones = self.__create_rects(tile, randrange(1, 4))
+        rects, poses_on_tile, started_divisiones = self.__create_rects(tile, len(LevelsConfig.get_level_enemies(level, wave)))
         try:
-            for i in range(len(rects)):
-                self.__enemies_builder.create_enemy(wave, rects[i], self.__get_type(wave, level), poses_on_tile[i], started_divisiones[i])
+            for i, rect in enumerate(rects):
+                self.__enemies_builder.create_enemy(wave, rect, LevelsConfig.get_level_enemies(level, wave)[i], poses_on_tile[i], started_divisiones[i], LevelsConfig.get_level_health_k(level, wave))
         except KeyError:
             raise KeyError('len(rects) != len(poses_on_tile)')
 
@@ -40,7 +42,7 @@ class GroupEnemiesBuilder:
         rects = []
         poses_on_tile = []
         started_divisiones = []
-        points = choices(((0, 0), (1, 0), (0, 1), (1, 1)), k=count)
+        points = sample(((0, 0), (1, 0), (0, 1), (1, 1)), k=count)
         size = rect.width
         for y in (0, 1):
             for x in (0, 1):
@@ -53,4 +55,3 @@ class GroupEnemiesBuilder:
                     poses_on_tile.append(pos_on_tile)
                     started_divisiones.append(started_division)
         return rects, poses_on_tile, started_divisiones
-

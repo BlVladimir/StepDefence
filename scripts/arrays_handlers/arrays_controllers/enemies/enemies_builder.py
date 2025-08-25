@@ -29,9 +29,9 @@ class EnemiesBuilder:
         self.__damage_calculator = DamageCalculater()
 
 
-    def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2)->None:
+    def create_enemy(self, wave:int, rect:Rect3D, type_enemy:str, pos_on_tile:Vec2, started_division_vec:Vec2, health_k)->None:
         parameters = EnemiesConfig.get_characteristic(type_enemy)
-        parameters['health'] = round(parameters['health'] * self.__get_wave_health_modifier(wave))
+        parameters['health'] = round(parameters['health'] * health_k)
         sprite = self.__sprites_factory.create_sprite(rect, EnemiesConfig.get_path_image(type_enemy), self.__enemies_node,
                                                       'enemy', len(self.__enemies_manager))
         enemy = Enemy(type_enemy,
