@@ -23,9 +23,22 @@ class MainMenuButtonsController(ButtonsController):
                            frameColor=(0, 0, 0, 0),
                            text='Чтобы разблокировать следующий уровень, доживите до 40 волны предыдущего',
                            text_fg=(1, 1, 1, 1),
-                           text_pos=(0, 0),
                            text_scale=0.05,
                            text_align=TextNode.ACenter)
+        self.__inf_mod_but = DirectButton(parent=self._buttons_node,
+                                          pos=Vec3(0.9, 0.8),
+                                          scale=0.1,
+                                          frameColor=((0.5, 0.5, 0.5, 1),
+                                                      (0.7, 0.7, 0.7, 1),
+                                                      (0.3, 0.3, 0.3, 1)),
+                                          text='infinity_mod',
+                                          text_fg=(1, 1, 1, 1),
+                                          text_align=TextNode.ACenter,
+                                          text_scale=1,
+                                          command=lambda: EventBus.publish('infinity_mod')
+                                          )
+        if SaveMng.get_level() < 5:
+            self.__inf_mod_but.hide()
         info.hide()
         for i, coord in enumerate(coords):
             self.__buttons_main_menu.append(DirectButton(image=rp.resource_path(f'images2d/UI/lvl/lvl{i + 1}.png') if i <= level else self.__get_dark_texture(f'images2d/UI/lvl/lvl{i + 1}.png'),
@@ -41,10 +54,12 @@ class MainMenuButtonsController(ButtonsController):
         EventBus.subscribe('win', lambda event_type, data: self.unlock_next_level(data))
 
     def unlock_next_level(self, level)->None:
-        self.__buttons_main_menu[level]['image'] = f'images2d/UI/lvl/lvl{level + 1}.png'
-        self.__buttons_main_menu[level]['command'] = lambda lvl=level: EventBus.publish('change_scene', str(lvl))
-        SaveMng.save(level)
-
+        if level <= 5:
+            self.__buttons_main_menu[level]['image'] = f'images2d/UI/lvl/lvl{level + 1}.png'
+            self.__buttons_main_menu[level]['command'] = lambda lvl=level: EventBus.publish('change_scene', str(lvl))
+            SaveMng.save(level)
+        elif level > 5:
+            self.__inf_mod_but.show()
 
     @staticmethod
     def __get_dark_texture(path:str)->Texture:
